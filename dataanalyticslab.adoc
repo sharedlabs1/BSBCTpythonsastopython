@@ -1,0 +1,169 @@
+== Lab: Data Analytics Using Functional Programming
+
+=== Objective
+This lab focuses on data analytics using functional programming principles. Key goals include:
+
+1. Extracting insights from data.
+2. Building a composable pipeline for analytics.
+3. Applying pure functions, higher-order functions, and data transformations.
+
+=== Scenario: Healthcare Analytics for BCBS
+You are tasked with performing data analytics for BCBS (Blue Cross Blue Shield) operations. The tasks include:
+
+1. Analyzing hospital and doctor collaboration.
+2. Calculating company revenue from member data.
+3. Identifying shared resources among companies.
+4. Generating a summary of actionable insights.
+
+=== Step 1: Setting Up Data
+
+[source,python]
+----
+# Sample data for hospitals, doctors, and members
+hospitals = [
+    {"hospital_id": "H001", "name": "Community Hospital", "city": "Springfield"},
+    {"hospital_id": "H002", "name": "Central Medical Center", "city": "Rivertown"}
+]
+
+doctors = [
+    {"doctor_id": "D001", "name": "Dr. Smith", "specialty": "Cardiology", "hospital_id": "H001"},
+    {"doctor_id": "D002", "name": "Dr. Johnson", "specialty": "Orthopedics", "hospital_id": "H002"}
+]
+
+bcbs_companies = [
+    {"company_id": "C001", "name": "BCBS Springfield", "shared_office": True},
+    {"company_id": "C002", "name": "BCBS Rivertown", "shared_office": False}
+]
+
+members = [
+    {"member_id": "M001", "name": "Alice", "plan": "Basic", "company_id": "C001"},
+    {"member_id": "M002", "name": "Bob", "plan": "Premium", "company_id": "C002"}
+]
+
+# Plan rates for revenue calculation
+plan_rates = {"Basic": 100, "Premium": 200}
+----
+
+=== Step 2: Data Transformation with Functional Programming
+
+#### Mapping Doctors to Hospitals
+
+[source,python]
+----
+def map_doctors_to_hospitals(doctors, hospitals):
+    """Map each doctor to their respective hospital."""
+    return [
+        {
+            **doctor,
+            "hospital_name": next(
+                (hospital["name"] for hospital in hospitals if hospital["hospital_id"] == doctor["hospital_id"]),
+                "Unknown"
+            )
+        }
+        for doctor in doctors
+    ]
+
+# Test mapping function
+mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+print("Mapped Doctors:", mapped_doctors)
+----
+
+#### Enriching Member Data
+
+[source,python]
+----
+def enrich_member_data(members, companies):
+    """Add company name to each member record."""
+    return [
+        {
+            **member,
+            "company_name": next(
+                (company["name"] for company in companies if company["company_id"] == member["company_id"]),
+                "Unknown"
+            )
+        }
+        for member in members
+    ]
+
+# Test enrichment function
+enriched_members = enrich_member_data(members, bcbs_companies)
+print("Enriched Members:", enriched_members)
+----
+
+=== Step 3: Revenue Calculation
+
+#### Aggregating Revenue by Company
+
+[source,python]
+----
+def calculate_revenue_by_company(members, plan_rates):
+    """Calculate total revenue for each company."""
+    return {
+        company_id: sum(plan_rates[member["plan"]] for member in members if member["company_id"] == company_id)
+        for company_id in {member["company_id"] for member in members}
+    }
+
+# Test revenue calculation
+revenue_by_company = calculate_revenue_by_company(members, plan_rates)
+print("Revenue by Company:", revenue_by_company)
+----
+
+=== Step 4: Resource Analysis
+
+#### Counting Companies Sharing Resources
+
+[source,python]
+----
+def count_shared_resources(companies):
+    """Count the number of companies sharing office resources."""
+    return len([company for company in companies if company["shared_office"]])
+
+# Test resource count
+shared_resource_count = count_shared_resources(bcbs_companies)
+print("Companies Sharing Resources:", shared_resource_count)
+----
+
+=== Step 5: Building an Analytics Pipeline
+
+#### Combining All Steps
+
+[source,python]
+----
+def healthcare_analytics_pipeline(doctors, hospitals, members, companies, plan_rates):
+    """Perform end-to-end analytics for BCBS data."""
+    # Step 1: Map doctors to hospitals
+    mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+
+    # Step 2: Enrich member data
+    enriched_members = enrich_member_data(members, companies)
+
+    # Step 3: Calculate revenue
+    revenue = calculate_revenue_by_company(members, plan_rates)
+
+    # Step 4: Analyze shared resources
+    shared_resource_count = count_shared_resources(companies)
+
+    return {
+        "mapped_doctors": mapped_doctors,
+        "enriched_members": enriched_members,
+        "revenue": revenue,
+        "shared_resource_count": shared_resource_count
+    }
+
+# Execute the pipeline
+analytics_results = healthcare_analytics_pipeline(doctors, hospitals, members, bcbs_companies, plan_rates)
+print("Analytics Results:", analytics_results)
+----
+
+=== Step 6: Insights and Summary
+
+#### Insights
+1. **Doctor-Hospital Mapping**: Understand the distribution of doctors across hospitals.
+2. **Enriched Member Data**: Identify company affiliations for all members.
+3. **Revenue Analysis**: Calculate revenue generated by each company.
+4. **Shared Resources**: Determine collaboration levels among companies.
+
+#### Summary
+- Functional programming principles like pure functions and higher-order functions enable efficient data transformations.
+- Composing functions into an analytics pipeline ensures modular and maintainable code.
+- The real-world scenario of BCBS highlights practical applications of data analytics in healthcare.
