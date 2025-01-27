@@ -1,0 +1,183 @@
+== Case Study: Database ETL and Analytics
+
+=== Objective
+This case study demonstrates how to use a database in an ETL (Extract, Transform, Load) pipeline and perform analytics using Python. The tasks include:
+
+1. Extracting data from various sources.
+2. Transforming and cleaning data.
+3. Loading data into a SQLite database.
+4. Performing analytics on the data.
+
+=== Scenario: Insurance Analytics Pipeline
+An insurance company wants to:
+
+1. Consolidate policyholder data from multiple sources.
+2. Clean and transform the data to ensure consistency.
+3. Store the processed data in a database.
+4. Generate reports and insights for business decisions.
+
+=== Step 1: Setting Up Data Sources
+
+#### Sample Data Sources
+
+[source,python]
+----
+# Data from multiple sources
+source_1 = [
+    {"policy_id": "POL12345", "holder": "John Doe", "type": "Life", "premium": 1200.50},
+    {"policy_id": "POL12346", "holder": "Jane Smith", "type": "Health", "premium": 2500.75}
+]
+
+source_2 = [
+    {"policy_id": "POL12347", "holder": "Jim Brown", "type": "Vehicle", "premium": 1800.00},
+    {"policy_id": "POL12348", "holder": "Alice Green", "type": "Life", "premium": 3000.00}
+]
+----
+
+=== Step 2: Extracting and Combining Data
+
+#### Extract Data from Multiple Sources
+
+[source,python]
+----
+def extract_data(sources):
+    """Combine data from multiple sources into a single list."""
+    combined_data = []
+    for source in sources:
+        combined_data.extend(source)
+    return combined_data
+
+# Combine data from sources
+raw_data = extract_data([source_1, source_2])
+print("Extracted Data:", raw_data)
+----
+
+=== Step 3: Transforming Data
+
+#### Cleaning and Standardizing Data
+
+[source,python]
+----
+def transform_data(data):
+    """Clean and standardize policy data."""
+    transformed_data = []
+    for record in data:
+        transformed_record = {
+            "policy_id": record["policy_id"].strip().upper(),
+            "policy_holder": record["holder"].title(),
+            "policy_type": record["type"].capitalize(),
+            "premium": round(record["premium"], 2)
+        }
+        transformed_data.append(transformed_record)
+    return transformed_data
+
+# Transform the raw data
+cleaned_data = transform_data(raw_data)
+print("Transformed Data:", cleaned_data)
+----
+
+=== Step 4: Loading Data into SQLite
+
+#### Create Database and Table
+
+[source,python]
+----
+import sqlite3
+
+# Connect to SQLite database
+connection = sqlite3.connect("insurance_etl.db")
+cursor = connection.cursor()
+
+# Create a table for policies
+create_table_query = """
+CREATE TABLE IF NOT EXISTS policies (
+    policy_id TEXT PRIMARY KEY,
+    policy_holder TEXT NOT NULL,
+    policy_type TEXT NOT NULL,
+    premium REAL NOT NULL
+);
+"""
+cursor.execute(create_table_query)
+print("Table 'policies' created successfully")
+----
+
+#### Insert Data into the Database
+
+[source,python]
+----
+def load_data_to_db(data, cursor, connection):
+    """Insert transformed data into the database."""
+    insert_query = "INSERT OR REPLACE INTO policies (policy_id, policy_holder, policy_type, premium) VALUES (?, ?, ?, ?);"
+    cursor.executemany(insert_query, [(record["policy_id"], record["policy_holder"], record["policy_type"], record["premium"]) for record in data])
+    connection.commit()
+
+# Load cleaned data into the database
+load_data_to_db(cleaned_data, cursor, connection)
+print("Data loaded into the database successfully")
+----
+
+=== Step 5: Performing Analytics
+
+#### Querying the Database
+
+[source,python]
+----
+# Retrieve all policies
+def fetch_policies(cursor):
+    cursor.execute("SELECT * FROM policies;")
+    return cursor.fetchall()
+
+# Fetch and display all policies
+policies = fetch_policies(cursor)
+print("Policies in Database:", policies)
+
+# Calculate total premiums by policy type
+def calculate_premium_by_type(cursor):
+    query = "SELECT policy_type, SUM(premium) AS total_premium FROM policies GROUP BY policy_type;"
+    cursor.execute(query)
+    return cursor.fetchall()
+
+premium_summary = calculate_premium_by_type(cursor)
+print("Premium Summary by Type:", premium_summary)
+----
+
+=== Step 6: Generating Reports
+
+#### Displaying Insights
+
+[source,python]
+----
+def generate_report(policies, premium_summary):
+    """Generate a report summarizing policy data."""
+    print("\n=== Insurance Policies Report ===")
+    print("\nAll Policies:")
+    for policy in policies:
+        print(f"ID: {policy[0]}, Holder: {policy[1]}, Type: {policy[2]}, Premium: ${policy[3]:.2f}")
+
+    print("\nPremium Summary by Type:")
+    for summary in premium_summary:
+        print(f"Type: {summary[0]}, Total Premium: ${summary[1]:.2f}")
+
+# Generate and display the report
+generate_report(policies, premium_summary)
+----
+
+=== Step 7: Closing the Database Connection
+
+[source,python]
+----
+# Close the database connection
+cursor.close()
+connection.close()
+print("Database connection closed")
+----
+
+=== Summary
+
+- **Extract**: Combined data from multiple sources.
+- **Transform**: Cleaned and standardized the data.
+- **Load**: Stored the data in a SQLite database.
+- **Analytics**: Queried the database to generate insights.
+- **Reporting**: Created a detailed report summarizing the data.
+
+This ETL pipeline demonstrates how to manage and analyze data efficiently using Python and SQLite.
