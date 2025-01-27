@@ -1,0 +1,219 @@
+== Case Study: Advanced DateTime Operations in Python (Insurance Domain)
+
+=== Objective
+Introduce beginners to Python's `datetime` module through a detailed exploration of:
+
+1. Core `datetime` classes (`datetime`, `date`, `time`, `timedelta`, `timezone`).
+2. Operations like parsing, formatting, and calculations.
+3. Handling time zones.
+4. Comparing Python operations with SAS equivalents.
+
+=== Scenario: Insurance Policy and Claims Processing
+Analyze and manipulate date and time data related to insurance policy issuance, claims submissions, and premium due dates.
+
+=== Step 1: Understanding Core Classes
+
+==== `datetime.date` Class
+
+[source,python]
+----
+from datetime import date
+
+# Example: Policy issuance date
+policy_issued = date(2023, 7, 15)
+print("Policy Issued Date:", policy_issued)
+
+# Accessing components
+print("Year:", policy_issued.year)
+print("Month:", policy_issued.month)
+print("Day:", policy_issued.day)
+
+# Calculating days since policy issuance
+today = date.today()
+days_since_issue = (today - policy_issued).days
+print("Days Since Policy Issuance:", days_since_issue)
+----
+
+==== SAS Comparison: `date`
+
+[source,sas]
+----
+/* SAS uses numeric variables with DATE format for date operations. */
+DATA policy_dates;
+    policy_issued = "15JUL2023"D;
+    today = TODAY();
+    days_since_issue = today - policy_issued;
+    FORMAT policy_issued DATE9. today DATE9.;
+RUN;
+
+PROC PRINT DATA=policy_dates;
+RUN;
+----
+
+==== `datetime.time` Class
+
+[source,python]
+----
+from datetime import time
+
+# Example: Claims submission time
+submission_time = time(14, 30, 0)  # 2:30 PM
+print("Submission Time:", submission_time)
+
+# Accessing components
+print("Hour:", submission_time.hour)
+print("Minute:", submission_time.minute)
+print("Second:", submission_time.second)
+----
+
+==== SAS Comparison: `time`
+
+[source,sas]
+----
+/* SAS uses numeric variables with TIME format for time operations. */
+DATA submission_times;
+    submission_time = "14:30:00"T;
+    FORMAT submission_time TIME8.;
+RUN;
+
+PROC PRINT DATA=submission_times;
+RUN;
+----
+
+==== `datetime.datetime` Class
+
+[source,python]
+----
+from datetime import datetime
+
+# Example: Policy creation timestamp
+policy_creation = datetime(2023, 7, 15, 14, 30, 0)
+print("Policy Creation Timestamp:", policy_creation)
+
+# Accessing components
+print("Year:", policy_creation.year)
+print("Hour:", policy_creation.hour)
+print("Second:", policy_creation.second)
+
+# Difference between two datetime objects
+claim_submission = datetime(2023, 7, 20, 10, 15, 0)
+time_to_submit = claim_submission - policy_creation
+print("Time to Submit Claim:", time_to_submit)
+----
+
+==== SAS Comparison: `datetime`
+
+[source,sas]
+----
+/* SAS combines date and time using the DATETIME format. */
+DATA datetime_example;
+    policy_creation = DHMS("15JUL2023"D, 14, 30, 0);
+    claim_submission = DHMS("20JUL2023"D, 10, 15, 0);
+    time_to_submit = claim_submission - policy_creation;
+    FORMAT policy_creation DATETIME20. claim_submission DATETIME20.;
+RUN;
+
+PROC PRINT DATA=datetime_example;
+RUN;
+----
+
+=== Step 2: Advanced Operations with `timedelta`
+
+[source,python]
+----
+from datetime import timedelta
+
+# Adding a grace period to premium due date
+premium_due = policy_issued + timedelta(days=30)
+grace_period_end = premium_due + timedelta(days=15)
+print("Premium Due Date:", premium_due)
+print("Grace Period End Date:", grace_period_end)
+
+# Calculating time differences
+policy_duration = timedelta(days=365)
+expiry_date = policy_issued + policy_duration
+print("Policy Expiry Date:", expiry_date)
+----
+
+==== SAS Comparison: `timedelta`
+
+[source,sas]
+----
+/* SAS uses direct date arithmetic for timedelta operations. */
+DATA timedelta_example;
+    policy_issued = "15JUL2023"D;
+    premium_due = policy_issued + 30;
+    grace_period_end = premium_due + 15;
+    policy_expiry = policy_issued + 365;
+    FORMAT policy_issued premium_due grace_period_end policy_expiry DATE9.;
+RUN;
+
+PROC PRINT DATA=timedelta_example;
+RUN;
+----
+
+=== Step 3: Handling Time Zones
+
+[source,python]
+----
+from datetime import timezone, timedelta
+
+# Example: Policy issuance in a specific timezone
+policy_timezone = timezone(timedelta(hours=-5))  # UTC-5
+policy_creation_utc = datetime(2023, 7, 15, 14, 30, 0, tzinfo=policy_timezone)
+print("Policy Creation with Timezone:", policy_creation_utc)
+
+# Converting to UTC
+policy_creation_converted = policy_creation_utc.astimezone(timezone.utc)
+print("Policy Creation in UTC:", policy_creation_converted)
+----
+
+==== SAS Comparison: Time Zones
+
+[source,sas]
+----
+/* SAS does not directly support time zones; custom calculations are required. */
+DATA timezone_example;
+    policy_creation = DHMS("15JUL2023"D, 14, 30, 0) - 5*3600; /* UTC-5 */
+    FORMAT policy_creation DATETIME20.;
+RUN;
+
+PROC PRINT DATA=timezone_example;
+RUN;
+----
+
+=== Step 4: Parsing and Formatting Dates
+
+[source,python]
+----
+# Parsing strings to datetime objects
+date_string = "2023-07-15 14:30:00"
+parsed_date = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
+print("Parsed Date:", parsed_date)
+
+# Formatting datetime objects to strings
+formatted_date = parsed_date.strftime("%A, %d %B %Y %I:%M %p")
+print("Formatted Date:", formatted_date)
+----
+
+==== SAS Comparison: Parsing and Formatting
+
+[source,sas]
+----
+/* SAS uses INPUT and PUT functions for parsing and formatting. */
+DATA parse_format_example;
+    date_string = "15JUL2023 14:30:00";
+    parsed_date = INPUT(date_string, DATETIME20.);
+    formatted_date = PUT(parsed_date, WORDDATX20.);
+RUN;
+
+PROC PRINT DATA=parse_format_example;
+RUN;
+----
+
+=== Step 5: Summary
+
+- Python's `datetime` module provides extensive support for date and time operations.
+- Key classes include `date`, `time`, `datetime`, `timedelta`, and `timezone`.
+- Operations like parsing, formatting, and time zone handling are intuitive.
+- SAS provides comparable functionality through formats and date/time functions but lacks direct support for time zones.
