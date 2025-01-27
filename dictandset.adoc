@@ -1,0 +1,206 @@
+== Case Study: Mastering Dictionaries and Sets in Python (Insurance Domain)
+
+=== Objective
+Provide a comprehensive exploration of Python dictionaries and sets by:
+
+1. Understanding their definitions and differences.
+2. Demonstrating core functionalities with examples.
+3. Applying advanced operations.
+4. Using real-world scenarios in the insurance domain.
+
+=== Scenario: Insurance Policy and Claims Data Management
+Efficiently manage and analyze insurance policy and claims data using dictionaries and sets.
+
+=== Step 1: Introduction to Dictionaries and Sets
+
+==== Dictionary Basics
+
+[source,python]
+----
+# Example: Dictionary of policy details
+policy_details = {
+    "POL12345": {"holder": "John Doe", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500}
+}
+
+# Accessing policy details
+print("Policy Holder for POL12345:", policy_details["POL12345"]["holder"])
+
+# Adding a new policy
+policy_details["POL12348"] = {"holder": "Jake White", "premium": 4500}
+
+# Removing a policy
+del policy_details["POL12345"]
+
+print("Updated Policy Details:", policy_details)
+----
+
+==== Set Basics
+
+[source,python]
+----
+# Example: Set of active policies
+active_policies = {"POL12345", "POL12346", "POL12347"}
+
+# Adding a new policy to the set
+active_policies.add("POL12348")
+
+# Removing a policy from the set
+active_policies.discard("POL12345")
+
+# Checking membership
+print("Is POL12346 active?:", "POL12346" in active_policies)
+
+print("Active Policies:", active_policies)
+----
+
+==== Key Differences
+- Dictionaries store data as key-value pairs.
+- Sets store unique, unordered elements and are ideal for membership tests and unique collections.
+
+=== Step 2: Common Operations on Dictionaries
+
+[source,python]
+----
+# Example: Managing claims using a dictionary
+claims = {
+    "POL12345": 1500,
+    "POL12346": 2500,
+    "POL12347": 3500
+}
+
+# Updating claim amounts
+claims["POL12345"] += 500  # Adding an adjustment
+
+# Iterating over dictionary items
+for policy, amount in claims.items():
+    print(f"Policy {policy} has a claim of ${amount}")
+
+# Getting a value with a default
+print("Claim for POL12348:", claims.get("POL12348", "No claim found"))
+----
+
+=== Step 3: Common Operations on Sets
+
+[source,python]
+----
+# Example: Operations with active and expired policies
+expired_policies = {"POL12345", "POL12349"}
+
+# Union of active and expired policies
+all_policies = active_policies.union(expired_policies)
+print("All Policies:", all_policies)
+
+# Intersection of active and expired policies
+common_policies = active_policies.intersection(expired_policies)
+print("Common Policies:", common_policies)
+
+# Difference between active and expired policies
+only_active = active_policies.difference(expired_policies)
+print("Only Active Policies:", only_active)
+----
+
+=== Step 4: Advanced Dictionary Operations
+
+==== Dictionary Comprehensions
+
+[source,python]
+----
+# Example: Creating a dictionary of premiums above a threshold
+premiums = {"POL12345": 1500, "POL12346": 2500, "POL12347": 3500}
+high_premiums = {policy: amount for policy, amount in premiums.items() if amount > 2000}
+print("High Premiums:", high_premiums)
+----
+
+==== Nested Dictionaries
+
+[source,python]
+----
+# Example: Nested dictionary for detailed claims data
+claims_data = {
+    "POL12345": {"amount": 1500, "status": "Pending"},
+    "POL12346": {"amount": 2500, "status": "Approved"},
+    "POL12347": {"amount": 3500, "status": "Denied"}
+}
+
+# Accessing nested data
+print("Claim Amount for POL12346:", claims_data["POL12346"]["amount"])
+
+# Updating claim status
+claims_data["POL12345"]["status"] = "Approved"
+print("Updated Claims Data:", claims_data)
+----
+
+=== Step 5: Advanced Set Operations
+
+==== Set Comprehensions
+
+[source,python]
+----
+# Example: Creating a set of high-risk policies
+high_risk_claims = {"POL12345", "POL12347", "POL12348"}
+high_risk_set = {policy for policy in high_risk_claims if "7" in policy}
+print("High Risk Policies:", high_risk_set)
+----
+
+==== Frozen Sets
+
+[source,python]
+----
+# Example: Using frozen sets for immutable collections
+frozen_active_policies = frozenset(active_policies)
+print("Frozen Active Policies:", frozen_active_policies)
+
+# Attempting to modify (this will raise an error)
+try:
+    frozen_active_policies.add("POL12349")
+except AttributeError as e:
+    print("Error:", e)
+----
+
+=== Step 6: Combining Dictionaries and Sets
+
+[source,python]
+----
+# Example: Managing policies with dictionaries and sets
+policy_details = {
+    "POL12345": {"holder": "John Doe", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500}
+}
+
+active_policies = {"POL12345", "POL12346"}
+
+# Finding active policy details
+active_policy_details = {policy: policy_details[policy] for policy in active_policies}
+print("Active Policy Details:", active_policy_details)
+----
+
+=== Step 7: Real-World Example: Policy Processing Pipeline
+
+[source,python]
+----
+# Example: Policy processing pipeline using dictionaries and sets
+policies = {
+    "POL12345": {"holder": "John Doe", "premium": 1500, "status": "Active"},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500, "status": "Expired"},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500, "status": "Active"}
+}
+
+# Extract active policies
+active_policies = {policy for policy, details in policies.items() if details["status"] == "Active"}
+
+# Calculate total premiums for active policies
+total_premium = sum(policies[policy]["premium"] for policy in active_policies)
+
+print("Active Policies:", active_policies)
+print("Total Premium for Active Policies:", total_premium)
+----
+
+=== Step 8: Summary
+
+- Dictionaries and sets are powerful tools for managing structured and unstructured data.
+- Dictionaries store key-value pairs and allow complex data modeling with nested structures.
+- Sets are ideal for unique collections, membership testing, and mathematical operations.
+- Combining dictionaries and sets enables efficient, real-world data management, such as insurance policy and claim processing.
