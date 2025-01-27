@@ -1,0 +1,257 @@
+== Beginner Case Study: Looping, Branching, and Advanced Sequence Operations in Python (Insurance Domain)
+
+=== Objective
+Introduce beginners to Python with examples focused on:
+
+1. Looping constructs (for, while, etc.).
+2. Branching (if-else, nested conditions).
+3. Advanced sequence operations (list comprehensions, dictionary comprehensions, and set operations).
+4. Comparison of Python operations with SAS equivalents for an insurance domain.
+
+=== Insurance Domain Scenario
+Analyze insurance claims data and apply Python operations for:
+
+- Filtering high-risk claims.
+- Calculating claim totals.
+- Identifying unique insurance categories.
+
+=== Step 1: Looping in Python
+
+[source,python]
+----
+# Example: Calculating total claims using a loop
+claims = [1500, 2000, 3000, 4500, 5000]
+
+# For loop to calculate total
+total_claims = 0
+for claim in claims:
+    total_claims += claim
+
+print("Total Claims:", total_claims)
+
+# While loop to find the first claim exceeding a threshold
+threshold = 4000
+index = 0
+while index < len(claims):
+    if claims[index] > threshold:
+        print("First high claim:", claims[index])
+        break
+    index += 1
+
+# Nested loop to calculate claim totals for different risk levels
+risk_levels = {"High": [12000, 15000], "Medium": [5000, 8000], "Low": [1500, 2000]}
+total_per_risk = {}
+for risk, amounts in risk_levels.items():
+    total_per_risk[risk] = sum(amounts)
+
+print("Total per risk level:", total_per_risk)
+----
+
+=== SAS Comparison: Looping
+
+[source,sas]
+----
+/* SAS uses DO loops for similar operations. */
+
+DATA _NULL_;
+    ARRAY claims[5] (1500 2000 3000 4500 5000);
+    total_claims = 0;
+    DO i = 1 TO DIM(claims);
+        total_claims + claims[i];
+    END;
+    PUT "Total Claims: " total_claims;
+
+    /* Find first claim exceeding threshold */
+    DO i = 1 TO DIM(claims);
+        IF claims[i] > 4000 THEN DO;
+            PUT "First high claim: " claims[i];
+            LEAVE;
+        END;
+    END;
+
+    /* Nested loop for risk levels */
+    ARRAY high[2] (12000 15000);
+    ARRAY medium[2] (5000 8000);
+    ARRAY low[2] (1500 2000);
+    total_high = 0; total_medium = 0; total_low = 0;
+
+    DO i = 1 TO DIM(high);
+        total_high + high[i];
+    END;
+
+    DO i = 1 TO DIM(medium);
+        total_medium + medium[i];
+    END;
+
+    DO i = 1 TO DIM(low);
+        total_low + low[i];
+    END;
+
+    PUT "Total High Risk: " total_high;
+    PUT "Total Medium Risk: " total_medium;
+    PUT "Total Low Risk: " total_low;
+RUN;
+----
+
+=== Step 2: Branching in Python
+
+[source,python]
+----
+# Example: Classifying claims based on amount
+claim_amounts = [1500, 2000, 5000, 12000, 800]
+
+for claim in claim_amounts:
+    if claim > 10000:
+        print(f"Claim ${claim} is categorized as High Risk.")
+    elif claim > 3000:
+        print(f"Claim ${claim} is categorized as Medium Risk.")
+    else:
+        print(f"Claim ${claim} is categorized as Low Risk.")
+
+# Nested branching for additional categorization
+for claim in claim_amounts:
+    if claim > 10000:
+        if claim > 20000:
+            print(f"Claim ${claim} is categorized as Critical High Risk.")
+        else:
+            print(f"Claim ${claim} is categorized as High Risk.")
+    elif claim > 3000:
+        print(f"Claim ${claim} is categorized as Medium Risk.")
+    else:
+        print(f"Claim ${claim} is categorized as Low Risk.")
+----
+
+=== SAS Comparison: Branching
+
+[source,sas]
+----
+/* SAS uses IF-THEN-ELSE for similar branching logic. */
+
+DATA claims_classification;
+    INPUT claim_amount;
+    IF claim_amount > 10000 THEN DO;
+        IF claim_amount > 20000 THEN risk = "Critical High Risk";
+        ELSE risk = "High Risk";
+    END;
+    ELSE IF claim_amount > 3000 THEN risk = "Medium Risk";
+    ELSE risk = "Low Risk";
+    DATALINES;
+    1500
+    2000
+    5000
+    12000
+    800
+    ;
+RUN;
+
+PROC PRINT DATA=claims_classification;
+RUN;
+----
+
+=== Step 3: Advanced Sequence Operations
+
+==== List Comprehensions
+
+[source,python]
+----
+# Example: Identify high-risk claims with list comprehension
+claims = [1500, 2000, 5000, 12000, 800]
+high_risk_claims = [claim for claim in claims if claim > 10000]
+print("High Risk Claims:", high_risk_claims)
+
+# Nested comprehension for risk classification
+risk_classification = [
+    "Critical High Risk" if claim > 20000 else "High Risk" if claim > 10000 else "Medium Risk" if claim > 3000 else "Low Risk"
+    for claim in claims
+]
+print("Risk Classification:", risk_classification)
+----
+
+==== Dictionary Comprehensions
+
+[source,python]
+----
+# Example: Map claim IDs to their categories
+claim_data = {
+    101: 1500,
+    102: 2000,
+    103: 5000,
+    104: 12000,
+    105: 800,
+}
+
+claim_categories = {
+    claim_id: "Critical High Risk" if amount > 20000 else "High Risk" if amount > 10000 else "Medium Risk" if amount > 3000 else "Low Risk"
+    for claim_id, amount in claim_data.items()
+}
+print("Claim Categories:", claim_categories)
+
+# Nested dictionary for claim details
+claim_details = {
+    claim_id: {"amount": amount, "risk": "High Risk" if amount > 10000 else "Medium Risk" if amount > 3000 else "Low Risk"}
+    for claim_id, amount in claim_data.items()
+}
+print("Claim Details:", claim_details)
+----
+
+==== Set Operations
+
+[source,python]
+----
+# Example: Identify unique categories of claims
+categories = ["Low Risk", "Medium Risk", "High Risk", "Critical High Risk", "Low Risk"]
+unique_categories = set(categories)
+print("Unique Categories:", unique_categories)
+
+# Find common categories across different datasets
+dataset1 = {"Low Risk", "Medium Risk"}
+dataset2 = {"Medium Risk", "High Risk"}
+common_categories = dataset1.intersection(dataset2)
+print("Common Categories:", common_categories)
+----
+
+=== SAS Comparison: Advanced Operations
+
+[source,sas]
+----
+/* List comprehensions can be simulated with WHERE clauses or arrays. */
+
+DATA high_risk_claims;
+    SET claims_classification;
+    WHERE risk = "High Risk";
+RUN;
+
+/* Nested logic for classification */
+PROC FORMAT;
+    VALUE riskfmt
+        0 - 3000 = "Low Risk"
+        3001 - 10000 = "Medium Risk"
+        10001 - 20000 = "High Risk"
+        20001 - HIGH = "Critical High Risk";
+RUN;
+
+DATA claims_mapped;
+    SET claims_classification;
+    risk_category = PUT(claim_amount, riskfmt.);
+RUN;
+
+PROC PRINT DATA=claims_mapped;
+RUN;
+
+/* Set operations are not directly supported but can be approximated using PROC SORT and NODUPKEY. */
+DATA unique_categories;
+    SET claims_classification;
+    BY risk;
+    IF FIRST.risk;
+RUN;
+
+PROC PRINT DATA=unique_categories;
+RUN;
+----
+
+=== Step 4: Summary
+
+- Python's looping and branching constructs provide flexibility for processing data efficiently.
+- Advanced sequence operations like comprehensions make Python ideal for data manipulation.
+- SAS achieves similar results but often requires more explicit configuration.
+- Using examples from the insurance domain helps solidify these programming concepts for real-world applications.
