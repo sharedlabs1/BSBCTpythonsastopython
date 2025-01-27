@@ -1,0 +1,211 @@
+== Lab: Object-Oriented Programming in Python
+
+=== Objective
+Provide a comprehensive guide to Object-Oriented Programming (OOP) in Python by:
+
+1. Introducing OOP concepts and principles.
+2. Explaining key features: encapsulation, inheritance, polymorphism, and abstraction.
+3. Demonstrating these concepts with detailed examples and a real-world case study.
+
+=== Step 1: Introduction to OOP
+
+Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects," which can contain data (attributes) and code (methods).
+
+#### Key Features of OOP
+1. **Encapsulation**: Bundling data and methods that operate on the data within a single unit (class).
+2. **Inheritance**: Enabling a new class (child) to inherit attributes and methods from an existing class (parent).
+3. **Polymorphism**: Allowing objects of different classes to be treated as objects of a common superclass.
+4. **Abstraction**: Hiding implementation details and exposing only the necessary functionality.
+
+=== Step 2: Encapsulation
+
+#### What is Encapsulation?
+Encapsulation ensures that the internal representation of an object is hidden from the outside world, and access is controlled through methods (getters and setters).
+
+[source,python]
+----
+# Example: Encapsulation
+class InsurancePolicy:
+    def __init__(self, policy_id, policy_holder, premium):
+        self.__policy_id = policy_id  # Private attribute
+        self.policy_holder = policy_holder
+        self.__premium = premium  # Private attribute
+
+    # Getter for premium
+    def get_premium(self):
+        return self.__premium
+
+    # Setter for premium
+    def set_premium(self, new_premium):
+        if new_premium > 0:
+            self.__premium = new_premium
+        else:
+            print("Invalid premium value.")
+
+# Test Encapsulation
+policy = InsurancePolicy("POL12345", "John Doe", 1500)
+print("Premium:", policy.get_premium())
+policy.set_premium(2000)
+print("Updated Premium:", policy.get_premium())
+policy.set_premium(-500)  # Invalid value
+----
+
+=== Step 3: Inheritance
+
+#### What is Inheritance?
+Inheritance allows a class to acquire the properties and methods of another class.
+
+[source,python]
+----
+# Example: Inheritance
+class Policy:
+    def __init__(self, policy_id, policy_holder):
+        self.policy_id = policy_id
+        self.policy_holder = policy_holder
+
+    def display_details(self):
+        print(f"Policy ID: {self.policy_id}, Holder: {self.policy_holder}")
+
+# Derived class
+class HealthPolicy(Policy):
+    def __init__(self, policy_id, policy_holder, coverage_amount):
+        super().__init__(policy_id, policy_holder)  # Call parent constructor
+        self.coverage_amount = coverage_amount
+
+    def display_details(self):
+        super().display_details()  # Call parent method
+        print(f"Coverage Amount: {self.coverage_amount}")
+
+# Test Inheritance
+health_policy = HealthPolicy("HP12345", "Jane Smith", 500000)
+health_policy.display_details()
+----
+
+=== Step 4: Polymorphism
+
+#### What is Polymorphism?
+Polymorphism allows methods in different classes to have the same name but behave differently.
+
+[source,python]
+----
+# Example: Polymorphism
+class VehiclePolicy:
+    def display_details(self):
+        print("Vehicle Policy Details")
+
+class LifePolicy:
+    def display_details(self):
+        print("Life Policy Details")
+
+# Polymorphic behavior
+def show_policy_details(policy):
+    policy.display_details()
+
+# Test Polymorphism
+vehicle_policy = VehiclePolicy()
+life_policy = LifePolicy()
+show_policy_details(vehicle_policy)  # Vehicle Policy Details
+show_policy_details(life_policy)    # Life Policy Details
+----
+
+=== Step 5: Abstraction
+
+#### What is Abstraction?
+Abstraction hides the implementation details and provides only essential information to the user.
+
+[source,python]
+----
+from abc import ABC, abstractmethod
+
+# Abstract Base Class
+class AbstractPolicy(ABC):
+    @abstractmethod
+    def calculate_premium(self):
+        pass
+
+# Concrete class
+class TermPolicy(AbstractPolicy):
+    def __init__(self, policy_id, term_years, base_premium):
+        self.policy_id = policy_id
+        self.term_years = term_years
+        self.base_premium = base_premium
+
+    def calculate_premium(self):
+        return self.base_premium * self.term_years
+
+# Test Abstraction
+term_policy = TermPolicy("TP12345", 10, 1000)
+print("Total Premium:", term_policy.calculate_premium())
+----
+
+=== Step 6: Real-World Case Study: Insurance Management System
+
+#### Scenario
+Build an insurance management system with the following features:
+1. Different policy types (Health, Vehicle, Life).
+2. Common attributes (policy ID, policy holder).
+3. Specific behavior for each policy type.
+
+[source,python]
+----
+class Policy:
+    def __init__(self, policy_id, policy_holder):
+        self.policy_id = policy_id
+        self.policy_holder = policy_holder
+
+    def calculate_premium(self):
+        pass
+
+class HealthPolicy(Policy):
+    def __init__(self, policy_id, policy_holder, coverage_amount):
+        super().__init__(policy_id, policy_holder)
+        self.coverage_amount = coverage_amount
+
+    def calculate_premium(self):
+        return self.coverage_amount * 0.02
+
+class VehiclePolicy(Policy):
+    def __init__(self, policy_id, policy_holder, vehicle_value):
+        super().__init__(policy_id, policy_holder)
+        self.vehicle_value = vehicle_value
+
+    def calculate_premium(self):
+        return self.vehicle_value * 0.03
+
+class LifePolicy(Policy):
+    def __init__(self, policy_id, policy_holder, sum_assured):
+        super().__init__(policy_id, policy_holder)
+        self.sum_assured = sum_assured
+
+    def calculate_premium(self):
+        return self.sum_assured * 0.01
+
+# Test Case Study
+policies = [
+    HealthPolicy("HP001", "Alice", 500000),
+    VehiclePolicy("VP001", "Bob", 300000),
+    LifePolicy("LP001", "Charlie", 1000000)
+]
+
+for policy in policies:
+    print(f"Policy ID: {policy.policy_id}, Premium: {policy.calculate_premium()}")
+----
+
+=== Step 7: Summary
+
+- **Encapsulation**: Protect sensitive data using private attributes and controlled access.
+- **Inheritance**: Reuse code by deriving new classes from existing ones.
+- **Polymorphism**: Enable methods with the same name to work across different classes.
+- **Abstraction**: Simplify complex systems by hiding implementation details.
+- The case study demonstrates how to use OOP principles in a real-world context.
+
+=== Step 8: Run and Verify
+
+To run the lab, save the code as `oop_lab.py` and execute it using:
+
+[source,bash]
+----
+python oop_lab.py
+----
+
+Verify the outputs match the expected behavior for each policy type.
