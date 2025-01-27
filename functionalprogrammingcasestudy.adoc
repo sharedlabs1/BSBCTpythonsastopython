@@ -1,0 +1,175 @@
+== Lab: Functional Programming in Python (Case-Driven)
+
+=== Objective
+Explore functional programming in Python through a case-driven approach, focusing on:
+
+1. Principles of functional programming.
+2. Application of pure functions and immutability.
+3. Usage of higher-order functions and function composition.
+4. Managing variable scope in real-world scenarios.
+
+=== Scenario: Insurance Claim Processing System
+
+You are tasked with creating a Python-based system for an insurance company. The system must:
+- Calculate premiums for various policies.
+- Apply discounts based on policy type.
+- Add taxes to the final premium amount.
+- Ensure all calculations are performed using functional programming principles.
+
+=== Step 1: Setting Up Data and Problem Statement
+
+Define the initial data and objective.
+
+[source,python]
+----
+# Initial data: List of policies with base premiums and policy types
+policies = [
+    {"policy_id": "POL12345", "base_premium": 1000, "policy_type": "Life"},
+    {"policy_id": "POL12346", "base_premium": 1500, "policy_type": "Health"},
+    {"policy_id": "POL12347", "base_premium": 2000, "policy_type": "Vehicle"}
+]
+
+# Objective: Calculate the final premium for each policy after discounts and taxes.
+----
+
+=== Step 2: Pure Function for Premium Calculation
+
+#### Create a pure function to calculate premiums based on a risk factor.
+
+[source,python]
+----
+# Pure function for premium calculation
+def calculate_premium(base_premium, risk_factor):
+    """Calculate the premium based on base amount and risk factor."""
+    return base_premium * risk_factor
+
+# Test the function
+print(calculate_premium(1000, 1.2))  # Output: 1200
+----
+
+=== Step 3: Applying Discounts Using Higher-Order Functions
+
+#### Define a higher-order function to apply discounts based on policy type.
+
+[source,python]
+----
+# Discount functions for different policy types
+def life_discount(premium):
+    return premium * 0.95
+
+def health_discount(premium):
+    return premium * 0.90
+
+def vehicle_discount(premium):
+    return premium * 0.85
+
+# Higher-order function to apply discount based on policy type
+def apply_discount(policy, discount_func):
+    """Apply a discount to the premium based on policy type."""
+    premium = policy["base_premium"]
+    return discount_func(premium)
+
+# Test with a policy
+policy = {"policy_id": "POL12345", "base_premium": 1000, "policy_type": "Life"}
+print(apply_discount(policy, life_discount))  # Output: 950
+----
+
+=== Step 4: Returning a Function for Tax Calculation
+
+#### Create a function that returns another function to calculate taxes.
+
+[source,python]
+----
+# Function returning a tax calculator
+def tax_calculator(tax_rate):
+    """Return a function to calculate tax on a given amount."""
+    def calculate_tax(amount):
+        return amount * tax_rate
+    return calculate_tax
+
+# Test the tax calculator
+calculate_tax = tax_calculator(0.05)  # 5% tax
+print(calculate_tax(1000))  # Output: 50
+----
+
+=== Step 5: Combining All Steps
+
+#### Build the final pipeline to calculate the total premium for all policies.
+
+[source,python]
+----
+# Function to process a single policy
+def process_policy(policy, discount_funcs, tax_func):
+    """Process a policy to calculate the final premium."""
+    policy_type = policy["policy_type"].lower()
+    discount_func = discount_funcs.get(policy_type, lambda x: x)  # Default: no discount
+
+    # Step 1: Calculate the premium
+    base_premium = policy["base_premium"]
+    premium = calculate_premium(base_premium, 1.2)  # Assume risk factor = 1.2
+
+    # Step 2: Apply discount
+    premium_after_discount = discount_func(premium)
+
+    # Step 3: Add tax
+    total_premium = premium_after_discount + tax_func(premium_after_discount)
+
+    return {"policy_id": policy["policy_id"], "total_premium": total_premium}
+
+# Mapping policy types to discount functions
+discount_funcs = {
+    "life": life_discount,
+    "health": health_discount,
+    "vehicle": vehicle_discount
+}
+
+# Tax function
+tax_func = tax_calculator(0.05)
+
+# Process all policies
+processed_policies = [process_policy(policy, discount_funcs, tax_func) for policy in policies]
+
+print("Processed Policies:", processed_policies)
+----
+
+=== Step 6: Understanding Variable Scope
+
+#### Demonstrate local, global, and nonlocal scopes.
+
+[source,python]
+----
+# Example of variable scopes
+x = 10  # Global variable
+
+def outer_function():
+    y = 20  # Enclosing variable
+
+    def inner_function():
+        nonlocal y
+        y += 5
+        print("Inner y:", y)  # Access enclosing variable
+
+    inner_function()
+    print("Outer y:", y)  # Modified by inner_function
+
+outer_function()
+print("Global x:", x)
+----
+
+=== Step 7: Summary
+
+- Functional programming enables clean, predictable, and reusable code.
+- Pure functions and immutability minimize side effects and make debugging easier.
+- Higher-order functions allow flexible operations like applying discounts and taxes dynamically.
+- Understanding variable scope helps manage data effectively in nested functions.
+
+=== Step 8: Run and Verify
+
+To run the lab, save the code as `functional_programming_lab.py` and execute it using:
+
+[source,bash]
+----
+python functional_programming_lab.py
+----
+
+Verify the outputs match the expected results for each policy processed.
