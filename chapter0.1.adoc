@@ -10,6 +10,7 @@ Provide a comprehensive guide to naming conventions and coding standards in Pyth
 === Step 1: Introduction to PEP8
 
 PEP8 is the official style guide for Python code. It provides conventions for:
+
 - Code layout.
 - Naming styles.
 - Indentation and line length.
