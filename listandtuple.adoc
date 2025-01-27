@@ -1,0 +1,193 @@
+== Case Study: Mastering Lists and Tuples in Python (Insurance Domain)
+
+=== Objective
+Provide a detailed exploration of Python lists and tuples by:
+
+1. Understanding their definitions and differences.
+2. Demonstrating core functionalities with examples.
+3. Applying advanced operations.
+4. Using real-world scenarios in the insurance domain.
+
+=== Scenario: Insurance Policy and Claims Data Management
+Manage and manipulate insurance policies and claims data effectively using lists and tuples.
+
+=== Step 1: Introduction to Lists and Tuples
+
+==== List Basics
+
+[source,python]
+----
+# Example: List of policy IDs
+policy_ids = ["POL12345", "POL12346", "POL12347"]
+
+# Adding a new policy ID
+policy_ids.append("POL12348")
+
+# Removing a policy ID
+policy_ids.remove("POL12345")
+
+# Accessing elements
+print("First Policy ID:", policy_ids[0])
+print("All Policy IDs:", policy_ids)
+----
+
+==== Tuple Basics
+
+[source,python]
+----
+# Example: Tuple of risk categories
+risk_categories = ("Low", "Medium", "High")
+
+# Accessing elements
+print("First Risk Category:", risk_categories[0])
+print("All Risk Categories:", risk_categories)
+
+# Attempting to modify a tuple (this will raise an error)
+try:
+    risk_categories[0] = "Very Low"
+except TypeError as e:
+    print("Error:", e)
+----
+
+==== Key Differences
+- Lists are mutable; tuples are immutable.
+- Tuples use less memory and are faster for fixed data.
+
+=== Step 2: Common Operations on Lists
+
+[source,python]
+----
+# Example: Managing a list of claim amounts
+claim_amounts = [1500, 2500, 3500, 4500, 5500]
+
+# Adding claims
+claim_amounts.append(6500)
+
+# Inserting a claim at a specific position
+claim_amounts.insert(2, 3000)
+
+# Removing claims
+claim_amounts.pop(1)  # Removes the second claim
+
+# Sorting claims
+claim_amounts.sort(reverse=True)  # Descending order
+
+print("Claim Amounts:", claim_amounts)
+----
+
+=== Step 3: Common Operations on Tuples
+
+[source,python]
+----
+# Example: Tuple of policy types
+policy_types = ("Life", "Health", "Vehicle", "Property")
+
+# Counting occurrences
+print("Occurrences of 'Health':", policy_types.count("Health"))
+
+# Finding an index
+print("Index of 'Vehicle':", policy_types.index("Vehicle"))
+----
+
+=== Step 4: Advanced List Operations
+
+==== List Comprehensions
+
+[source,python]
+----
+# Example: Calculate premiums with a list comprehension
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+final_premiums = [base * risk for base, risk in zip(base_premiums, risk_factors)]
+print("Final Premiums:", final_premiums)
+----
+
+==== Nested Lists
+
+[source,python]
+----
+# Example: Claims grouped by risk levels
+claims_by_risk = [
+    [1500, 2500],  # Low risk
+    [3500, 4500],  # Medium risk
+    [5500, 6500]   # High risk
+]
+
+# Accessing nested elements
+print("High Risk Claims:", claims_by_risk[2])
+----
+
+=== Step 5: Advanced Tuple Operations
+
+==== Nested Tuples
+
+[source,python]
+----
+# Example: Policy details stored in tuples
+policy_details = (
+    ("POL12345", "John Doe", 1500),
+    ("POL12346", "Jane Smith", 2500),
+    ("POL12347", "Jim Brown", 3500)
+)
+
+# Accessing nested elements
+print("First Policy Details:", policy_details[0])
+print("Policy Holder of Second Policy:", policy_details[1][1])
+----
+
+==== Tuple Unpacking
+
+[source,python]
+----
+# Example: Unpacking policy details
+policy_id, policy_holder, claim_amount = policy_details[0]
+print(f"Policy ID: {policy_id}, Holder: {policy_holder}, Claim: ${claim_amount}")
+----
+
+=== Step 6: Combining Lists and Tuples
+
+[source,python]
+----
+# Example: Combining lists and tuples for policy management
+policies = [
+    ("POL12345", "John Doe", "Life"),
+    ("POL12346", "Jane Smith", "Health"),
+    ("POL12347", "Jim Brown", "Vehicle")
+]
+
+# Adding a new policy
+policies.append(("POL12348", "Jake White", "Property"))
+
+# Filtering policies based on type
+life_policies = [policy for policy in policies if policy[2] == "Life"]
+print("Life Policies:", life_policies)
+----
+
+=== Step 7: Real-World Example: Claim Processing Pipeline
+
+[source,python]
+----
+# Example: Process claims data with lists and tuples
+claims_data = [
+    ("POL12345", 1500, "Low"),
+    ("POL12346", 2500, "Medium"),
+    ("POL12347", 3500, "High"),
+    ("POL12348", 4500, "High")
+]
+
+# Filter high-risk claims
+high_risk_claims = [claim for claim in claims_data if claim[2] == "High"]
+
+# Calculate total high-risk claims
+total_high_risk = sum(claim[1] for claim in high_risk_claims)
+
+print("High Risk Claims:", high_risk_claims)
+print("Total High Risk Claims:", total_high_risk)
+----
+
+=== Step 8: Summary
+
+- Lists and tuples are versatile data structures for managing collections of data.
+- Lists are mutable and suitable for dynamic collections, while tuples are immutable and ideal for fixed data.
+- Combining lists and tuples enables efficient management of complex data in real-world scenarios, such as insurance policies and claims.
