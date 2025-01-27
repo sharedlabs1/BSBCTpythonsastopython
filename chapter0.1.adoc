@@ -1,0 +1,228 @@
+== Lab: Python Naming Conventions and PEP8 Guidelines
+
+=== Objective
+Provide a comprehensive guide to naming conventions and coding standards in Python, focusing on:
+
+1. Rules for naming various coding artifacts.
+2. PEP8 guidelines for maintaining clean and readable code.
+3. Examples of best practices and common pitfalls.
+
+=== Step 1: Introduction to PEP8
+
+PEP8 is the official style guide for Python code. It provides conventions for:
+- Code layout.
+- Naming styles.
+- Indentation and line length.
+- Spacing, imports, and comments.
+
+=== Step 2: Naming Conventions
+
+==== Variables and Functions
+- Use **snake_case** for variable and function names.
+- Keep names descriptive and meaningful.
+
+[source,python]
+----
+# Correct
+policy_id = "POL12345"
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Incorrect
+PolicyId = "POL12345"
+def CalculatePremium(Base, RiskFactor):
+    return Base * RiskFactor
+----
+
+==== Constants
+- Use **ALL_CAPS** for constants.
+- Define constants at the top of the file or in a separate configuration file.
+
+[source,python]
+----
+# Correct
+MAX_PREMIUM_LIMIT = 10000
+DEFAULT_POLICY_TYPE = "Life"
+
+# Incorrect
+maxPremiumLimit = 10000
+defaultPolicyType = "Life"
+----
+
+==== Classes
+- Use **CamelCase** for class names.
+
+[source,python]
+----
+# Correct
+class InsurancePolicy:
+    def __init__(self, policy_id, premium):
+        self.policy_id = policy_id
+        self.premium = premium
+
+# Incorrect
+class insurance_policy:
+    def __init__(self, policy_id, premium):
+        self.policy_id = policy_id
+        self.premium = premium
+----
+
+==== Methods
+- Use **snake_case** for method names within classes.
+
+[source,python]
+----
+# Correct
+class InsurancePolicy:
+    def calculate_premium(self, base, risk_factor):
+        return base * risk_factor
+
+# Incorrect
+class InsurancePolicy:
+    def CalculatePremium(self, Base, RiskFactor):
+        return Base * RiskFactor
+----
+
+==== Modules and Packages
+- Use **short_snake_case** for module and package names.
+
+[source,python]
+----
+# Correct
+import policy_calculator
+
+# Incorrect
+import PolicyCalculator
+----
+
+==== Exceptions
+- Use **CamelCase** for exception class names, and suffix them with "Error."
+
+[source,python]
+----
+# Correct
+class PolicyValidationError(Exception):
+    pass
+
+# Incorrect
+class policy_validation_error(Exception):
+    pass
+----
+
+=== Step 3: PEP8 Guidelines
+
+==== Indentation
+- Use **4 spaces per indentation level**.
+
+[source,python]
+----
+# Correct
+if premium > 1000:
+    print("High premium")
+
+# Incorrect
+if premium > 1000:
+	print("High premium")  # Tab instead of spaces
+----
+
+==== Line Length
+- Limit lines to **79 characters**.
+
+[source,python]
+----
+# Correct
+policy_description = (
+    "This policy provides comprehensive coverage for individuals "
+    "aged between 25 and 50 years."
+)
+
+# Incorrect
+policy_description = "This policy provides comprehensive coverage for individuals aged between 25 and 50 years."
+----
+
+==== Spacing
+- Add a single space around operators and after commas.
+
+[source,python]
+----
+# Correct
+premium = base_premium * risk_factor
+
+# Incorrect
+premium=base_premium*risk_factor
+----
+
+==== Imports
+- Imports should be grouped as:
+  1. Standard library imports.
+  2. Related third-party imports.
+  3. Local application/library imports.
+- Each group should be separated by a blank line.
+
+[source,python]
+----
+# Correct
+import os
+import sys
+
+import pytest
+
+from policy_calculator import calculate_premium
+
+# Incorrect
+import pytest, os, sys
+from policy_calculator import calculate_premium
+----
+
+==== Comments
+- Use comments to explain **why**, not **what**.
+- Use **#** for inline comments and block comments.
+
+[source,python]
+----
+# Correct
+# Calculate premium based on base amount and risk factor.
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Incorrect
+# This function calculates the premium.
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+----
+
+=== Step 4: Real-World Example
+
+[source,python]
+----
+# Constants
+MAX_PREMIUM_LIMIT = 10000
+DEFAULT_POLICY_TYPE = "Life"
+
+# Class definition
+class InsurancePolicy:
+    def __init__(self, policy_id, policy_type, premium):
+        self.policy_id = policy_id
+        self.policy_type = policy_type
+        self.premium = premium
+
+    def is_high_premium(self):
+        return self.premium > MAX_PREMIUM_LIMIT
+
+# Function to calculate premium
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Main workflow
+if __name__ == "__main__":
+    policy = InsurancePolicy("POL12345", DEFAULT_POLICY_TYPE, 12000)
+    print(f"Policy ID: {policy.policy_id}, High Premium: {policy.is_high_premium()}")
+----
+
+=== Step 5: Summary
+
+- Follow PEP8 for consistent, clean, and readable Python code.
+- Use descriptive names for variables, functions, and classes.
+- Group and format imports properly.
+- Apply spacing, indentation, and line length guidelines effectively.
+- Use comments to clarify intent and avoid redundant explanations.
