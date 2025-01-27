@@ -1,0 +1,260 @@
+== Lab: Comprehensive Testing in Python
+
+=== Objective
+Provide a step-by-step guide to testing in Python by:
+
+1. Introducing testing fundamentals.
+2. Exploring basic to advanced use cases.
+3. Covering unit testing, integration testing, and edge cases.
+4. Using real-world insurance domain scenarios.
+
+=== Step 1: Setting Up the Environment
+
+==== Install Dependencies
+To run this lab, ensure the following dependencies are installed:
+
+[source,bash]
+----
+pip install pytest unittest2
+----
+
+- `pytest`: A testing framework for Python.
+- `unittest2`: Backport of Python's built-in `unittest` module for older versions of Python.
+- Ensure you are using Python 3.6 or later.
+
+==== Verify the Setup
+Check if the dependencies are installed:
+
+[source,bash]
+----
+pytest --version
+python -m unittest --help
+----
+
+The commands should print the respective versions and usage information.
+
+=== Step 2: Introduction to Testing
+
+==== What is Testing?
+- Testing ensures that your code behaves as expected.
+- Types of testing covered:
+  - **Unit Testing:** Testing individual functions or components.
+  - **Integration Testing:** Testing combined components or workflows.
+  - **Edge Case Testing:** Verifying behavior in unusual or extreme cases.
+
+==== Python Testing Frameworks
+- **`unittest`:** Built-in Python library for testing.
+- **`pytest`:** Popular third-party library with advanced features.
+- **`mock`:** Used to simulate objects and behavior.
+
+[source,python]
+----
+# Importing the unittest framework
+import unittest
+
+# Example: Simple function to test
+def add_numbers(a, b):
+    return a + b
+
+# Writing a basic test case
+class TestAddNumbers(unittest.TestCase):
+    def test_add_positive(self):
+        self.assertEqual(add_numbers(2, 3), 5)
+
+    def test_add_negative(self):
+        self.assertEqual(add_numbers(-2, -3), -5)
+
+if __name__ == "__main__":
+    unittest.main()
+----
+
+=== Step 3: Writing Unit Tests
+
+==== Function to Test
+
+[source,python]
+----
+# Example: Function to calculate premium
+
+def calculate_premium(base, risk_factor):
+    if base <= 0 or risk_factor <= 0:
+        raise ValueError("Base and risk factor must be positive.")
+    return base * risk_factor
+----
+
+==== Writing Unit Tests
+
+[source,python]
+----
+import unittest
+
+class TestCalculatePremium(unittest.TestCase):
+
+    def test_valid_premium(self):
+        self.assertEqual(calculate_premium(1000, 1.2), 1200)
+
+    def test_zero_base(self):
+        with self.assertRaises(ValueError):
+            calculate_premium(0, 1.2)
+
+    def test_negative_risk_factor(self):
+        with self.assertRaises(ValueError):
+            calculate_premium(1000, -1.2)
+
+if __name__ == "__main__":
+    unittest.main()
+----
+
+=== Step 4: Testing with `pytest`
+
+==== Function to Test
+
+[source,python]
+----
+# Example: Function to determine policy status
+
+def policy_status(policies, policy_id):
+    """
+    Return the status of a policy.
+    """
+    return policies.get(policy_id, "Policy not found")
+----
+
+==== Writing Tests with `pytest`
+
+[source,python]
+----
+import pytest
+
+# Example test cases
+def test_valid_policy():
+    policies = {"POL12345": "Active", "POL12346": "Expired"}
+    assert policy_status(policies, "POL12345") == "Active"
+
+def test_invalid_policy():
+    policies = {"POL12345": "Active"}
+    assert policy_status(policies, "POL99999") == "Policy not found"
+----
+
+=== Step 5: Mocking in Tests
+
+[source,python]
+----
+from unittest.mock import patch
+
+# Example: Simulating external function behavior
+@patch("builtins.print")
+def test_mocked_function(mock_print):
+    print("Testing mock")
+    mock_print.assert_called_with("Testing mock")
+----
+
+=== Step 6: Integration Testing
+
+[source,python]
+----
+# Integration testing multiple functions
+
+def validate_policy(policy_id, active_policies):
+    if policy_id not in active_policies:
+        raise ValueError("Policy is not active.")
+    return "Policy is valid"
+
+def calculate_claim(policy_id, claim_amount, active_policies):
+    try:
+        validate_policy(policy_id, active_policies)
+        return f"Claim approved for {claim_amount}"
+    except ValueError as e:
+        return str(e)
+----
+
+==== Writing Integration Tests
+
+[source,python]
+----
+def test_integration():
+    active_policies = {"POL12345", "POL12346"}
+    assert calculate_claim("POL12345", 1000, active_policies) == "Claim approved for 1000"
+    assert calculate_claim("POL12347", 1000, active_policies) == "Policy is not active."
+----
+
+=== Step 7: Testing Edge Cases
+
+[source,python]
+----
+def test_edge_cases():
+    # Test with extreme values
+    assert calculate_premium(1e6, 1.5) == 1.5e6
+    assert policy_status({}, "POL12345") == "Policy not found"
+----
+
+=== Step 8: Real-World Case Study: Insurance Claims System
+
+[source,python]
+----
+# System to validate claims and calculate premium
+
+def process_claim(policy_id, claim_amount, policies):
+    """Process a claim for a policy."""
+    if policy_id not in policies:
+        return "Policy not found"
+
+    if claim_amount > policies[policy_id]["premium"] * 2:
+        return "Claim denied: Exceeds limit"
+
+    return "Claim approved"
+
+# Writing tests for the claims system
+def test_claim_system():
+    policies = {
+        "POL12345": {"premium": 1500},
+        "POL12346": {"premium": 2500}
+    }
+    assert process_claim("POL12345", 3000, policies) == "Claim approved"
+    assert process_claim("POL12345", 4000, policies) == "Claim denied: Exceeds limit"
+    assert process_claim("POL99999", 2000, policies) == "Policy not found"
+----
+
+=== Step 9: Run and Verify
+
+==== Running `unittest`
+
+- Save your test script as `test_script.py`.
+- Run the tests using the following command:
+
+[source,bash]
+----
+python -m unittest test_script.py
+----
+
+==== Running `pytest`
+
+- Save your test script as `test_script.py`.
+- Run the tests using the following command:
+
+[source,bash]
+----
+pytest test_script.py
+----
+
+- To run all test files in the directory:
+
+[source,bash]
+----
+pytest
+----
+
+- To generate a detailed output:
+
+[source,bash]
+----
+pytest -v
+----
+
+=== Step 10: Summary
+
+- **Unit Testing:** Focus on individual components like functions.
+- **Integration Testing:** Validate interactions between components.
+- **Edge Case Testing:** Ensure robustness with extreme inputs.
+- Tools like `unittest` and `pytest` simplify testing workflows, while mocking enables testing external dependencies effectively.
+- Follow the setup and execution steps to validate your scripts.
