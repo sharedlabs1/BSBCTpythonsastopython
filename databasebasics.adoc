@@ -1,0 +1,150 @@
+== Lab: Database Basics with Python
+
+=== Objective
+This lab introduces the basics of working with relational databases in Python. You will:
+
+1. Set up a SQLite database.
+2. Perform CRUD (Create, Read, Update, Delete) operations.
+3. Use SQL queries for data manipulation and retrieval.
+
+=== Step 1: Setting Up SQLite
+
+#### What is SQLite?
+SQLite is a lightweight, file-based relational database management system. It is included with Python, making it ideal for learning and small projects.
+
+#### Installing SQLite
+SQLite is pre-installed with Python. To check, run:
+
+[source,bash]
+----
+python -c "import sqlite3; print('SQLite is available')"
+----
+
+=== Step 2: Connecting to a Database
+
+#### Creating and Connecting to a SQLite Database
+
+[source,python]
+----
+import sqlite3
+
+# Connect to SQLite database (creates the database file if it doesn't exist)
+connection = sqlite3.connect("insurance.db")
+
+# Create a cursor to interact with the database
+cursor = connection.cursor()
+
+print("Connected to database successfully")
+----
+
+=== Step 3: Creating Tables
+
+#### Define a Table for Policies
+
+[source,python]
+----
+# SQL query to create a table
+create_table_query = """
+CREATE TABLE IF NOT EXISTS policies (
+    policy_id TEXT PRIMARY KEY,
+    policy_holder TEXT NOT NULL,
+    policy_type TEXT NOT NULL,
+    premium REAL NOT NULL
+);
+"""
+
+# Execute the query
+cursor.execute(create_table_query)
+print("Table 'policies' created successfully")
+----
+
+=== Step 4: Inserting Data
+
+#### Insert Records into the Table
+
+[source,python]
+----
+# Sample data
+policy_data = [
+    ("POL12345", "John Doe", "Life", 1200.50),
+    ("POL12346", "Jane Smith", "Health", 2500.75),
+    ("POL12347", "Jim Brown", "Vehicle", 1800.00)
+]
+
+# SQL query to insert data
+insert_query = "INSERT INTO policies (policy_id, policy_holder, policy_type, premium) VALUES (?, ?, ?, ?);"
+
+# Insert data
+cursor.executemany(insert_query, policy_data)
+connection.commit()
+print("Data inserted successfully")
+----
+
+=== Step 5: Querying Data
+
+#### Retrieve Data from the Table
+
+[source,python]
+----
+# SQL query to select all records
+select_query = "SELECT * FROM policies;"
+
+# Execute the query and fetch all results
+cursor.execute(select_query)
+rows = cursor.fetchall()
+
+# Display the results
+print("Policies:")
+for row in rows:
+    print(row)
+----
+
+=== Step 6: Updating Data
+
+#### Update a Record
+
+[source,python]
+----
+# SQL query to update a record
+update_query = "UPDATE policies SET premium = ? WHERE policy_id = ?;"
+
+# Update the premium for a specific policy
+cursor.execute(update_query, (1400.00, "POL12345"))
+connection.commit()
+print("Policy updated successfully")
+----
+
+=== Step 7: Deleting Data
+
+#### Delete a Record
+
+[source,python]
+----
+# SQL query to delete a record
+delete_query = "DELETE FROM policies WHERE policy_id = ?;"
+
+# Delete a policy by ID
+cursor.execute(delete_query, ("POL12347",))
+connection.commit()
+print("Policy deleted successfully")
+----
+
+=== Step 8: Closing the Connection
+
+#### Always Close the Database Connection
+
+[source,python]
+----
+# Close the cursor and connection
+cursor.close()
+connection.close()
+print("Database connection closed")
+----
+
+=== Step 9: Summary
+
+- SQLite is an easy-to-use database for small projects and learning.
+- CRUD operations allow you to interact with data effectively.
+- Always ensure you close database connections to avoid resource leaks.
+
+You now have a basic understanding of working with databases in Python!
