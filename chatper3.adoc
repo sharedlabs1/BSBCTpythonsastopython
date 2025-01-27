@@ -1,0 +1,173 @@
+== Beginner Case Study: Detailed String Operations in Python
+
+=== Objective
+Introduce beginners to Python string operations by:
+
+1. Exploring basic and advanced string functions.
+2. Writing clean and efficient string manipulation code.
+3. Comparing Python string operations with SAS equivalents.
+
+=== Scenario: Insurance Policy Management
+Analyze and manipulate strings representing insurance policy data, including policy IDs, holder names, and descriptions.
+
+=== Step 1: Basic String Operations
+
+[source,python]
+----
+# Example data
+policy_id = "POL12345"
+policy_holder = "John Doe"
+description = "Premium insurance policy for vehicle protection."
+
+# Length of strings
+print("Length of Policy ID:", len(policy_id))
+print("Length of Description:", len(description))
+
+# String indexing and slicing
+print("First character of Policy ID:", policy_id[0])
+print("Last character of Policy ID:", policy_id[-1])
+print("Slice of Description (0-7):", description[0:7])
+
+# String concatenation
+full_name = policy_holder.split()[0] + " " + policy_holder.split()[1]
+print("Full Name:", full_name)
+
+# String repetition
+separator = "-" * 10
+print("Separator:", separator)
+----
+
+=== SAS Comparison: Basic String Operations
+
+[source,sas]
+----
+/* SAS uses functions like LENGTH, SUBSTR, and CATX for string operations. */
+DATA policy_example;
+    policy_id = "POL12345";
+    policy_holder = "John Doe";
+    description = "Premium insurance policy for vehicle protection.";
+
+    /* Length of strings */
+    policy_id_length = LENGTH(policy_id);
+    description_length = LENGTH(description);
+
+    /* Substring operations */
+    first_char = SUBSTR(policy_id, 1, 1);
+    last_char = SUBSTR(policy_id, LENGTH(policy_id), 1);
+    slice_desc = SUBSTR(description, 1, 7);
+
+    /* Concatenation */
+    full_name = CATX(" ", SCAN(policy_holder, 1), SCAN(policy_holder, 2));
+
+    /* Repetition */
+    separator = REPEAT("-", 10);
+RUN;
+
+PROC PRINT DATA=policy_example;
+RUN;
+----
+
+=== Step 2: Advanced String Operations
+
+==== String Methods
+
+[source,python]
+----
+# String case transformations
+print("Uppercase Policy Holder:", policy_holder.upper())
+print("Lowercase Description:", description.lower())
+
+# String replacement
+updated_description = description.replace("vehicle", "car")
+print("Updated Description:", updated_description)
+
+# String splitting and joining
+words = description.split()
+print("Words in Description:", words)
+joined_description = " ".join(words)
+print("Joined Description:", joined_description)
+
+# Checking string properties
+print("Is Policy ID alphanumeric?:", policy_id.isalnum())
+print("Does Description start with 'Premium'?:", description.startswith("Premium"))
+print("Does Description end with 'protection.'?:", description.endswith("protection."))
+----
+
+==== SAS Comparison: Advanced String Operations
+
+[source,sas]
+----
+/* SAS provides functions like UPCASE, LOWCASE, TRANWRD, SCAN, and INDEX for similar operations. */
+DATA advanced_string_example;
+    policy_id = "POL12345";
+    policy_holder = "John Doe";
+    description = "Premium insurance policy for vehicle protection.";
+
+    /* Case transformations */
+    uppercase_holder = UPCASE(policy_holder);
+    lowercase_desc = LOWCASE(description);
+
+    /* Replacement */
+    updated_description = TRANWRD(description, "vehicle", "car");
+
+    /* Splitting and joining */
+    first_word = SCAN(description, 1, " ");
+    second_word = SCAN(description, 2, " ");
+    joined_desc = CATX(" ", first_word, second_word);
+
+    /* Checking properties */
+    starts_with_premium = INDEX(description, "Premium") = 1;
+    ends_with_protection = SUBSTR(description, LENGTH(description) - 9) = "protection.";
+RUN;
+
+PROC PRINT DATA=advanced_string_example;
+RUN;
+----
+
+=== Step 3: Regular Expressions for String Operations
+
+[source,python]
+----
+import re
+
+# Find all numeric parts in a string
+policy_number = re.findall(r"\d+", policy_id)
+print("Policy Number Extracted:", policy_number)
+
+# Validate policy format
+is_valid_policy = bool(re.match(r"POL\d{5}$", policy_id))
+print("Is Policy ID Valid?:", is_valid_policy)
+
+# Replace multiple spaces with a single space
+messy_description = "Premium   insurance   policy    for  vehicle   protection."
+cleaned_description = re.sub(r"\s+", " ", messy_description)
+print("Cleaned Description:", cleaned_description)
+----
+
+==== SAS Comparison: Regular Expressions
+
+[source,sas]
+----
+/* SAS supports PRXMATCH and PRXCHANGE for regular expressions. */
+DATA regex_example;
+    policy_id = "POL12345";
+    messy_description = "Premium   insurance   policy    for  vehicle   protection.";
+
+    /* Find numeric parts */
+    IF PRXMATCH("/POL\d{5}/", policy_id) THEN valid_policy = 1;
+    ELSE valid_policy = 0;
+
+    /* Replace multiple spaces */
+    cleaned_description = PRXCHANGE("s/\s+/ /", -1, messy_description);
+RUN;
+
+PROC PRINT DATA=regex_example;
+RUN;
+----
+
+=== Step 4: Summary
+
+- Python provides versatile tools for string manipulation, including basic and advanced operations.
+- Regular expressions add flexibility for pattern matching and validation.
+- SAS offers similar functionality but often requires explicit function calls for operations.
+- Using insurance-related examples helps contextualize these operations for practical use.
