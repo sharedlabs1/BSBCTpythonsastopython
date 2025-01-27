@@ -11,6 +11,7 @@ Explore functional programming in Python through a case-driven approach, focusin
 === Scenario: Insurance Claim Processing System
 
 You are tasked with creating a Python-based system for an insurance company. The system must:
+
 - Calculate premiums for various policies.
 - Apply discounts based on policy type.
 - Add taxes to the final premium amount.
