@@ -1,0 +1,155 @@
+== Beginner Case Study: Understanding Data Types, Sequence Types, and PEP 8 Standards
+
+=== Objective
+Introduce beginners to Python programming with a focus on:
+
+1. Data types and their usage.
+2. Sequence types (list, tuple, string, dictionary, and set).
+3. Writing clean, readable code following PEP 8 standards.
+4. Comparison of Python operations with SAS equivalents for better context.
+
+=== Step 1: Introduction to Data Types
+
+[source,python]
+----
+# Python has dynamic typing, meaning variables do not need explicit type declarations.
+# Common data types:
+
+# Integer
+age = 25  # Example of an integer
+
+# Float
+salary = 45750.75  # Example of a floating-point number
+
+# String
+name = "John Doe"  # Example of a string
+
+# Boolean
+is_employee = True  # Example of a boolean value
+
+print("Age:", type(age))
+print("Salary:", type(salary))
+print("Name:", type(name))
+print("Is Employee:", type(is_employee))
+----
+
+=== SAS Comparison: Data Types
+
+[source,sas]
+----
+/* SAS uses explicit typing for variables within data steps. */
+
+DATA example;
+    age = 25; /* Numeric variable */
+    salary = 45750.75; /* Numeric variable */
+    name = "John Doe"; /* Character variable */
+    is_employee = 1; /* Numeric, often 0/1 for boolean-like operations */
+RUN;
+
+PROC PRINT DATA=example;
+RUN;
+----
+
+=== Step 2: Sequence Types
+
+[source,python]
+----
+# Python's sequence types are powerful and versatile.
+
+# List: Mutable sequence of items
+fruits = ["Apple", "Banana", "Cherry"]
+fruits.append("Date")  # Add an item
+
+# Tuple: Immutable sequence of items
+coordinates = (34.0522, -118.2437)  # Latitude and longitude
+
+# String: Immutable sequence of characters
+message = "Hello, World!"
+substring = message[0:5]  # Slicing strings
+
+# Set: Unordered collection of unique items
+unique_fruits = set(fruits)
+
+# Dictionary: Key-value pairs
+employee = {"name": "John Doe", "age": 25, "salary": 45750.75}
+
+print("List:", fruits)
+print("Tuple:", coordinates)
+print("Substring:", substring)
+print("Set:", unique_fruits)
+print("Dictionary:", employee)
+----
+
+=== SAS Comparison: Sequence Types
+
+[source,sas]
+----
+/* SAS does not natively support sequence types like Python but achieves similar results with arrays or tables. */
+
+/* Array in SAS */
+DATA array_example;
+    ARRAY fruits[4] $12 _TEMPORARY_ ("Apple", "Banana", "Cherry", "Date");
+    DO i = 1 TO DIM(fruits);
+        PUT fruits[i];
+    END;
+RUN;
+
+/* Key-value structures in SAS can be approximated with hash objects. */
+DATA _NULL_;
+    DECLARE HASH employee();
+    employee.DEFINEKEY("key");
+    employee.DEFINEVALUE("value");
+    employee.DEFINEDONE();
+    employee.ADD(KEY:"name", VALUE:"John Doe");
+    employee.ADD(KEY:"age", VALUE:25);
+    employee.ADD(KEY:"salary", VALUE:45750.75);
+    employee.OUTPUT(DATASET:"employee_data");
+RUN;
+
+PROC PRINT DATA=employee_data;
+RUN;
+----
+
+=== Step 3: Writing Clean Code with PEP 8
+
+[source,python]
+----
+# Following PEP 8 ensures your Python code is readable and maintainable.
+
+# Example of PEP 8-compliant code:
+def calculate_bonus(salary, percentage):
+    """Calculate bonus based on salary and percentage."""
+    bonus = salary * (percentage / 100)
+    return bonus
+
+# Call the function
+employee_bonus = calculate_bonus(salary=45750.75, percentage=10)
+print(f"Bonus: ${employee_bonus:.2f}")
+
+# Common PEP 8 Practices:
+# 1. Use 4 spaces per indentation level.
+# 2. Limit lines to 79 characters.
+# 3. Use descriptive variable names.
+# 4. Leave a blank line between functions or class definitions.
+----
+
+=== SAS Comparison: Code Readability
+
+[source,sas]
+----
+/* SAS emphasizes proper indentation for readability, although it does not have strict style guides like PEP 8. */
+
+%MACRO calculate_bonus(salary, percentage);
+    %LET bonus = %SYSEVALF(&salary * (&percentage / 100));
+    %PUT Bonus: &bonus;
+%MEND;
+
+%calculate_bonus(45750.75, 10);
+----
+
+=== Step 4: Summary
+
+- Python's dynamic typing makes it easy to start with data types.
+- Sequence types provide powerful tools for organizing and manipulating data.
+- PEP 8 guidelines help ensure your code is clean, readable, and maintainable.
+- SAS provides comparable functionality but often requires explicit setups, such as arrays or hash objects, to achieve similar results.
