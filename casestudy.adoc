@@ -1,0 +1,154 @@
+== Case Study: Comprehensive Insurance Data Management System
+
+=== Objective
+Develop a Python-based insurance data management system utilizing:
+
+1. Lists, dictionaries, sets, and tuples for data storage and manipulation.
+2. Functions for modular and reusable code.
+3. Lambda functions for concise data processing.
+4. Exception handling for robustness and error management.
+
+=== Scenario: Insurance Policy and Claims Management
+Create a system to manage policy details, validate claims, and calculate premiums while ensuring data integrity and error handling.
+
+=== Step 1: Data Storage with Lists, Dictionaries, Sets, and Tuples
+
+[source,python]
+----
+# List of policy types
+policy_types = ["Life", "Health", "Vehicle", "Property"]
+
+# Dictionary of policy details
+policy_details = {
+    "POL12345": {"holder": "John Doe", "type": "Life", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "type": "Health", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "type": "Vehicle", "premium": 3500}
+}
+
+# Set of active policies
+active_policies = {"POL12345", "POL12346"}
+
+# Tuple of risk categories
+risk_categories = ("Low", "Medium", "High")
+
+print("Policy Types:", policy_types)
+print("Policy Details:", policy_details)
+print("Active Policies:", active_policies)
+print("Risk Categories:", risk_categories)
+----
+
+=== Step 2: Functions for Policy Management
+
+[source,python]
+----
+# Function to calculate premium with risk factor
+
+def calculate_premium(base_premium, risk_factor):
+    """
+    Calculate the premium based on risk factor.
+    Arguments:
+        base_premium (float): Base premium amount.
+        risk_factor (float): Risk multiplier.
+    Returns:
+        float: Adjusted premium.
+    """
+    return base_premium * risk_factor
+
+# Function to validate policy
+
+def validate_policy(policy_id, policy_dict):
+    """
+    Validate if a policy exists in the system.
+    Arguments:
+        policy_id (str): Policy ID to validate.
+        policy_dict (dict): Dictionary of policy details.
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    return policy_id in policy_dict
+
+print("Premium for High Risk:", calculate_premium(2000, 1.5))
+print("Is POL12345 a valid policy?:", validate_policy("POL12345", policy_details))
+----
+
+=== Step 3: Lambda Functions for Quick Processing
+
+[source,python]
+----
+# Lambda function to check high premium
+is_high_premium = lambda premium: premium > 3000
+
+# Apply lambda to filter high premium policies
+high_premium_policies = {policy for policy, details in policy_details.items() if is_high_premium(details["premium"])}
+
+print("High Premium Policies:", high_premium_policies)
+----
+
+=== Step 4: Exception Handling for Robustness
+
+[source,python]
+----
+# Function to safely fetch policy details
+
+def get_policy_details(policy_id, policy_dict):
+    """
+    Fetch policy details safely with exception handling.
+    Arguments:
+        policy_id (str): Policy ID to fetch.
+        policy_dict (dict): Dictionary of policy details.
+    Returns:
+        dict: Policy details if found.
+    """
+    try:
+        return policy_dict[policy_id]
+    except KeyError:
+        print(f"Error: Policy {policy_id} not found.")
+        return None
+
+print("Details for POL12345:", get_policy_details("POL12345", policy_details))
+print("Details for POL99999:", get_policy_details("POL99999", policy_details))
+----
+
+=== Step 5: Combining All Concepts in a Real-World Scenario
+
+[source,python]
+----
+# Function to process claims
+
+def process_claim(policy_id, claim_amount, policy_dict, active_set):
+    """
+    Process a claim for a given policy.
+    Arguments:
+        policy_id (str): Policy ID.
+        claim_amount (float): Claim amount.
+        policy_dict (dict): Dictionary of policy details.
+        active_set (set): Set of active policies.
+    Returns:
+        str: Result of the claim processing.
+    """
+    try:
+        if policy_id not in active_set:
+            raise ValueError(f"Policy {policy_id} is not active.")
+
+        if claim_amount > policy_dict[policy_id]["premium"] * 2:
+            return f"Claim for {policy_id} denied: Exceeds allowable limit."
+
+        return f"Claim for {policy_id} approved: ${claim_amount} processed."
+
+    except KeyError:
+        return f"Error: Policy {policy_id} not found."
+    except ValueError as e:
+        return str(e)
+
+# Test the function
+print(process_claim("POL12345", 2000, policy_details, active_policies))
+print(process_claim("POL12345", 4000, policy_details, active_policies))
+print(process_claim("POL12348", 2000, policy_details, active_policies))
+----
+
+=== Step 6: Summary
+
+- This case study demonstrates the combined use of lists, dictionaries, sets, and tuples to manage structured data.
+- Functions ensure reusability and modularity in the code.
+- Lambda functions provide concise processing, while exception handling ensures robust error management.
+- The real-world insurance domain example highlights practical applications of Python concepts.
