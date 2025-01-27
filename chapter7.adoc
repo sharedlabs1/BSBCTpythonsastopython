@@ -1,0 +1,136 @@
+== Case Study: Mastering Lambda Functions in Python (Insurance Domain)
+
+=== Objective
+Provide a comprehensive guide to Python lambda functions by:
+
+1. Understanding lambda syntax and use cases.
+2. Exploring advanced operations with `map`, `filter`, `reduce`, and `sorted`.
+3. Applying these concepts to an insurance domain case study.
+
+=== Scenario: Insurance Policy and Claims Processing
+Use lambda functions to process policy data, calculate claims, and filter policies based on risk and premium levels.
+
+=== Step 1: Introduction to Lambda Functions
+
+[source,python]
+----
+# Example: Basic lambda function to calculate premium multiplier
+premium_multiplier = lambda risk_factor: risk_factor * 1.1
+
+# Using the lambda function
+print(f"Premium Multiplier for Risk Factor 1.2: {premium_multiplier(1.2):.2f}")
+print(f"Premium Multiplier for Risk Factor 1.5: {premium_multiplier(1.5):.2f}")
+----
+
+=== Step 2: Using `map` for Data Transformation
+
+[source,python]
+----
+# Example: Applying `map` to calculate premiums for multiple policies
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+# Use map with a lambda function to calculate final premiums
+final_premiums = list(map(lambda base, risk: base * risk, base_premiums, risk_factors))
+
+print("Final Premiums:", final_premiums)
+----
+
+==== Explanation
+- `map` applies the lambda function to each element in the input iterables.
+- In this case, it multiplies each base premium by its corresponding risk factor.
+
+=== Step 3: Using `filter` for Data Filtering
+
+[source,python]
+----
+# Example: Filtering policies with premiums above a threshold
+threshold = 1500
+
+# Use filter with a lambda function to select policies above the threshold
+high_premium_policies = list(filter(lambda premium: premium > threshold, final_premiums))
+
+print("High Premium Policies:", high_premium_policies)
+----
+
+==== Explanation
+- `filter` applies the lambda function as a condition and returns elements that evaluate to `True`.
+- Here, it filters out premiums that are below or equal to the threshold.
+
+=== Step 4: Using `reduce` for Aggregation
+
+[source,python]
+----
+from functools import reduce
+
+# Example: Calculating the total premium using `reduce`
+total_premium = reduce(lambda x, y: x + y, final_premiums)
+
+print("Total Premium Collected:", total_premium)
+----
+
+==== Explanation
+- `reduce` applies the lambda function cumulatively to the items of the iterable.
+- Here, it sums up all premiums to calculate the total.
+
+=== Step 5: Using `sorted` with a Lambda Function
+
+[source,python]
+----
+# Example: Sorting policies by premium in descending order
+sorted_policies = sorted(final_premiums, key=lambda premium: premium, reverse=True)
+
+print("Policies Sorted by Premium (Descending):", sorted_policies)
+----
+
+==== Explanation
+- `sorted` uses the lambda function as a key to determine the sorting order.
+- The `reverse=True` argument sorts the values in descending order.
+
+=== Step 6: Combining `map`, `filter`, and `reduce`
+
+[source,python]
+----
+# Example: Complex pipeline for policy processing
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+# Step 1: Calculate final premiums
+final_premiums = list(map(lambda base, risk: base * risk, base_premiums, risk_factors))
+
+# Step 2: Filter high premiums
+high_premium_policies = list(filter(lambda premium: premium > 1500, final_premiums))
+
+# Step 3: Calculate total of high premiums
+total_high_premium = reduce(lambda x, y: x + y, high_premium_policies)
+
+print("High Premium Policies:", high_premium_policies)
+print("Total of High Premium Policies:", total_high_premium)
+----
+
+=== Step 7: Real-World Example: Claim Processing Pipeline
+
+[source,python]
+----
+# Example: Processing claim amounts with map, filter, and reduce
+claim_amounts = [500, 3000, 7000, 1500, 2000]
+
+# Step 1: Apply a risk multiplier to all claims
+adjusted_claims = list(map(lambda claim: claim * 1.2, claim_amounts))
+
+# Step 2: Filter claims above a threshold
+significant_claims = list(filter(lambda claim: claim > 3000, adjusted_claims))
+
+# Step 3: Calculate the total payout for significant claims
+total_payout = reduce(lambda x, y: x + y, significant_claims)
+
+print("Adjusted Claims:", adjusted_claims)
+print("Significant Claims:", significant_claims)
+print("Total Payout for Significant Claims:", total_payout)
+----
+
+=== Step 8: Summary
+
+- Lambda functions provide concise, inline solutions for single-use operations.
+- `map`, `filter`, `reduce`, and `sorted` enable efficient data transformations and aggregations.
+- Combining these tools creates powerful pipelines for real-world applications, as demonstrated in the insurance domain.
