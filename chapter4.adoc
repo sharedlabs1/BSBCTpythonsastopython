@@ -1,0 +1,175 @@
+== Case Study: Comprehensive Exception Handling in Python (Insurance Domain)
+
+=== Objective
+Provide a detailed overview of Python's exception handling mechanism by:
+
+1. Introducing core exception handling concepts.
+2. Demonstrating common exception types and custom exceptions.
+3. Highlighting advanced techniques like logging and re-raising exceptions.
+4. Comparing Python's approach with SAS error-handling techniques.
+
+=== Scenario: Insurance Policy and Claims Validation
+Handle exceptions during data processing, validation of claims, and file handling in the context of an insurance system.
+
+=== Step 1: Basics of Exception Handling
+
+[source,python]
+----
+# Example: Basic exception handling during claim amount processing
+claims = [2000, 4500, "invalid", 3000, -1000]
+
+for claim in claims:
+    try:
+        # Ensure claim is a valid positive number
+        if not isinstance(claim, (int, float)):
+            raise ValueError(f"Claim must be a number. Invalid claim value provided: {claim}")
+        if claim <= 0:
+            raise ValueError(f"Claim value must be positive. Provided: {claim}")
+        print(f"Processed claim: ${claim}")
+    except ValueError as e:
+        print(f"Error: {e}")
+----
+
+=== SAS Comparison: Error Handling
+
+[source,sas]
+----
+/* SAS uses conditional checks to handle errors. */
+DATA claims_handling;
+    INPUT claim_amount : $10.;
+    IF NOT (claim_amount > 0) THEN DO;
+        PUT "Error: Invalid or negative claim value " claim_amount;
+    END;
+    ELSE PUT "Processed claim: " claim_amount;
+    DATALINES;
+    2000
+    4500
+    invalid
+    3000
+    -1000
+    ;
+RUN;
+----
+
+=== Step 2: Handling Multiple Exceptions
+
+[source,python]
+----
+# Example: File handling with multiple exception types
+try:
+    with open("policy_data.txt", "r", encoding="utf-8") as file:
+        data = file.read()
+        print("File content:", data)
+except FileNotFoundError:
+    print("Error: File not found.")
+except PermissionError:
+    print("Error: Permission denied.")
+except UnicodeDecodeError:
+    print("Error: Unable to decode the file with the specified encoding.")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+----
+
+=== SAS Comparison: File Handling
+
+[source,sas]
+----
+/* SAS uses conditional checks for file existence and permissions. */
+FILENAME policy_data "policy_data.txt";
+DATA _NULL_;
+    INFILE policy_data;
+    INPUT;
+    FILE_EXISTS = (FILEREF("policy_data") = 0);
+    IF NOT FILE_EXISTS THEN PUT "Error: File not found.";
+RUN;
+----
+
+=== Step 3: Custom Exceptions
+
+[source,python]
+----
+# Define a custom exception for claim validation
+class ClaimValidationError(Exception):
+    pass
+
+# Example: Using the custom exception
+claims = [2000, 4500, "invalid", 3000, -1000]
+
+def validate_claim(claim):
+    if not isinstance(claim, (int, float)):
+        raise ClaimValidationError(f"Claim must be a number. Invalid claim value provided: {claim}")
+    if claim <= 0:
+        raise ClaimValidationError(f"Claim value must be positive. Provided: {claim}")
+
+for claim in claims:
+    try:
+        validate_claim(claim)
+        print(f"Valid claim: ${claim}")
+    except ClaimValidationError as e:
+        print(f"Claim Validation Error: {e}")
+----
+
+=== Step 4: Advanced Techniques
+
+==== Logging Exceptions
+
+[source,python]
+----
+import logging
+
+# Configure logging
+log_file_path = "errors.log"  # Configurable log file path
+logging.basicConfig(level=logging.ERROR, filename=log_file_path)
+
+# Example: Logging exceptions
+for claim in claims:
+    try:
+        validate_claim(claim)
+        print(f"Valid claim: ${claim}")
+    except ClaimValidationError as e:
+        logging.error(f"Error processing claim {claim}: {e}")
+        print(f"Error logged: {e}")
+----
+
+==== Re-raising Exceptions
+
+[source,python]
+----
+# Example: Re-raising exceptions after logging
+try:
+    validate_claim("invalid")
+except ClaimValidationError as e:
+    logging.error(f"Critical error: {e}")
+    raise
+----
+
+=== SAS Comparison: Logging and Advanced Handling
+
+[source,sas]
+----
+/* SAS does not have direct logging but uses PUT statements for error tracking. */
+DATA _NULL_;
+    FILE LOG;
+    PUT "Error: Invalid claim value.";
+RUN;
+----
+
+=== Step 5: Ensuring Cleanup with `finally`
+
+[source,python]
+----
+# Example: Ensuring cleanup with `finally`
+try:
+    with open("policy_data.txt", "r", encoding="utf-8") as file:
+        data = file.read()
+        print("File content:", data)
+except FileNotFoundError:
+    print("Error: File not found.")
+----
+
+=== Step 6: Summary
+
+- Python's exception handling provides flexibility through `try`, `except`, `else`, and `finally` blocks.
+- Custom exceptions enable domain-specific error handling.
+- Advanced techniques like logging and re-raising improve robustness.
+- SAS relies on conditional checks and PUT statements for error handling, offering limited flexibility compared to Python.
