@@ -1,0 +1,3975 @@
+= Python Level 1 for BSBCT
+:toc:
+:toclevels: 1
+
+++++
+<div class="progress-container">
+    <div class="progress-track">
+        <div class="progress-fill"></div>
+    </div>
+    <div class="progress-stats">
+        <span>Exercises completed: 0/0</span>
+        <span>0%</span>
+    </div>
+</div>
+
+<link rel="stylesheet" href="styles.css">
+<script src="script.js"></script>
+++++
+
+== Lab: Python Naming Conventions and PEP8 Guidelines
+
+=== Objective
+Provide a comprehensive guide to naming conventions and coding standards in Python, focusing on:
+
+1. Rules for naming various coding artifacts.
+2. PEP8 guidelines for maintaining clean and readable code.
+3. Examples of best practices and common pitfalls.
+
+=== Step 1: Introduction to PEP8
+
+PEP8 is the official style guide for Python code. It provides conventions for:
+
+- Code layout.
+- Naming styles.
+- Indentation and line length.
+- Spacing, imports, and comments.
+
+=== Step 2: Naming Conventions
+
+==== Variables and Functions
+- Use **snake_case** for variable and function names.
+- Keep names descriptive and meaningful.
+
+[source,python]
+----
+# Correct
+policy_id = "POL12345"
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Incorrect
+PolicyId = "POL12345"
+def CalculatePremium(Base, RiskFactor):
+    return Base * RiskFactor
+----
+
+==== Constants
+- Use **ALL_CAPS** for constants.
+- Define constants at the top of the file or in a separate configuration file.
+
+[source,python]
+----
+# Correct
+MAX_PREMIUM_LIMIT = 10000
+DEFAULT_POLICY_TYPE = "Life"
+
+# Incorrect
+maxPremiumLimit = 10000
+defaultPolicyType = "Life"
+----
+
+==== Classes
+- Use **CamelCase** for class names.
+
+[source,python]
+----
+# Correct
+class InsurancePolicy:
+    def __init__(self, policy_id, premium):
+        self.policy_id = policy_id
+        self.premium = premium
+
+# Incorrect
+class insurance_policy:
+    def __init__(self, policy_id, premium):
+        self.policy_id = policy_id
+        self.premium = premium
+----
+
+==== Methods
+- Use **snake_case** for method names within classes.
+
+[source,python]
+----
+# Correct
+class InsurancePolicy:
+    def calculate_premium(self, base, risk_factor):
+        return base * risk_factor
+
+# Incorrect
+class InsurancePolicy:
+    def CalculatePremium(self, Base, RiskFactor):
+        return Base * RiskFactor
+----
+
+==== Modules and Packages
+- Use **short_snake_case** for module and package names.
+
+[source,python]
+----
+# Correct
+import policy_calculator
+
+# Incorrect
+import PolicyCalculator
+----
+
+==== Exceptions
+- Use **CamelCase** for exception class names, and suffix them with "Error."
+
+[source,python]
+----
+# Correct
+class PolicyValidationError(Exception):
+    pass
+
+# Incorrect
+class policy_validation_error(Exception):
+    pass
+----
+
+=== Step 3: PEP8 Guidelines
+
+==== Indentation
+- Use **4 spaces per indentation level**.
+
+[source,python]
+----
+# Correct
+if premium > 1000:
+    print("High premium")
+
+# Incorrect
+if premium > 1000:
+	print("High premium")  # Tab instead of spaces
+----
+
+==== Line Length
+- Limit lines to **79 characters**.
+
+[source,python]
+----
+# Correct
+policy_description = (
+    "This policy provides comprehensive coverage for individuals "
+    "aged between 25 and 50 years."
+)
+
+# Incorrect
+policy_description = "This policy provides comprehensive coverage for individuals aged between 25 and 50 years."
+----
+
+==== Spacing
+- Add a single space around operators and after commas.
+
+[source,python]
+----
+# Correct
+premium = base_premium * risk_factor
+
+# Incorrect
+premium=base_premium*risk_factor
+----
+
+==== Imports
+- Imports should be grouped as:
+  1. Standard library imports.
+  2. Related third-party imports.
+  3. Local application/library imports.
+- Each group should be separated by a blank line.
+
+[source,python]
+----
+# Correct
+import os
+import sys
+
+import pytest
+
+from policy_calculator import calculate_premium
+
+# Incorrect
+import pytest, os, sys
+from policy_calculator import calculate_premium
+----
+
+==== Comments
+- Use comments to explain **why**, not **what**.
+- Use **#** for inline comments and block comments.
+
+[source,python]
+----
+# Correct
+# Calculate premium based on base amount and risk factor.
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Incorrect
+# This function calculates the premium.
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+----
+
+=== Step 4: Real-World Example
+
+[source,python]
+----
+# Constants
+MAX_PREMIUM_LIMIT = 10000
+DEFAULT_POLICY_TYPE = "Life"
+
+# Class definition
+class InsurancePolicy:
+    def __init__(self, policy_id, policy_type, premium):
+        self.policy_id = policy_id
+        self.policy_type = policy_type
+        self.premium = premium
+
+    def is_high_premium(self):
+        return self.premium > MAX_PREMIUM_LIMIT
+
+# Function to calculate premium
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Main workflow
+if __name__ == "__main__":
+    policy = InsurancePolicy("POL12345", DEFAULT_POLICY_TYPE, 12000)
+    print(f"Policy ID: {policy.policy_id}, High Premium: {policy.is_high_premium()}")
+----
+
+=== Step 5: Summary
+
+- Follow PEP8 for consistent, clean, and readable Python code.
+- Use descriptive names for variables, functions, and classes.
+- Group and format imports properly.
+- Apply spacing, indentation, and line length guidelines effectively.
+- Use comments to clarify intent and avoid redundant explanations.
+
+
+== Lab: Understanding Data Types, Sequence Types, and PEP 8 Standards
+
+=== Objective
+Introduce beginners to Python programming with a focus on:
+
+1. Data types and their usage.
+2. Sequence types (list, tuple, string, dictionary, and set).
+3. Writing clean, readable code following PEP 8 standards.
+4. Comparison of Python operations with SAS equivalents for better context.
+
+=== Step 1: Introduction to Data Types
+
+[source,python]
+----
+# Python has dynamic typing, meaning variables do not need explicit type declarations.
+# Common data types:
+
+# Integer
+age = 25  # Example of an integer
+
+# Float
+salary = 45750.75  # Example of a floating-point number
+
+# String
+name = "John Doe"  # Example of a string
+
+# Boolean
+is_employee = True  # Example of a boolean value
+
+print("Age:", type(age))
+print("Salary:", type(salary))
+print("Name:", type(name))
+print("Is Employee:", type(is_employee))
+----
+
+=== SAS Comparison: Data Types
+
+[source,sas]
+----
+/* SAS uses explicit typing for variables within data steps. */
+
+DATA example;
+    age = 25; /* Numeric variable */
+    salary = 45750.75; /* Numeric variable */
+    name = "John Doe"; /* Character variable */
+    is_employee = 1; /* Numeric, often 0/1 for boolean-like operations */
+RUN;
+
+PROC PRINT DATA=example;
+RUN;
+----
+
+=== Step 2: Sequence Types
+
+[source,python]
+----
+# Python's sequence types are powerful and versatile.
+
+# List: Mutable sequence of items
+fruits = ["Apple", "Banana", "Cherry"]
+fruits.append("Date")  # Add an item
+
+# Tuple: Immutable sequence of items
+coordinates = (34.0522, -118.2437)  # Latitude and longitude
+
+# String: Immutable sequence of characters
+message = "Hello, World!"
+substring = message[0:5]  # Slicing strings
+
+# Set: Unordered collection of unique items
+unique_fruits = set(fruits)
+
+# Dictionary: Key-value pairs
+employee = {"name": "John Doe", "age": 25, "salary": 45750.75}
+
+print("List:", fruits)
+print("Tuple:", coordinates)
+print("Substring:", substring)
+print("Set:", unique_fruits)
+print("Dictionary:", employee)
+----
+
+=== SAS Comparison: Sequence Types
+
+[source,sas]
+----
+/* SAS does not natively support sequence types like Python but achieves similar results with arrays or tables. */
+
+/* Array in SAS */
+DATA array_example;
+    ARRAY fruits[4] $12 _TEMPORARY_ ("Apple", "Banana", "Cherry", "Date");
+    DO i = 1 TO DIM(fruits);
+        PUT fruits[i];
+    END;
+RUN;
+
+/* Key-value structures in SAS can be approximated with hash objects. */
+DATA _NULL_;
+    DECLARE HASH employee();
+    employee.DEFINEKEY("key");
+    employee.DEFINEVALUE("value");
+    employee.DEFINEDONE();
+    employee.ADD(KEY:"name", VALUE:"John Doe");
+    employee.ADD(KEY:"age", VALUE:25);
+    employee.ADD(KEY:"salary", VALUE:45750.75);
+    employee.OUTPUT(DATASET:"employee_data");
+RUN;
+
+PROC PRINT DATA=employee_data;
+RUN;
+----
+
+=== Step 3: Writing Clean Code with PEP 8
+
+[source,python]
+----
+# Following PEP 8 ensures your Python code is readable and maintainable.
+
+# Example of PEP 8-compliant code:
+def calculate_bonus(salary, percentage):
+    """Calculate bonus based on salary and percentage."""
+    bonus = salary * (percentage / 100)
+    return bonus
+
+# Call the function
+employee_bonus = calculate_bonus(salary=45750.75, percentage=10)
+print(f"Bonus: ${employee_bonus:.2f}")
+
+# Common PEP 8 Practices:
+# 1. Use 4 spaces per indentation level.
+# 2. Limit lines to 79 characters.
+# 3. Use descriptive variable names.
+# 4. Leave a blank line between functions or class definitions.
+----
+
+=== SAS Comparison: Code Readability
+
+[source,sas]
+----
+/* SAS emphasizes proper indentation for readability, although it does not have strict style guides like PEP 8. */
+
+%MACRO calculate_bonus(salary, percentage);
+    %LET bonus = %SYSEVALF(&salary * (&percentage / 100));
+    %PUT Bonus: &bonus;
+%MEND;
+
+%calculate_bonus(45750.75, 10);
+----
+
+=== Step 4: Summary
+
+- Python's dynamic typing makes it easy to start with data types.
+- Sequence types provide powerful tools for organizing and manipulating data.
+- PEP 8 guidelines help ensure your code is clean, readable, and maintainable.
+- SAS provides comparable functionality but often requires explicit setups, such as arrays or hash objects, to achieve similar results.
+
+
+
+== Lab: Looping, Branching, and Advanced Sequence Operations in Python 
+
+=== Objective
+Introduce beginners to Python with examples focused on:
+
+1. Looping constructs (for, while, etc.).
+2. Branching (if-else, nested conditions).
+3. Advanced sequence operations (list comprehensions, dictionary comprehensions, and set operations).
+4. Comparison of Python operations with SAS equivalents for an insurance domain.
+
+=== Insurance Domain Scenario
+Analyze insurance claims data and apply Python operations for:
+
+- Filtering high-risk claims.
+- Calculating claim totals.
+- Identifying unique insurance categories.
+
+=== Step 1: Looping in Python
+
+[source,python]
+----
+# Example: Calculating total claims using a loop
+claims = [1500, 2000, 3000, 4500, 5000]
+
+# For loop to calculate total
+total_claims = 0
+for claim in claims:
+    total_claims += claim
+
+print("Total Claims:", total_claims)
+
+# While loop to find the first claim exceeding a threshold
+threshold = 4000
+index = 0
+while index < len(claims):
+    if claims[index] > threshold:
+        print("First high claim:", claims[index])
+        break
+    index += 1
+
+# Nested loop to calculate claim totals for different risk levels
+risk_levels = {"High": [12000, 15000], "Medium": [5000, 8000], "Low": [1500, 2000]}
+total_per_risk = {}
+for risk, amounts in risk_levels.items():
+    total_per_risk[risk] = sum(amounts)
+
+print("Total per risk level:", total_per_risk)
+----
+
+=== SAS Comparison: Looping
+
+[source,sas]
+----
+/* SAS uses DO loops for similar operations. */
+
+DATA _NULL_;
+    ARRAY claims[5] (1500 2000 3000 4500 5000);
+    total_claims = 0;
+    DO i = 1 TO DIM(claims);
+        total_claims + claims[i];
+    END;
+    PUT "Total Claims: " total_claims;
+
+    /* Find first claim exceeding threshold */
+    DO i = 1 TO DIM(claims);
+        IF claims[i] > 4000 THEN DO;
+            PUT "First high claim: " claims[i];
+            LEAVE;
+        END;
+    END;
+
+    /* Nested loop for risk levels */
+    ARRAY high[2] (12000 15000);
+    ARRAY medium[2] (5000 8000);
+    ARRAY low[2] (1500 2000);
+    total_high = 0; total_medium = 0; total_low = 0;
+
+    DO i = 1 TO DIM(high);
+        total_high + high[i];
+    END;
+
+    DO i = 1 TO DIM(medium);
+        total_medium + medium[i];
+    END;
+
+    DO i = 1 TO DIM(low);
+        total_low + low[i];
+    END;
+
+    PUT "Total High Risk: " total_high;
+    PUT "Total Medium Risk: " total_medium;
+    PUT "Total Low Risk: " total_low;
+RUN;
+----
+
+=== Step 2: Branching in Python
+
+[source,python]
+----
+# Example: Classifying claims based on amount
+claim_amounts = [1500, 2000, 5000, 12000, 800]
+
+for claim in claim_amounts:
+    if claim > 10000:
+        print(f"Claim ${claim} is categorized as High Risk.")
+    elif claim > 3000:
+        print(f"Claim ${claim} is categorized as Medium Risk.")
+    else:
+        print(f"Claim ${claim} is categorized as Low Risk.")
+
+# Nested branching for additional categorization
+for claim in claim_amounts:
+    if claim > 10000:
+        if claim > 20000:
+            print(f"Claim ${claim} is categorized as Critical High Risk.")
+        else:
+            print(f"Claim ${claim} is categorized as High Risk.")
+    elif claim > 3000:
+        print(f"Claim ${claim} is categorized as Medium Risk.")
+    else:
+        print(f"Claim ${claim} is categorized as Low Risk.")
+----
+
+=== SAS Comparison: Branching
+
+[source,sas]
+----
+/* SAS uses IF-THEN-ELSE for similar branching logic. */
+
+DATA claims_classification;
+    INPUT claim_amount;
+    IF claim_amount > 10000 THEN DO;
+        IF claim_amount > 20000 THEN risk = "Critical High Risk";
+        ELSE risk = "High Risk";
+    END;
+    ELSE IF claim_amount > 3000 THEN risk = "Medium Risk";
+    ELSE risk = "Low Risk";
+    DATALINES;
+    1500
+    2000
+    5000
+    12000
+    800
+    ;
+RUN;
+
+PROC PRINT DATA=claims_classification;
+RUN;
+----
+
+=== Step 3: Advanced Sequence Operations
+
+==== List Comprehensions
+
+[source,python]
+----
+# Example: Identify high-risk claims with list comprehension
+claims = [1500, 2000, 5000, 12000, 800]
+high_risk_claims = [claim for claim in claims if claim > 10000]
+print("High Risk Claims:", high_risk_claims)
+
+# Nested comprehension for risk classification
+risk_classification = [
+    "Critical High Risk" if claim > 20000 else "High Risk" if claim > 10000 else "Medium Risk" if claim > 3000 else "Low Risk"
+    for claim in claims
+]
+print("Risk Classification:", risk_classification)
+----
+
+==== Dictionary Comprehensions
+
+[source,python]
+----
+# Example: Map claim IDs to their categories
+claim_data = {
+    101: 1500,
+    102: 2000,
+    103: 5000,
+    104: 12000,
+    105: 800,
+}
+
+claim_categories = {
+    claim_id: "Critical High Risk" if amount > 20000 else "High Risk" if amount > 10000 else "Medium Risk" if amount > 3000 else "Low Risk"
+    for claim_id, amount in claim_data.items()
+}
+print("Claim Categories:", claim_categories)
+
+# Nested dictionary for claim details
+claim_details = {
+    claim_id: {"amount": amount, "risk": "High Risk" if amount > 10000 else "Medium Risk" if amount > 3000 else "Low Risk"}
+    for claim_id, amount in claim_data.items()
+}
+print("Claim Details:", claim_details)
+----
+
+==== Set Operations
+
+[source,python]
+----
+# Example: Identify unique categories of claims
+categories = ["Low Risk", "Medium Risk", "High Risk", "Critical High Risk", "Low Risk"]
+unique_categories = set(categories)
+print("Unique Categories:", unique_categories)
+
+# Find common categories across different datasets
+dataset1 = {"Low Risk", "Medium Risk"}
+dataset2 = {"Medium Risk", "High Risk"}
+common_categories = dataset1.intersection(dataset2)
+print("Common Categories:", common_categories)
+----
+
+=== SAS Comparison: Advanced Operations
+
+[source,sas]
+----
+/* List comprehensions can be simulated with WHERE clauses or arrays. */
+
+DATA high_risk_claims;
+    SET claims_classification;
+    WHERE risk = "High Risk";
+RUN;
+
+/* Nested logic for classification */
+PROC FORMAT;
+    VALUE riskfmt
+        0 - 3000 = "Low Risk"
+        3001 - 10000 = "Medium Risk"
+        10001 - 20000 = "High Risk"
+        20001 - HIGH = "Critical High Risk";
+RUN;
+
+DATA claims_mapped;
+    SET claims_classification;
+    risk_category = PUT(claim_amount, riskfmt.);
+RUN;
+
+PROC PRINT DATA=claims_mapped;
+RUN;
+
+/* Set operations are not directly supported but can be approximated using PROC SORT and NODUPKEY. */
+DATA unique_categories;
+    SET claims_classification;
+    BY risk;
+    IF FIRST.risk;
+RUN;
+
+PROC PRINT DATA=unique_categories;
+RUN;
+----
+
+=== Step 4: Summary
+
+- Python's looping and branching constructs provide flexibility for processing data efficiently.
+- Advanced sequence operations like comprehensions make Python ideal for data manipulation.
+- SAS achieves similar results but often requires more explicit configuration.
+- Using examples from the insurance domain helps solidify these programming concepts for real-world applications.
+
+
+== Lab: Detailed String Operations in Python
+
+=== Objective
+Introduce beginners to Python string operations by:
+
+1. Exploring basic and advanced string functions.
+2. Writing clean and efficient string manipulation code.
+3. Comparing Python string operations with SAS equivalents.
+
+=== Scenario: Insurance Policy Management
+Analyze and manipulate strings representing insurance policy data, including policy IDs, holder names, and descriptions.
+
+=== Step 1: Basic String Operations
+
+[source,python]
+----
+# Example data
+policy_id = "POL12345"
+policy_holder = "John Doe"
+description = "Premium insurance policy for vehicle protection."
+
+# Length of strings
+print("Length of Policy ID:", len(policy_id))
+print("Length of Description:", len(description))
+
+# String indexing and slicing
+print("First character of Policy ID:", policy_id[0])
+print("Last character of Policy ID:", policy_id[-1])
+print("Slice of Description (0-7):", description[0:7])
+
+# String concatenation
+full_name = policy_holder.split()[0] + " " + policy_holder.split()[1]
+print("Full Name:", full_name)
+
+# String repetition
+separator = "-" * 10
+print("Separator:", separator)
+----
+
+=== SAS Comparison: Basic String Operations
+
+[source,sas]
+----
+/* SAS uses functions like LENGTH, SUBSTR, and CATX for string operations. */
+DATA policy_example;
+    policy_id = "POL12345";
+    policy_holder = "John Doe";
+    description = "Premium insurance policy for vehicle protection.";
+
+    /* Length of strings */
+    policy_id_length = LENGTH(policy_id);
+    description_length = LENGTH(description);
+
+    /* Substring operations */
+    first_char = SUBSTR(policy_id, 1, 1);
+    last_char = SUBSTR(policy_id, LENGTH(policy_id), 1);
+    slice_desc = SUBSTR(description, 1, 7);
+
+    /* Concatenation */
+    full_name = CATX(" ", SCAN(policy_holder, 1), SCAN(policy_holder, 2));
+
+    /* Repetition */
+    separator = REPEAT("-", 10);
+RUN;
+
+PROC PRINT DATA=policy_example;
+RUN;
+----
+
+=== Step 2: Advanced String Operations
+
+==== String Methods
+
+[source,python]
+----
+# String case transformations
+print("Uppercase Policy Holder:", policy_holder.upper())
+print("Lowercase Description:", description.lower())
+
+# String replacement
+updated_description = description.replace("vehicle", "car")
+print("Updated Description:", updated_description)
+
+# String splitting and joining
+words = description.split()
+print("Words in Description:", words)
+joined_description = " ".join(words)
+print("Joined Description:", joined_description)
+
+# Checking string properties
+print("Is Policy ID alphanumeric?:", policy_id.isalnum())
+print("Does Description start with 'Premium'?:", description.startswith("Premium"))
+print("Does Description end with 'protection.'?:", description.endswith("protection."))
+----
+
+==== SAS Comparison: Advanced String Operations
+
+[source,sas]
+----
+/* SAS provides functions like UPCASE, LOWCASE, TRANWRD, SCAN, and INDEX for similar operations. */
+DATA advanced_string_example;
+    policy_id = "POL12345";
+    policy_holder = "John Doe";
+    description = "Premium insurance policy for vehicle protection.";
+
+    /* Case transformations */
+    uppercase_holder = UPCASE(policy_holder);
+    lowercase_desc = LOWCASE(description);
+
+    /* Replacement */
+    updated_description = TRANWRD(description, "vehicle", "car");
+
+    /* Splitting and joining */
+    first_word = SCAN(description, 1, " ");
+    second_word = SCAN(description, 2, " ");
+    joined_desc = CATX(" ", first_word, second_word);
+
+    /* Checking properties */
+    starts_with_premium = INDEX(description, "Premium") = 1;
+    ends_with_protection = SUBSTR(description, LENGTH(description) - 9) = "protection.";
+RUN;
+
+PROC PRINT DATA=advanced_string_example;
+RUN;
+----
+
+=== Step 3: Regular Expressions for String Operations
+
+[source,python]
+----
+import re
+
+# Find all numeric parts in a string
+policy_number = re.findall(r"\d+", policy_id)
+print("Policy Number Extracted:", policy_number)
+
+# Validate policy format
+is_valid_policy = bool(re.match(r"POL\d{5}$", policy_id))
+print("Is Policy ID Valid?:", is_valid_policy)
+
+# Replace multiple spaces with a single space
+messy_description = "Premium   insurance   policy    for  vehicle   protection."
+cleaned_description = re.sub(r"\s+", " ", messy_description)
+print("Cleaned Description:", cleaned_description)
+----
+
+==== SAS Comparison: Regular Expressions
+
+[source,sas]
+----
+/* SAS supports PRXMATCH and PRXCHANGE for regular expressions. */
+DATA regex_example;
+    policy_id = "POL12345";
+    messy_description = "Premium   insurance   policy    for  vehicle   protection.";
+
+    /* Find numeric parts */
+    IF PRXMATCH("/POL\d{5}/", policy_id) THEN valid_policy = 1;
+    ELSE valid_policy = 0;
+
+    /* Replace multiple spaces */
+    cleaned_description = PRXCHANGE("s/\s+/ /", -1, messy_description);
+RUN;
+
+PROC PRINT DATA=regex_example;
+RUN;
+----
+
+=== Step 4: Summary
+
+- Python provides versatile tools for string manipulation, including basic and advanced operations.
+- Regular expressions add flexibility for pattern matching and validation.
+- SAS offers similar functionality but often requires explicit function calls for operations.
+- Using insurance-related examples helps contextualize these operations for practical use.
+
+
+== Lab: Comprehensive Exception Handling in Python (Insurance Domain)
+
+=== Objective
+Provide a detailed overview of Python's exception handling mechanism by:
+
+1. Introducing core exception handling concepts.
+2. Demonstrating common exception types and custom exceptions.
+3. Highlighting advanced techniques like logging and re-raising exceptions.
+4. Comparing Python's approach with SAS error-handling techniques.
+
+=== Scenario: Insurance Policy and Claims Validation
+Handle exceptions during data processing, validation of claims, and file handling in the context of an insurance system.
+
+=== Step 1: Basics of Exception Handling
+
+[source,python]
+----
+# Example: Basic exception handling during claim amount processing
+claims = [2000, 4500, "invalid", 3000, -1000]
+
+for claim in claims:
+    try:
+        # Ensure claim is a valid positive number
+        if not isinstance(claim, (int, float)):
+            raise ValueError(f"Claim must be a number. Invalid claim value provided: {claim}")
+        if claim <= 0:
+            raise ValueError(f"Claim value must be positive. Provided: {claim}")
+        print(f"Processed claim: ${claim}")
+    except ValueError as e:
+        print(f"Error: {e}")
+----
+
+=== SAS Comparison: Error Handling
+
+[source,sas]
+----
+/* SAS uses conditional checks to handle errors. */
+DATA claims_handling;
+    INPUT claim_amount : $10.;
+    IF NOT (claim_amount > 0) THEN DO;
+        PUT "Error: Invalid or negative claim value " claim_amount;
+    END;
+    ELSE PUT "Processed claim: " claim_amount;
+    DATALINES;
+    2000
+    4500
+    invalid
+    3000
+    -1000
+    ;
+RUN;
+----
+
+=== Step 2: Handling Multiple Exceptions
+
+[source,python]
+----
+# Example: File handling with multiple exception types
+try:
+    with open("policy_data.txt", "r", encoding="utf-8") as file:
+        data = file.read()
+        print("File content:", data)
+except FileNotFoundError:
+    print("Error: File not found.")
+except PermissionError:
+    print("Error: Permission denied.")
+except UnicodeDecodeError:
+    print("Error: Unable to decode the file with the specified encoding.")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+----
+
+=== SAS Comparison: File Handling
+
+[source,sas]
+----
+/* SAS uses conditional checks for file existence and permissions. */
+FILENAME policy_data "policy_data.txt";
+DATA _NULL_;
+    INFILE policy_data;
+    INPUT;
+    FILE_EXISTS = (FILEREF("policy_data") = 0);
+    IF NOT FILE_EXISTS THEN PUT "Error: File not found.";
+RUN;
+----
+
+=== Step 3: Custom Exceptions
+
+[source,python]
+----
+# Define a custom exception for claim validation
+class ClaimValidationError(Exception):
+    pass
+
+# Example: Using the custom exception
+claims = [2000, 4500, "invalid", 3000, -1000]
+
+def validate_claim(claim):
+    if not isinstance(claim, (int, float)):
+        raise ClaimValidationError(f"Claim must be a number. Invalid claim value provided: {claim}")
+    if claim <= 0:
+        raise ClaimValidationError(f"Claim value must be positive. Provided: {claim}")
+
+for claim in claims:
+    try:
+        validate_claim(claim)
+        print(f"Valid claim: ${claim}")
+    except ClaimValidationError as e:
+        print(f"Claim Validation Error: {e}")
+----
+
+=== Step 4: Advanced Techniques
+
+==== Logging Exceptions
+
+[source,python]
+----
+import logging
+
+# Configure logging
+log_file_path = "errors.log"  # Configurable log file path
+logging.basicConfig(level=logging.ERROR, filename=log_file_path)
+
+# Example: Logging exceptions
+for claim in claims:
+    try:
+        validate_claim(claim)
+        print(f"Valid claim: ${claim}")
+    except ClaimValidationError as e:
+        logging.error(f"Error processing claim {claim}: {e}")
+        print(f"Error logged: {e}")
+----
+
+==== Re-raising Exceptions
+
+[source,python]
+----
+# Example: Re-raising exceptions after logging
+try:
+    validate_claim("invalid")
+except ClaimValidationError as e:
+    logging.error(f"Critical error: {e}")
+    raise
+----
+
+=== SAS Comparison: Logging and Advanced Handling
+
+[source,sas]
+----
+/* SAS does not have direct logging but uses PUT statements for error tracking. */
+DATA _NULL_;
+    FILE LOG;
+    PUT "Error: Invalid claim value.";
+RUN;
+----
+
+=== Step 5: Ensuring Cleanup with `finally`
+
+[source,python]
+----
+# Example: Ensuring cleanup with `finally`
+try:
+    with open("policy_data.txt", "r", encoding="utf-8") as file:
+        data = file.read()
+        print("File content:", data)
+except FileNotFoundError:
+    print("Error: File not found.")
+----
+
+=== Step 6: Summary
+
+- Python's exception handling provides flexibility through `try`, `except`, `else`, and `finally` blocks.
+- Custom exceptions enable domain-specific error handling.
+- Advanced techniques like logging and re-raising improve robustness.
+- SAS relies on conditional checks and PUT statements for error handling, offering limited flexibility compared to Python.
+
+
+== Lab: Advanced DateTime Operations in Python 
+
+=== Objective
+Introduce beginners to Python's `datetime` module through a detailed exploration of:
+
+1. Core `datetime` classes (`datetime`, `date`, `time`, `timedelta`, `timezone`).
+2. Operations like parsing, formatting, and calculations.
+3. Handling time zones.
+4. Comparing Python operations with SAS equivalents.
+
+=== Scenario: Insurance Policy and Claims Processing
+Analyze and manipulate date and time data related to insurance policy issuance, claims submissions, and premium due dates.
+
+=== Step 1: Understanding Core Classes
+
+==== `datetime.date` Class
+
+[source,python]
+----
+from datetime import date
+
+# Example: Policy issuance date
+policy_issued = date(2023, 7, 15)
+print("Policy Issued Date:", policy_issued)
+
+# Accessing components
+print("Year:", policy_issued.year)
+print("Month:", policy_issued.month)
+print("Day:", policy_issued.day)
+
+# Calculating days since policy issuance
+today = date.today()
+days_since_issue = (today - policy_issued).days
+print("Days Since Policy Issuance:", days_since_issue)
+----
+
+==== SAS Comparison: `date`
+
+[source,sas]
+----
+/* SAS uses numeric variables with DATE format for date operations. */
+DATA policy_dates;
+    policy_issued = "15JUL2023"D;
+    today = TODAY();
+    days_since_issue = today - policy_issued;
+    FORMAT policy_issued DATE9. today DATE9.;
+RUN;
+
+PROC PRINT DATA=policy_dates;
+RUN;
+----
+
+==== `datetime.time` Class
+
+[source,python]
+----
+from datetime import time
+
+# Example: Claims submission time
+submission_time = time(14, 30, 0)  # 2:30 PM
+print("Submission Time:", submission_time)
+
+# Accessing components
+print("Hour:", submission_time.hour)
+print("Minute:", submission_time.minute)
+print("Second:", submission_time.second)
+----
+
+==== SAS Comparison: `time`
+
+[source,sas]
+----
+/* SAS uses numeric variables with TIME format for time operations. */
+DATA submission_times;
+    submission_time = "14:30:00"T;
+    FORMAT submission_time TIME8.;
+RUN;
+
+PROC PRINT DATA=submission_times;
+RUN;
+----
+
+==== `datetime.datetime` Class
+
+[source,python]
+----
+from datetime import datetime
+
+# Example: Policy creation timestamp
+policy_creation = datetime(2023, 7, 15, 14, 30, 0)
+print("Policy Creation Timestamp:", policy_creation)
+
+# Accessing components
+print("Year:", policy_creation.year)
+print("Hour:", policy_creation.hour)
+print("Second:", policy_creation.second)
+
+# Difference between two datetime objects
+claim_submission = datetime(2023, 7, 20, 10, 15, 0)
+time_to_submit = claim_submission - policy_creation
+print("Time to Submit Claim:", time_to_submit)
+----
+
+==== SAS Comparison: `datetime`
+
+[source,sas]
+----
+/* SAS combines date and time using the DATETIME format. */
+DATA datetime_example;
+    policy_creation = DHMS("15JUL2023"D, 14, 30, 0);
+    claim_submission = DHMS("20JUL2023"D, 10, 15, 0);
+    time_to_submit = claim_submission - policy_creation;
+    FORMAT policy_creation DATETIME20. claim_submission DATETIME20.;
+RUN;
+
+PROC PRINT DATA=datetime_example;
+RUN;
+----
+
+=== Step 2: Advanced Operations with `timedelta`
+
+[source,python]
+----
+from datetime import timedelta
+
+# Adding a grace period to premium due date
+premium_due = policy_issued + timedelta(days=30)
+grace_period_end = premium_due + timedelta(days=15)
+print("Premium Due Date:", premium_due)
+print("Grace Period End Date:", grace_period_end)
+
+# Calculating time differences
+policy_duration = timedelta(days=365)
+expiry_date = policy_issued + policy_duration
+print("Policy Expiry Date:", expiry_date)
+----
+
+==== SAS Comparison: `timedelta`
+
+[source,sas]
+----
+/* SAS uses direct date arithmetic for timedelta operations. */
+DATA timedelta_example;
+    policy_issued = "15JUL2023"D;
+    premium_due = policy_issued + 30;
+    grace_period_end = premium_due + 15;
+    policy_expiry = policy_issued + 365;
+    FORMAT policy_issued premium_due grace_period_end policy_expiry DATE9.;
+RUN;
+
+PROC PRINT DATA=timedelta_example;
+RUN;
+----
+
+=== Step 3: Handling Time Zones
+
+[source,python]
+----
+from datetime import timezone, timedelta
+
+# Example: Policy issuance in a specific timezone
+policy_timezone = timezone(timedelta(hours=-5))  # UTC-5
+policy_creation_utc = datetime(2023, 7, 15, 14, 30, 0, tzinfo=policy_timezone)
+print("Policy Creation with Timezone:", policy_creation_utc)
+
+# Converting to UTC
+policy_creation_converted = policy_creation_utc.astimezone(timezone.utc)
+print("Policy Creation in UTC:", policy_creation_converted)
+----
+
+==== SAS Comparison: Time Zones
+
+[source,sas]
+----
+/* SAS does not directly support time zones; custom calculations are required. */
+DATA timezone_example;
+    policy_creation = DHMS("15JUL2023"D, 14, 30, 0) - 5*3600; /* UTC-5 */
+    FORMAT policy_creation DATETIME20.;
+RUN;
+
+PROC PRINT DATA=timezone_example;
+RUN;
+----
+
+=== Step 4: Parsing and Formatting Dates
+
+[source,python]
+----
+# Parsing strings to datetime objects
+date_string = "2023-07-15 14:30:00"
+parsed_date = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
+print("Parsed Date:", parsed_date)
+
+# Formatting datetime objects to strings
+formatted_date = parsed_date.strftime("%A, %d %B %Y %I:%M %p")
+print("Formatted Date:", formatted_date)
+----
+
+==== SAS Comparison: Parsing and Formatting
+
+[source,sas]
+----
+/* SAS uses INPUT and PUT functions for parsing and formatting. */
+DATA parse_format_example;
+    date_string = "15JUL2023 14:30:00";
+    parsed_date = INPUT(date_string, DATETIME20.);
+    formatted_date = PUT(parsed_date, WORDDATX20.);
+RUN;
+
+PROC PRINT DATA=parse_format_example;
+RUN;
+----
+
+=== Step 5: Summary
+
+- Python's `datetime` module provides extensive support for date and time operations.
+- Key classes include `date`, `time`, `datetime`, `timedelta`, and `timezone`.
+- Operations like parsing, formatting, and time zone handling are intuitive.
+- SAS provides comparable functionality through formats and date/time functions but lacks direct support for time zones.
+
+
+== Lab: Comprehensive Guide to Python Functions 
+
+=== Objective
+Explore all aspects of Python functions by:
+
+1. Understanding function definitions and types.
+2. Exploring arguments, return values, and scope.
+3. Demonstrating advanced topics like decorators, lambda functions, and recursion.
+4. Applying these concepts in a real-world insurance domain scenario.
+
+=== Scenario: Insurance Policy and Claims Processing
+Develop a Python-based system to process insurance claims, calculate premiums, and validate policy details using functions.
+
+=== Step 1: Basics of Function Definition
+
+[source,python]
+----
+# Example: Function to calculate monthly premium
+
+def calculate_premium(base_amount, risk_factor):
+    """
+    Calculate the monthly premium based on a base amount and risk factor.
+    Arguments:
+        base_amount (float): The base premium amount.
+        risk_factor (float): The risk multiplier (e.g., 1.2 for medium risk).
+    Returns:
+        float: The calculated monthly premium.
+    """
+    return base_amount * risk_factor
+
+# Function call
+premium = calculate_premium(500, 1.5)
+print(f"Calculated Premium: ${premium:.2f}")
+----
+
+=== Step 2: Positional and Keyword Arguments
+
+[source,python]
+----
+# Example: Function to validate a policy
+
+def validate_policy(policy_id, policy_holder, *, active=True):
+    """
+    Validate the details of an insurance policy.
+    Arguments:
+        policy_id (str): The policy identifier.
+        policy_holder (str): The policyholder's name.
+        active (bool): Whether the policy is active (default: True).
+    Returns:
+        str: Validation result message.
+    """
+    if not policy_id or not policy_holder:
+        return "Policy validation failed: Missing details."
+    if not active:
+        return "Policy validation failed: Policy is inactive."
+    return "Policy validation successful."
+
+# Function calls
+print(validate_policy("POL12345", "John Doe", active=True))
+print(validate_policy("POL12345", "", active=False))
+----
+
+=== Step 3: Default and Variable-Length Arguments
+
+[source,python]
+----
+# Example: Function to calculate total claims with variable-length arguments
+
+def calculate_total_claims(base_claim, *additional_claims, **adjustments):
+    """
+    Calculate the total claim amount, including adjustments.
+    Arguments:
+        base_claim (float): The base claim amount.
+        *additional_claims (float): Additional claims to include.
+        **adjustments (float): Adjustments to apply (e.g., discounts, penalties).
+    Returns:
+        float: The total claim amount after adjustments.
+    """
+    total = base_claim + sum(additional_claims)
+    for key, value in adjustments.items():
+        if key == "discount":
+            total -= value
+        elif key == "penalty":
+            total += value
+    return total
+
+# Function call
+print(calculate_total_claims(1000, 200, 300, discount=150, penalty=50))
+----
+
+=== Step 4: Scope and Closures
+
+[source,python]
+----
+# Example: Function demonstrating closures
+
+def policy_discount(discount_rate):
+    """
+    Create a function to calculate discounts for a given rate.
+    Arguments:
+        discount_rate (float): The discount rate as a percentage.
+    Returns:
+        function: A closure that calculates discounts.
+    """
+    def apply_discount(amount):
+        return amount - (amount * discount_rate / 100)
+    return apply_discount
+
+# Using the closure
+gold_policy_discount = policy_discount(20)  # 20% discount
+gold_policy_total = gold_policy_discount(1500)
+print(f"Gold Policy Total after Discount: ${gold_policy_total:.2f}")
+----
+
+=== Step 5: Lambda Functions
+
+[source,python]
+----
+# Example: Lambda function for quick claim approvals
+quick_approval = lambda claim_amount: claim_amount < 5000
+
+# Using the lambda function
+print("Claim Approved:" if quick_approval(4500) else "Claim Denied")
+print("Claim Approved:" if quick_approval(5500) else "Claim Denied")
+----
+
+=== Step 6: Decorators
+
+[source,python]
+----
+# Example: Decorator for logging function calls
+
+def log_function_call(func):
+    """
+    Decorator to log the details of a function call.
+    """
+    def wrapper(*args, **kwargs):
+        print(f"Calling function '{func.__name__}' with arguments {args} and {kwargs}")
+        result = func(*args, **kwargs)
+        print(f"Function '{func.__name__}' returned {result}")
+        return result
+    return wrapper
+
+@log_function_call
+def calculate_claim(claim_amount, penalty=0):
+    return claim_amount + penalty
+
+# Function call
+calculate_claim(3000, penalty=100)
+----
+
+=== Step 7: Recursion
+
+[source,python]
+----
+# Example: Recursive function to calculate policy tier benefits
+
+def calculate_tier_benefits(tier, base_benefit=1000):
+    """
+    Recursively calculate benefits for multiple tiers.
+    Arguments:
+        tier (int): The tier level (e.g., 1 for basic, 3 for premium).
+        base_benefit (float): The base benefit amount.
+    Returns:
+        float: Total benefits for the tier.
+    """
+    if tier == 1:
+        return base_benefit
+    return base_benefit + calculate_tier_benefits(tier - 1, base_benefit * 1.5)
+
+# Function call
+print(f"Total Benefits for Tier 3: ${calculate_tier_benefits(3):.2f}")
+----
+
+=== Step 8: Summary
+
+- Functions in Python provide a powerful way to organize code for reusability and clarity.
+- Advanced features like closures, decorators, and recursion enable flexible and concise solutions.
+- The insurance domain use case highlights practical applications of these concepts.
+
+
+== Lab: Mastering Lambda Functions in Python (Insurance Domain)
+
+=== Objective
+Provide a comprehensive guide to Python lambda functions by:
+
+1. Understanding lambda syntax and use cases.
+2. Exploring advanced operations with `map`, `filter`, `reduce`, and `sorted`.
+3. Applying these concepts to an insurance domain case study.
+
+=== Scenario: Insurance Policy and Claims Processing
+Use lambda functions to process policy data, calculate claims, and filter policies based on risk and premium levels.
+
+=== Step 1: Introduction to Lambda Functions
+
+[source,python]
+----
+# Example: Basic lambda function to calculate premium multiplier
+premium_multiplier = lambda risk_factor: risk_factor * 1.1
+
+# Using the lambda function
+print(f"Premium Multiplier for Risk Factor 1.2: {premium_multiplier(1.2):.2f}")
+print(f"Premium Multiplier for Risk Factor 1.5: {premium_multiplier(1.5):.2f}")
+----
+
+=== Step 2: Using `map` for Data Transformation
+
+[source,python]
+----
+# Example: Applying `map` to calculate premiums for multiple policies
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+# Use map with a lambda function to calculate final premiums
+final_premiums = list(map(lambda base, risk: base * risk, base_premiums, risk_factors))
+
+print("Final Premiums:", final_premiums)
+----
+
+==== Explanation
+- `map` applies the lambda function to each element in the input iterables.
+- In this case, it multiplies each base premium by its corresponding risk factor.
+
+=== Step 3: Using `filter` for Data Filtering
+
+[source,python]
+----
+# Example: Filtering policies with premiums above a threshold
+threshold = 1500
+
+# Use filter with a lambda function to select policies above the threshold
+high_premium_policies = list(filter(lambda premium: premium > threshold, final_premiums))
+
+print("High Premium Policies:", high_premium_policies)
+----
+
+==== Explanation
+- `filter` applies the lambda function as a condition and returns elements that evaluate to `True`.
+- Here, it filters out premiums that are below or equal to the threshold.
+
+=== Step 4: Using `reduce` for Aggregation
+
+[source,python]
+----
+from functools import reduce
+
+# Example: Calculating the total premium using `reduce`
+total_premium = reduce(lambda x, y: x + y, final_premiums)
+
+print("Total Premium Collected:", total_premium)
+----
+
+==== Explanation
+- `reduce` applies the lambda function cumulatively to the items of the iterable.
+- Here, it sums up all premiums to calculate the total.
+
+=== Step 5: Using `sorted` with a Lambda Function
+
+[source,python]
+----
+# Example: Sorting policies by premium in descending order
+sorted_policies = sorted(final_premiums, key=lambda premium: premium, reverse=True)
+
+print("Policies Sorted by Premium (Descending):", sorted_policies)
+----
+
+==== Explanation
+- `sorted` uses the lambda function as a key to determine the sorting order.
+- The `reverse=True` argument sorts the values in descending order.
+
+=== Step 6: Combining `map`, `filter`, and `reduce`
+
+[source,python]
+----
+# Example: Complex pipeline for policy processing
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+# Step 1: Calculate final premiums
+final_premiums = list(map(lambda base, risk: base * risk, base_premiums, risk_factors))
+
+# Step 2: Filter high premiums
+high_premium_policies = list(filter(lambda premium: premium > 1500, final_premiums))
+
+# Step 3: Calculate total of high premiums
+total_high_premium = reduce(lambda x, y: x + y, high_premium_policies)
+
+print("High Premium Policies:", high_premium_policies)
+print("Total of High Premium Policies:", total_high_premium)
+----
+
+=== Step 7: Real-World Example: Claim Processing Pipeline
+
+[source,python]
+----
+# Example: Processing claim amounts with map, filter, and reduce
+claim_amounts = [500, 3000, 7000, 1500, 2000]
+
+# Step 1: Apply a risk multiplier to all claims
+adjusted_claims = list(map(lambda claim: claim * 1.2, claim_amounts))
+
+# Step 2: Filter claims above a threshold
+significant_claims = list(filter(lambda claim: claim > 3000, adjusted_claims))
+
+# Step 3: Calculate the total payout for significant claims
+total_payout = reduce(lambda x, y: x + y, significant_claims)
+
+print("Adjusted Claims:", adjusted_claims)
+print("Significant Claims:", significant_claims)
+print("Total Payout for Significant Claims:", total_payout)
+----
+
+=== Step 8: Summary
+
+- Lambda functions provide concise, inline solutions for single-use operations.
+- `map`, `filter`, `reduce`, and `sorted` enable efficient data transformations and aggregations.
+- Combining these tools creates powerful pipelines for real-world applications, as demonstrated in the insurance domain.
+
+
+== Lab: Mastering Lists and Tuples in Python 
+
+=== Objective
+Provide a detailed exploration of Python lists and tuples by:
+
+1. Understanding their definitions and differences.
+2. Demonstrating core functionalities with examples.
+3. Applying advanced operations.
+4. Using real-world scenarios in the insurance domain.
+
+=== Scenario: Insurance Policy and Claims Data Management
+Manage and manipulate insurance policies and claims data effectively using lists and tuples.
+
+=== Step 1: Introduction to Lists and Tuples
+
+==== List Basics
+
+[source,python]
+----
+# Example: List of policy IDs
+policy_ids = ["POL12345", "POL12346", "POL12347"]
+
+# Adding a new policy ID
+policy_ids.append("POL12348")
+
+# Removing a policy ID
+policy_ids.remove("POL12345")
+
+# Accessing elements
+print("First Policy ID:", policy_ids[0])
+print("All Policy IDs:", policy_ids)
+----
+
+==== Tuple Basics
+
+[source,python]
+----
+# Example: Tuple of risk categories
+risk_categories = ("Low", "Medium", "High")
+
+# Accessing elements
+print("First Risk Category:", risk_categories[0])
+print("All Risk Categories:", risk_categories)
+
+# Attempting to modify a tuple (this will raise an error)
+try:
+    risk_categories[0] = "Very Low"
+except TypeError as e:
+    print("Error:", e)
+----
+
+==== Key Differences
+- Lists are mutable; tuples are immutable.
+- Tuples use less memory and are faster for fixed data.
+
+=== Step 2: Common Operations on Lists
+
+[source,python]
+----
+# Example: Managing a list of claim amounts
+claim_amounts = [1500, 2500, 3500, 4500, 5500]
+
+# Adding claims
+claim_amounts.append(6500)
+
+# Inserting a claim at a specific position
+claim_amounts.insert(2, 3000)
+
+# Removing claims
+claim_amounts.pop(1)  # Removes the second claim
+
+# Sorting claims
+claim_amounts.sort(reverse=True)  # Descending order
+
+print("Claim Amounts:", claim_amounts)
+----
+
+=== Step 3: Common Operations on Tuples
+
+[source,python]
+----
+# Example: Tuple of policy types
+policy_types = ("Life", "Health", "Vehicle", "Property")
+
+# Counting occurrences
+print("Occurrences of 'Health':", policy_types.count("Health"))
+
+# Finding an index
+print("Index of 'Vehicle':", policy_types.index("Vehicle"))
+----
+
+=== Step 4: Advanced List Operations
+
+==== List Comprehensions
+
+[source,python]
+----
+# Example: Calculate premiums with a list comprehension
+base_premiums = [1000, 1200, 1500, 2000]
+risk_factors = [1.1, 1.2, 1.5, 1.8]
+
+final_premiums = [base * risk for base, risk in zip(base_premiums, risk_factors)]
+print("Final Premiums:", final_premiums)
+----
+
+==== Nested Lists
+
+[source,python]
+----
+# Example: Claims grouped by risk levels
+claims_by_risk = [
+    [1500, 2500],  # Low risk
+    [3500, 4500],  # Medium risk
+    [5500, 6500]   # High risk
+]
+
+# Accessing nested elements
+print("High Risk Claims:", claims_by_risk[2])
+----
+
+=== Step 5: Advanced Tuple Operations
+
+==== Nested Tuples
+
+[source,python]
+----
+# Example: Policy details stored in tuples
+policy_details = (
+    ("POL12345", "John Doe", 1500),
+    ("POL12346", "Jane Smith", 2500),
+    ("POL12347", "Jim Brown", 3500)
+)
+
+# Accessing nested elements
+print("First Policy Details:", policy_details[0])
+print("Policy Holder of Second Policy:", policy_details[1][1])
+----
+
+==== Tuple Unpacking
+
+[source,python]
+----
+# Example: Unpacking policy details
+policy_id, policy_holder, claim_amount = policy_details[0]
+print(f"Policy ID: {policy_id}, Holder: {policy_holder}, Claim: ${claim_amount}")
+----
+
+=== Step 6: Combining Lists and Tuples
+
+[source,python]
+----
+# Example: Combining lists and tuples for policy management
+policies = [
+    ("POL12345", "John Doe", "Life"),
+    ("POL12346", "Jane Smith", "Health"),
+    ("POL12347", "Jim Brown", "Vehicle")
+]
+
+# Adding a new policy
+policies.append(("POL12348", "Jake White", "Property"))
+
+# Filtering policies based on type
+life_policies = [policy for policy in policies if policy[2] == "Life"]
+print("Life Policies:", life_policies)
+----
+
+=== Step 7: Real-World Example: Claim Processing Pipeline
+
+[source,python]
+----
+# Example: Process claims data with lists and tuples
+claims_data = [
+    ("POL12345", 1500, "Low"),
+    ("POL12346", 2500, "Medium"),
+    ("POL12347", 3500, "High"),
+    ("POL12348", 4500, "High")
+]
+
+# Filter high-risk claims
+high_risk_claims = [claim for claim in claims_data if claim[2] == "High"]
+
+# Calculate total high-risk claims
+total_high_risk = sum(claim[1] for claim in high_risk_claims)
+
+print("High Risk Claims:", high_risk_claims)
+print("Total High Risk Claims:", total_high_risk)
+----
+
+=== Step 8: Summary
+
+- Lists and tuples are versatile data structures for managing collections of data.
+- Lists are mutable and suitable for dynamic collections, while tuples are immutable and ideal for fixed data.
+- Combining lists and tuples enables efficient management of complex data in real-world scenarios, such as insurance policies and claims.
+
+
+== Lab: Mastering Dictionaries and Sets in Python 
+
+=== Objective
+Provide a comprehensive exploration of Python dictionaries and sets by:
+
+1. Understanding their definitions and differences.
+2. Demonstrating core functionalities with examples.
+3. Applying advanced operations.
+4. Using real-world scenarios in the insurance domain.
+
+=== Scenario: Insurance Policy and Claims Data Management
+Efficiently manage and analyze insurance policy and claims data using dictionaries and sets.
+
+=== Step 1: Introduction to Dictionaries and Sets
+
+==== Dictionary Basics
+
+[source,python]
+----
+# Example: Dictionary of policy details
+policy_details = {
+    "POL12345": {"holder": "John Doe", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500}
+}
+
+# Accessing policy details
+print("Policy Holder for POL12345:", policy_details["POL12345"]["holder"])
+
+# Adding a new policy
+policy_details["POL12348"] = {"holder": "Jake White", "premium": 4500}
+
+# Removing a policy
+del policy_details["POL12345"]
+
+print("Updated Policy Details:", policy_details)
+----
+
+==== Set Basics
+
+[source,python]
+----
+# Example: Set of active policies
+active_policies = {"POL12345", "POL12346", "POL12347"}
+
+# Adding a new policy to the set
+active_policies.add("POL12348")
+
+# Removing a policy from the set
+active_policies.discard("POL12345")
+
+# Checking membership
+print("Is POL12346 active?:", "POL12346" in active_policies)
+
+print("Active Policies:", active_policies)
+----
+
+==== Key Differences
+- Dictionaries store data as key-value pairs.
+- Sets store unique, unordered elements and are ideal for membership tests and unique collections.
+
+=== Step 2: Common Operations on Dictionaries
+
+[source,python]
+----
+# Example: Managing claims using a dictionary
+claims = {
+    "POL12345": 1500,
+    "POL12346": 2500,
+    "POL12347": 3500
+}
+
+# Updating claim amounts
+claims["POL12345"] += 500  # Adding an adjustment
+
+# Iterating over dictionary items
+for policy, amount in claims.items():
+    print(f"Policy {policy} has a claim of ${amount}")
+
+# Getting a value with a default
+print("Claim for POL12348:", claims.get("POL12348", "No claim found"))
+----
+
+=== Step 3: Common Operations on Sets
+
+[source,python]
+----
+# Example: Operations with active and expired policies
+expired_policies = {"POL12345", "POL12349"}
+
+# Union of active and expired policies
+all_policies = active_policies.union(expired_policies)
+print("All Policies:", all_policies)
+
+# Intersection of active and expired policies
+common_policies = active_policies.intersection(expired_policies)
+print("Common Policies:", common_policies)
+
+# Difference between active and expired policies
+only_active = active_policies.difference(expired_policies)
+print("Only Active Policies:", only_active)
+----
+
+=== Step 4: Advanced Dictionary Operations
+
+==== Dictionary Comprehensions
+
+[source,python]
+----
+# Example: Creating a dictionary of premiums above a threshold
+premiums = {"POL12345": 1500, "POL12346": 2500, "POL12347": 3500}
+high_premiums = {policy: amount for policy, amount in premiums.items() if amount > 2000}
+print("High Premiums:", high_premiums)
+----
+
+==== Nested Dictionaries
+
+[source,python]
+----
+# Example: Nested dictionary for detailed claims data
+claims_data = {
+    "POL12345": {"amount": 1500, "status": "Pending"},
+    "POL12346": {"amount": 2500, "status": "Approved"},
+    "POL12347": {"amount": 3500, "status": "Denied"}
+}
+
+# Accessing nested data
+print("Claim Amount for POL12346:", claims_data["POL12346"]["amount"])
+
+# Updating claim status
+claims_data["POL12345"]["status"] = "Approved"
+print("Updated Claims Data:", claims_data)
+----
+
+=== Step 5: Advanced Set Operations
+
+==== Set Comprehensions
+
+[source,python]
+----
+# Example: Creating a set of high-risk policies
+high_risk_claims = {"POL12345", "POL12347", "POL12348"}
+high_risk_set = {policy for policy in high_risk_claims if "7" in policy}
+print("High Risk Policies:", high_risk_set)
+----
+
+==== Frozen Sets
+
+[source,python]
+----
+# Example: Using frozen sets for immutable collections
+frozen_active_policies = frozenset(active_policies)
+print("Frozen Active Policies:", frozen_active_policies)
+
+# Attempting to modify (this will raise an error)
+try:
+    frozen_active_policies.add("POL12349")
+except AttributeError as e:
+    print("Error:", e)
+----
+
+=== Step 6: Combining Dictionaries and Sets
+
+[source,python]
+----
+# Example: Managing policies with dictionaries and sets
+policy_details = {
+    "POL12345": {"holder": "John Doe", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500}
+}
+
+active_policies = {"POL12345", "POL12346"}
+
+# Finding active policy details
+active_policy_details = {policy: policy_details[policy] for policy in active_policies}
+print("Active Policy Details:", active_policy_details)
+----
+
+=== Step 7: Real-World Example: Policy Processing Pipeline
+
+[source,python]
+----
+# Example: Policy processing pipeline using dictionaries and sets
+policies = {
+    "POL12345": {"holder": "John Doe", "premium": 1500, "status": "Active"},
+    "POL12346": {"holder": "Jane Smith", "premium": 2500, "status": "Expired"},
+    "POL12347": {"holder": "Jim Brown", "premium": 3500, "status": "Active"}
+}
+
+# Extract active policies
+active_policies = {policy for policy, details in policies.items() if details["status"] == "Active"}
+
+# Calculate total premiums for active policies
+total_premium = sum(policies[policy]["premium"] for policy in active_policies)
+
+print("Active Policies:", active_policies)
+print("Total Premium for Active Policies:", total_premium)
+----
+
+=== Step 8: Summary
+
+- Dictionaries and sets are powerful tools for managing structured and unstructured data.
+- Dictionaries store key-value pairs and allow complex data modeling with nested structures.
+- Sets are ideal for unique collections, membership testing, and mathematical operations.
+- Combining dictionaries and sets enables efficient, real-world data management, such as insurance policy and claim processing.
+
+
+
+
+== Case Study: Comprehensive Insurance Data Management System
+
+=== Objective
+Develop a Python-based insurance data management system utilizing:
+
+1. Lists, dictionaries, sets, and tuples for data storage and manipulation.
+2. Functions for modular and reusable code.
+3. Lambda functions for concise data processing.
+4. Exception handling for robustness and error management.
+
+=== Scenario: Insurance Policy and Claims Management
+Create a system to manage policy details, validate claims, and calculate premiums while ensuring data integrity and error handling.
+
+=== Step 1: Data Storage with Lists, Dictionaries, Sets, and Tuples
+
+[source,python]
+----
+# List of policy types
+policy_types = ["Life", "Health", "Vehicle", "Property"]
+
+# Dictionary of policy details
+policy_details = {
+    "POL12345": {"holder": "John Doe", "type": "Life", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "type": "Health", "premium": 2500},
+    "POL12347": {"holder": "Jim Brown", "type": "Vehicle", "premium": 3500}
+}
+
+# Set of active policies
+active_policies = {"POL12345", "POL12346"}
+
+# Tuple of risk categories
+risk_categories = ("Low", "Medium", "High")
+
+print("Policy Types:", policy_types)
+print("Policy Details:", policy_details)
+print("Active Policies:", active_policies)
+print("Risk Categories:", risk_categories)
+----
+
+=== Step 2: Functions for Policy Management
+
+[source,python]
+----
+# Function to calculate premium with risk factor
+
+def calculate_premium(base_premium, risk_factor):
+    """
+    Calculate the premium based on risk factor.
+    Arguments:
+        base_premium (float): Base premium amount.
+        risk_factor (float): Risk multiplier.
+    Returns:
+        float: Adjusted premium.
+    """
+    return base_premium * risk_factor
+
+# Function to validate policy
+
+def validate_policy(policy_id, policy_dict):
+    """
+    Validate if a policy exists in the system.
+    Arguments:
+        policy_id (str): Policy ID to validate.
+        policy_dict (dict): Dictionary of policy details.
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    return policy_id in policy_dict
+
+print("Premium for High Risk:", calculate_premium(2000, 1.5))
+print("Is POL12345 a valid policy?:", validate_policy("POL12345", policy_details))
+----
+
+=== Step 3: Lambda Functions for Quick Processing
+
+[source,python]
+----
+# Lambda function to check high premium
+is_high_premium = lambda premium: premium > 3000
+
+# Apply lambda to filter high premium policies
+high_premium_policies = {policy for policy, details in policy_details.items() if is_high_premium(details["premium"])}
+
+print("High Premium Policies:", high_premium_policies)
+----
+
+=== Step 4: Exception Handling for Robustness
+
+[source,python]
+----
+# Function to safely fetch policy details
+
+def get_policy_details(policy_id, policy_dict):
+    """
+    Fetch policy details safely with exception handling.
+    Arguments:
+        policy_id (str): Policy ID to fetch.
+        policy_dict (dict): Dictionary of policy details.
+    Returns:
+        dict: Policy details if found.
+    """
+    try:
+        return policy_dict[policy_id]
+    except KeyError:
+        print(f"Error: Policy {policy_id} not found.")
+        return None
+
+print("Details for POL12345:", get_policy_details("POL12345", policy_details))
+print("Details for POL99999:", get_policy_details("POL99999", policy_details))
+----
+
+=== Step 5: Combining All Concepts in a Real-World Scenario
+
+[source,python]
+----
+# Function to process claims
+
+def process_claim(policy_id, claim_amount, policy_dict, active_set):
+    """
+    Process a claim for a given policy.
+    Arguments:
+        policy_id (str): Policy ID.
+        claim_amount (float): Claim amount.
+        policy_dict (dict): Dictionary of policy details.
+        active_set (set): Set of active policies.
+    Returns:
+        str: Result of the claim processing.
+    """
+    try:
+        if policy_id not in active_set:
+            raise ValueError(f"Policy {policy_id} is not active.")
+
+        if claim_amount > policy_dict[policy_id]["premium"] * 2:
+            return f"Claim for {policy_id} denied: Exceeds allowable limit."
+
+        return f"Claim for {policy_id} approved: ${claim_amount} processed."
+
+    except KeyError:
+        return f"Error: Policy {policy_id} not found."
+    except ValueError as e:
+        return str(e)
+
+# Test the function
+print(process_claim("POL12345", 2000, policy_details, active_policies))
+print(process_claim("POL12345", 4000, policy_details, active_policies))
+print(process_claim("POL12348", 2000, policy_details, active_policies))
+----
+
+=== Step 6: Summary
+
+- This case study demonstrates the combined use of lists, dictionaries, sets, and tuples to manage structured data.
+- Functions ensure reusability and modularity in the code.
+- Lambda functions provide concise processing, while exception handling ensures robust error management.
+- The real-world insurance domain example highlights practical applications of Python concepts.
+
+
+== Lab: Mastering File Operations in Python
+
+=== Objective
+Provide a comprehensive guide to Python file operations by:
+
+1. Understanding file modes and their usage.
+2. Demonstrating operations with CSV, JSON, and text files.
+3. Using real-world scenarios for practical learning.
+
+=== Step 1: Introduction to File Modes
+
+[source,python]
+----
+# File modes in Python:
+file_modes = {
+    "r": "Read - Opens a file for reading (default).",
+    "w": "Write - Opens a file for writing (creates/truncates).",
+    "x": "Exclusive creation - Fails if the file exists.",
+    "a": "Append - Opens a file for appending.",
+    "b": "Binary - Opens a file in binary mode.",
+    "t": "Text - Opens a file in text mode (default).",
+    "+": "Read and write mode."
+}
+
+for mode, description in file_modes.items():
+    print(f"Mode '{mode}': {description}")
+----
+
+=== Step 2: Basic Text File Operations
+
+[source,python]
+----
+# Writing to a text file
+with open("policies.txt", "w") as file:
+    file.write("POL12345, John Doe, Life, 1500\n")
+    file.write("POL12346, Jane Smith, Health, 2500\n")
+
+# Reading from a text file
+with open("policies.txt", "r") as file:
+    content = file.readlines()
+    print("File Content:", content)
+
+# Appending to a text file
+with open("policies.txt", "a") as file:
+    file.write("POL12347, Jim Brown, Vehicle, 3500\n")
+----
+
+=== Step 3: Working with CSV Files
+
+[source,python]
+----
+import csv
+
+# Writing to a CSV file
+with open("policies.csv", "w", newline="") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["PolicyID", "Holder", "Type", "Premium"])
+    writer.writerow(["POL12345", "John Doe", "Life", 1500])
+    writer.writerow(["POL12346", "Jane Smith", "Health", 2500])
+
+# Reading from a CSV file
+with open("policies.csv", "r") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)
+
+# Writing to a CSV file with DictWriter
+with open("policies_dict.csv", "w", newline="") as csvfile:
+    fieldnames = ["PolicyID", "Holder", "Type", "Premium"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    writer.writerow({"PolicyID": "POL12345", "Holder": "John Doe", "Type": "Life", "Premium": 1500})
+----
+
+=== Step 4: Working with JSON Files
+
+[source,python]
+----
+import json
+
+# Writing to a JSON file
+policy_data = {
+    "POL12345": {"holder": "John Doe", "type": "Life", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "type": "Health", "premium": 2500}
+}
+
+with open("policies.json", "w") as jsonfile:
+    json.dump(policy_data, jsonfile, indent=4)
+
+# Reading from a JSON file
+with open("policies.json", "r") as jsonfile:
+    data = json.load(jsonfile)
+    print("Policy Data:", data)
+----
+
+=== Step 5: Handling Binary Files
+
+[source,python]
+----
+# Writing to a binary file
+with open("policy_binary.bin", "wb") as binfile:
+    binfile.write(b"Policy Data: POL12345, John Doe, Life, 1500")
+
+# Reading from a binary file
+with open("policy_binary.bin", "rb") as binfile:
+    binary_content = binfile.read()
+    print("Binary Content:", binary_content)
+----
+
+=== Step 6: Combining File Operations in a Real-World Scenario
+
+[source,python]
+----
+import csv
+import json
+
+# Step 1: Read policies from a CSV file
+with open("policies.csv", "r") as csvfile:
+    reader = csv.DictReader(csvfile)
+    policies = [row for row in reader]
+
+# Step 2: Filter policies with premiums above a threshold
+high_premium_policies = [policy for policy in policies if int(policy["Premium"]) > 2000]
+
+# Step 3: Save filtered policies to a JSON file
+with open("high_premium_policies.json", "w") as jsonfile:
+    json.dump(high_premium_policies, jsonfile, indent=4)
+
+# Step 4: Append a summary to a text file
+with open("policy_summary.txt", "a") as file:
+    file.write(f"Total High Premium Policies: {len(high_premium_policies)}\n")
+    file.write("High Premium Policies saved to high_premium_policies.json\n")
+----
+
+=== Step 7: Summary
+
+- File modes provide flexibility in handling different file operations.
+- Python’s libraries for CSV and JSON make it easy to work with structured data.
+- Combining these operations enables powerful data processing pipelines for real-world scenarios, such as insurance policy management.
+
+
+== Lab: Functional Programming in Python
+
+=== Objective
+Provide a detailed guide to functional programming in Python, focusing on:
+
+1. Features of functional programming.
+2. Pure functions and immutability.
+3. Higher-order functions and using functions as arguments/return values.
+4. Scope of variables in functional programming.
+
+=== Step 1: Introduction to Functional Programming
+
+Functional programming is a programming paradigm where functions are treated as first-class citizens and computation is performed using mathematical functions. Key principles include:
+
+- **Immutability**: Data is not modified after creation.
+- **Pure Functions**: Functions produce the same output for the same input without side effects.
+- **First-Class Functions**: Functions can be passed as arguments, returned as values, and stored in variables.
+- **Higher-Order Functions**: Functions that take other functions as arguments or return them as results.
+
+=== Step 2: Pure Functions
+
+#### What is a Pure Function?
+- A function is considered pure if:
+  - It has no side effects.
+  - The output depends solely on the input.
+
+[source,python]
+----
+# Example: Pure Function
+
+def add_numbers(a, b):
+    """Adds two numbers without modifying external state."""
+    return a + b
+
+print(add_numbers(2, 3))  # Always produces 5
+
+# Example: Impure Function
+result = 0
+
+def add_to_result(value):
+    """Adds value to a global variable (impure)."""
+    global result
+    result += value
+    return result
+
+print(add_to_result(5))  # Depends on external state
+----
+
+#### Key Benefits of Pure Functions
+- Easier to test and debug.
+- More predictable behavior.
+- Suitable for parallel processing.
+
+=== Step 3: Immutability
+
+#### Mutable vs Immutable Data Types
+- **Immutable**: Data cannot be changed (e.g., `int`, `tuple`, `str`).
+- **Mutable**: Data can be changed (e.g., `list`, `dict`).
+
+[source,python]
+----
+# Example: Immutable Data
+x = (1, 2, 3)
+try:
+    x[0] = 10
+except TypeError as e:
+    print("Error:", e)
+
+# Example: Mutable Data
+y = [1, 2, 3]
+y[0] = 10
+print(y)  # [10, 2, 3]
+----
+
+#### Immutability in Functional Programming
+- Avoid mutating data to ensure predictable results.
+- Use immutable types like `tuple` or functional libraries like `frozenset`.
+
+=== Step 4: Higher-Order Functions
+
+#### What is a Higher-Order Function?
+- A function that:
+  - Takes another function as an argument.
+  - Returns a function as a result.
+
+#### Using Functions as Arguments
+
+[source,python]
+----
+# Example: Using a Function as an Argument
+
+def apply_function(func, value):
+    """Applies a function to a value."""
+    return func(value)
+
+# Function to double a number
+def double(x):
+    return x * 2
+
+print(apply_function(double, 5))  # Output: 10
+----
+
+#### Returning a Function
+
+[source,python]
+----
+# Example: Returning a Function
+
+def multiplier(factor):
+    """Returns a function that multiplies by the given factor."""
+    def multiply(value):
+        return value * factor
+    return multiply
+
+# Create a function that triples a value
+triple = multiplier(3)
+print(triple(5))  # Output: 15
+----
+
+=== Step 5: Scope of Variables
+
+#### Variable Scope in Python
+- **Local Scope**: Variables defined inside a function.
+- **Global Scope**: Variables defined outside any function.
+- **Nonlocal Scope**: Variables in an enclosing function for nested functions.
+
+[source,python]
+----
+# Example: Local, Global, and Nonlocal Scope
+x = 10  # Global variable
+
+def outer_function():
+    y = 20  # Enclosing variable
+
+    def inner_function():
+        nonlocal y
+        y += 5
+        print("Inner y:", y)
+
+    inner_function()
+    print("Outer y:", y)
+
+outer_function()
+print("Global x:", x)
+----
+
+=== Step 6: Real-World : Insurance Premium Calculator
+
+[source,python]
+----
+# Step 1: Pure Function to Calculate Premium
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Step 2: Higher-Order Function to Apply Discounts
+def apply_discount(discount_func, premium):
+    return discount_func(premium)
+
+# Discount Function
+def ten_percent_discount(premium):
+    return premium * 0.9
+
+# Step 3: Returning a Function for Tax Calculation
+def tax_calculator(tax_rate):
+    def calculate_tax(amount):
+        return amount * tax_rate
+    return calculate_tax
+
+# Step 4: Combining All Concepts
+premium = calculate_premium(1000, 1.2)
+premium_after_discount = apply_discount(ten_percent_discount, premium)
+calculate_tax = tax_calculator(0.05)
+total_with_tax = premium_after_discount + calculate_tax(premium_after_discount)
+
+print(f"Base Premium: {premium}")
+print(f"Premium After Discount: {premium_after_discount}")
+print(f"Total with Tax: {total_with_tax}")
+----
+
+=== Step 7: Summary
+
+- Functional programming promotes immutability and pure functions for predictable results.
+- Higher-order functions allow flexible and reusable code by operating on other functions.
+- Understanding variable scope is crucial for avoiding unintended side effects.
+- Applying these principles can simplify complex real-world problems, as shown in the case study.
+
+
+== Lab: Functional Programming in Python (Case-Driven)
+
+=== Objective
+Explore functional programming in Python through a case-driven approach, focusing on:
+
+1. Principles of functional programming.
+2. Application of pure functions and immutability.
+3. Usage of higher-order functions and function composition.
+4. Managing variable scope in real-world scenarios.
+
+=== Scenario: Insurance Claim Processing System
+
+You are tasked with creating a Python-based system for an insurance company. The system must:
+
+- Calculate premiums for various policies.
+- Apply discounts based on policy type.
+- Add taxes to the final premium amount.
+- Ensure all calculations are performed using functional programming principles.
+
+=== Step 1: Setting Up Data and Problem Statement
+
+Define the initial data and objective.
+
+[source,python]
+----
+# Initial data: List of policies with base premiums and policy types
+policies = [
+    {"policy_id": "POL12345", "base_premium": 1000, "policy_type": "Life"},
+    {"policy_id": "POL12346", "base_premium": 1500, "policy_type": "Health"},
+    {"policy_id": "POL12347", "base_premium": 2000, "policy_type": "Vehicle"}
+]
+
+# Objective: Calculate the final premium for each policy after discounts and taxes.
+----
+
+=== Step 2: Pure Function for Premium Calculation
+
+#### Create a pure function to calculate premiums based on a risk factor.
+
+[source,python]
+----
+# Pure function for premium calculation
+def calculate_premium(base_premium, risk_factor):
+    """Calculate the premium based on base amount and risk factor."""
+    return base_premium * risk_factor
+
+# Test the function
+print(calculate_premium(1000, 1.2))  # Output: 1200
+----
+
+=== Step 3: Applying Discounts Using Higher-Order Functions
+
+#### Define a higher-order function to apply discounts based on policy type.
+
+[source,python]
+----
+# Discount functions for different policy types
+def life_discount(premium):
+    return premium * 0.95
+
+def health_discount(premium):
+    return premium * 0.90
+
+def vehicle_discount(premium):
+    return premium * 0.85
+
+# Higher-order function to apply discount based on policy type
+def apply_discount(policy, discount_func):
+    """Apply a discount to the premium based on policy type."""
+    premium = policy["base_premium"]
+    return discount_func(premium)
+
+# Test with a policy
+policy = {"policy_id": "POL12345", "base_premium": 1000, "policy_type": "Life"}
+print(apply_discount(policy, life_discount))  # Output: 950
+----
+
+=== Step 4: Returning a Function for Tax Calculation
+
+#### Create a function that returns another function to calculate taxes.
+
+[source,python]
+----
+# Function returning a tax calculator
+def tax_calculator(tax_rate):
+    """Return a function to calculate tax on a given amount."""
+    def calculate_tax(amount):
+        return amount * tax_rate
+    return calculate_tax
+
+# Test the tax calculator
+calculate_tax = tax_calculator(0.05)  # 5% tax
+print(calculate_tax(1000))  # Output: 50
+----
+
+=== Step 5: Combining All Steps
+
+#### Build the final pipeline to calculate the total premium for all policies.
+
+[source,python]
+----
+# Function to process a single policy
+def process_policy(policy, discount_funcs, tax_func):
+    """Process a policy to calculate the final premium."""
+    policy_type = policy["policy_type"].lower()
+    discount_func = discount_funcs.get(policy_type, lambda x: x)  # Default: no discount
+
+    # Step 1: Calculate the premium
+    base_premium = policy["base_premium"]
+    premium = calculate_premium(base_premium, 1.2)  # Assume risk factor = 1.2
+
+    # Step 2: Apply discount
+    premium_after_discount = discount_func(premium)
+
+    # Step 3: Add tax
+    total_premium = premium_after_discount + tax_func(premium_after_discount)
+
+    return {"policy_id": policy["policy_id"], "total_premium": total_premium}
+
+# Mapping policy types to discount functions
+discount_funcs = {
+    "life": life_discount,
+    "health": health_discount,
+    "vehicle": vehicle_discount
+}
+
+# Tax function
+tax_func = tax_calculator(0.05)
+
+# Process all policies
+processed_policies = [process_policy(policy, discount_funcs, tax_func) for policy in policies]
+
+print("Processed Policies:", processed_policies)
+----
+
+=== Step 6: Understanding Variable Scope
+
+#### Demonstrate local, global, and nonlocal scopes.
+
+[source,python]
+----
+# Example of variable scopes
+x = 10  # Global variable
+
+def outer_function():
+    y = 20  # Enclosing variable
+
+    def inner_function():
+        nonlocal y
+        y += 5
+        print("Inner y:", y)  # Access enclosing variable
+
+    inner_function()
+    print("Outer y:", y)  # Modified by inner_function
+
+outer_function()
+print("Global x:", x)
+----
+
+=== Step 7: Summary
+
+- Functional programming enables clean, predictable, and reusable code.
+- Pure functions and immutability minimize side effects and make debugging easier.
+- Higher-order functions allow flexible operations like applying discounts and taxes dynamically.
+- Understanding variable scope helps manage data effectively in nested functions.
+
+=== Step 8: Run and Verify
+
+To run the lab, save the code as `functional_programming_lab.py` and execute it using:
+
+[source,bash]
+----
+python functional_programming_lab.py
+----
+
+Verify the outputs match the expected results for each policy processed.
+
+
+== Case Study: Functional Programming for BCBS Operations
+
+=== Objective
+Implement a functional programming approach to streamline BCBS (Blue Cross Blue Shield) operations, focusing on:
+
+1. Managing hospital and doctor collaboration data.
+2. Sharing resources between BCBS companies.
+3. Joint enrollment and billing functions.
+
+This case study uses Python's functional programming principles to create reusable, composable, and predictable solutions.
+
+=== Step 1: Defining the Problem
+
+BCBS companies operate in a decentralized model but collaborate in key areas:
+
+1. Maintain a list of hospitals and doctors in a community.
+2. Share office space and resources between companies.
+3. Conduct joint enrollment and billing for members.
+
+We will solve this using:
+
+- Pure functions for predictable operations.
+- Higher-order functions for reusable logic.
+- Data immutability to maintain consistent state.
+
+=== Step 2: Setting Up Initial Data
+
+[source,python]
+----
+# List of hospitals and doctors in the community
+hospitals = [
+    {"hospital_id": "H001", "name": "Community Hospital", "city": "Springfield"},
+    {"hospital_id": "H002", "name": "Central Medical Center", "city": "Rivertown"}
+]
+
+doctors = [
+    {"doctor_id": "D001", "name": "Dr. Smith", "specialty": "Cardiology", "hospital_id": "H001"},
+    {"doctor_id": "D002", "name": "Dr. Johnson", "specialty": "Orthopedics", "hospital_id": "H002"}
+]
+
+# BCBS companies sharing resources
+bcbs_companies = [
+    {"company_id": "C001", "name": "BCBS Springfield", "shared_office": True},
+    {"company_id": "C002", "name": "BCBS Rivertown", "shared_office": True}
+]
+
+# Enrollment data
+members = [
+    {"member_id": "M001", "name": "Alice", "plan": "Basic", "company_id": "C001"},
+    {"member_id": "M002", "name": "Bob", "plan": "Premium", "company_id": "C002"}
+]
+----
+
+=== Step 3: Functional Operations for Data Management
+
+#### Pure Function: Mapping Doctors to Hospitals
+
+[source,python]
+----
+def map_doctors_to_hospitals(doctors, hospitals):
+    """Map doctors to their respective hospitals."""
+    return [
+        {
+            **doctor,
+            "hospital_name": next(
+                (hospital["name"] for hospital in hospitals if hospital["hospital_id"] == doctor["hospital_id"]),
+                "Unknown"
+            )
+        }
+        for doctor in doctors
+    ]
+
+# Test the function
+mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+print("Mapped Doctors:", mapped_doctors)
+----
+
+#### Higher-Order Function: Filter Shared Resources
+
+[source,python]
+----
+def filter_shared_resources(companies, filter_func):
+    """Filter companies based on a condition."""
+    return list(filter(filter_func, companies))
+
+# Test the function
+shared_office_companies = filter_shared_resources(bcbs_companies, lambda c: c["shared_office"])
+print("Companies Sharing Offices:", shared_office_companies)
+----
+
+#### Composing Enrollment Data
+
+[source,python]
+----
+def enrich_member_data(members, companies):
+    """Enrich members with company names."""
+    return [
+        {
+            **member,
+            "company_name": next(
+                (company["name"] for company in companies if company["company_id"] == member["company_id"]),
+                "Unknown"
+            )
+        }
+        for member in members
+    ]
+
+# Test the function
+enriched_members = enrich_member_data(members, bcbs_companies)
+print("Enriched Members:", enriched_members)
+----
+
+=== Step 4: Joint Enrollment and Billing
+
+#### Function Composition: Calculate Total Members and Premium Revenue
+
+[source,python]
+----
+def calculate_revenue_by_company(members, plans):
+    """Calculate total revenue by company based on member plans."""
+    return {
+        company_id: sum(plans[member["plan"]] for member in members if member["company_id"] == company_id)
+        for company_id in {member["company_id"] for member in members}
+    }
+
+# Define plan rates
+plan_rates = {"Basic": 100, "Premium": 200}
+
+# Test the function
+revenue_by_company = calculate_revenue_by_company(members, plan_rates)
+print("Revenue by Company:", revenue_by_company)
+----
+
+=== Step 5: Sharing Office Space and Resources
+
+#### Aggregating Shared Resource Usage
+
+[source,python]
+----
+def aggregate_shared_resources(companies):
+    """Aggregate shared resources among BCBS companies."""
+    return len([company for company in companies if company["shared_office"]])
+
+# Test the function
+shared_resource_count = aggregate_shared_resources(bcbs_companies)
+print("Total Companies Sharing Resources:", shared_resource_count)
+----
+
+=== Step 6: End-to-End Pipeline
+
+#### Process All Data Together
+
+[source,python]
+----
+def process_bcbs_data(doctors, hospitals, members, companies):
+    """Process BCBS data to produce final insights."""
+    # Step 1: Map doctors to hospitals
+    mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+
+    # Step 2: Enrich members with company data
+    enriched_members = enrich_member_data(members, companies)
+
+    # Step 3: Calculate revenue by company
+    plan_rates = {"Basic": 100, "Premium": 200}
+    revenue = calculate_revenue_by_company(members, plan_rates)
+
+    return {
+        "mapped_doctors": mapped_doctors,
+        "enriched_members": enriched_members,
+        "revenue": revenue
+    }
+
+# Run the pipeline
+final_data = process_bcbs_data(doctors, hospitals, members, bcbs_companies)
+print("Final Data:", final_data)
+----
+
+=== Step 7: Summary
+
+- **Pure Functions**: Ensure predictable operations like mapping doctors to hospitals.
+- **Higher-Order Functions**: Reuse logic for filtering and enrichment.
+- **Data Composition**: Build enriched and aggregated insights like member data and revenue.
+- **Real-World Applicability**: Demonstrated a complete pipeline for BCBS operations using functional programming principles.
+
+
+== Lab: Object-Oriented Programming in Python
+
+=== Objective
+Provide a comprehensive guide to Object-Oriented Programming (OOP) in Python by:
+
+1. Introducing OOP concepts and principles.
+2. Explaining key features: encapsulation, inheritance, polymorphism, and abstraction.
+3. Demonstrating these concepts with detailed examples and a real-world case study.
+
+=== Step 1: Introduction to OOP
+
+Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects," which can contain data (attributes) and code (methods).
+
+#### Key Features of OOP
+1. **Encapsulation**: Bundling data and methods that operate on the data within a single unit (class).
+2. **Inheritance**: Enabling a new class (child) to inherit attributes and methods from an existing class (parent).
+3. **Polymorphism**: Allowing objects of different classes to be treated as objects of a common superclass.
+4. **Abstraction**: Hiding implementation details and exposing only the necessary functionality.
+
+=== Step 2: Encapsulation
+
+#### What is Encapsulation?
+Encapsulation ensures that the internal representation of an object is hidden from the outside world, and access is controlled through methods (getters and setters).
+
+[source,python]
+----
+# Example: Encapsulation
+class InsurancePolicy:
+    def __init__(self, policy_id, policy_holder, premium):
+        self.__policy_id = policy_id  # Private attribute
+        self.policy_holder = policy_holder
+        self.__premium = premium  # Private attribute
+
+    # Getter for premium
+    def get_premium(self):
+        return self.__premium
+
+    # Setter for premium
+    def set_premium(self, new_premium):
+        if new_premium > 0:
+            self.__premium = new_premium
+        else:
+            print("Invalid premium value.")
+
+# Test Encapsulation
+policy = InsurancePolicy("POL12345", "John Doe", 1500)
+print("Premium:", policy.get_premium())
+policy.set_premium(2000)
+print("Updated Premium:", policy.get_premium())
+policy.set_premium(-500)  # Invalid value
+----
+
+=== Step 3: Inheritance
+
+#### What is Inheritance?
+Inheritance allows a class to acquire the properties and methods of another class.
+
+[source,python]
+----
+# Example: Inheritance
+class Policy:
+    def __init__(self, policy_id, policy_holder):
+        self.policy_id = policy_id
+        self.policy_holder = policy_holder
+
+    def display_details(self):
+        print(f"Policy ID: {self.policy_id}, Holder: {self.policy_holder}")
+
+# Derived class
+class HealthPolicy(Policy):
+    def __init__(self, policy_id, policy_holder, coverage_amount):
+        super().__init__(policy_id, policy_holder)  # Call parent constructor
+        self.coverage_amount = coverage_amount
+
+    def display_details(self):
+        super().display_details()  # Call parent method
+        print(f"Coverage Amount: {self.coverage_amount}")
+
+# Test Inheritance
+health_policy = HealthPolicy("HP12345", "Jane Smith", 500000)
+health_policy.display_details()
+----
+
+=== Step 4: Polymorphism
+
+#### What is Polymorphism?
+Polymorphism allows methods in different classes to have the same name but behave differently.
+
+[source,python]
+----
+# Example: Polymorphism
+class VehiclePolicy:
+    def display_details(self):
+        print("Vehicle Policy Details")
+
+class LifePolicy:
+    def display_details(self):
+        print("Life Policy Details")
+
+# Polymorphic behavior
+def show_policy_details(policy):
+    policy.display_details()
+
+# Test Polymorphism
+vehicle_policy = VehiclePolicy()
+life_policy = LifePolicy()
+show_policy_details(vehicle_policy)  # Vehicle Policy Details
+show_policy_details(life_policy)    # Life Policy Details
+----
+
+=== Step 5: Abstraction
+
+#### What is Abstraction?
+Abstraction hides the implementation details and provides only essential information to the user.
+
+[source,python]
+----
+from abc import ABC, abstractmethod
+
+# Abstract Base Class
+class AbstractPolicy(ABC):
+    @abstractmethod
+    def calculate_premium(self):
+        pass
+
+# Concrete class
+class TermPolicy(AbstractPolicy):
+    def __init__(self, policy_id, term_years, base_premium):
+        self.policy_id = policy_id
+        self.term_years = term_years
+        self.base_premium = base_premium
+
+    def calculate_premium(self):
+        return self.base_premium * self.term_years
+
+# Test Abstraction
+term_policy = TermPolicy("TP12345", 10, 1000)
+print("Total Premium:", term_policy.calculate_premium())
+----
+
+=== Step 6: Real-World scenario: Insurance Management System
+
+#### Scenario
+Build an insurance management system with the following features:
+1. Different policy types (Health, Vehicle, Life).
+2. Common attributes (policy ID, policy holder).
+3. Specific behavior for each policy type.
+
+[source,python]
+----
+class Policy:
+    def __init__(self, policy_id, policy_holder):
+        self.policy_id = policy_id
+        self.policy_holder = policy_holder
+
+    def calculate_premium(self):
+        pass
+
+class HealthPolicy(Policy):
+    def __init__(self, policy_id, policy_holder, coverage_amount):
+        super().__init__(policy_id, policy_holder)
+        self.coverage_amount = coverage_amount
+
+    def calculate_premium(self):
+        return self.coverage_amount * 0.02
+
+class VehiclePolicy(Policy):
+    def __init__(self, policy_id, policy_holder, vehicle_value):
+        super().__init__(policy_id, policy_holder)
+        self.vehicle_value = vehicle_value
+
+    def calculate_premium(self):
+        return self.vehicle_value * 0.03
+
+class LifePolicy(Policy):
+    def __init__(self, policy_id, policy_holder, sum_assured):
+        super().__init__(policy_id, policy_holder)
+        self.sum_assured = sum_assured
+
+    def calculate_premium(self):
+        return self.sum_assured * 0.01
+
+# Test Case Study
+policies = [
+    HealthPolicy("HP001", "Alice", 500000),
+    VehiclePolicy("VP001", "Bob", 300000),
+    LifePolicy("LP001", "Charlie", 1000000)
+]
+
+for policy in policies:
+    print(f"Policy ID: {policy.policy_id}, Premium: {policy.calculate_premium()}")
+----
+
+=== Step 7: Summary
+
+- **Encapsulation**: Protect sensitive data using private attributes and controlled access.
+- **Inheritance**: Reuse code by deriving new classes from existing ones.
+- **Polymorphism**: Enable methods with the same name to work across different classes.
+- **Abstraction**: Simplify complex systems by hiding implementation details.
+- The case study demonstrates how to use OOP principles in a real-world context.
+
+=== Step 8: Run and Verify
+
+To run the lab, save the code as `oop_lab.py` and execute it using:
+
+[source,bash]
+----
+python oop_lab.py
+----
+
+Verify the outputs match the expected behavior for each policy type.
+
+
+
+== Lab: Comprehensive Testing in Python
+
+=== Objective
+Provide a step-by-step guide to testing in Python by:
+
+1. Introducing testing fundamentals.
+2. Exploring basic to advanced use cases.
+3. Covering unit testing, integration testing, and edge cases.
+4. Using real-world insurance domain scenarios.
+
+=== Step 1: Setting Up the Environment
+
+==== Install Dependencies
+To run this lab, ensure the following dependencies are installed:
+
+[source,bash]
+----
+pip install pytest unittest2
+----
+
+- `pytest`: A testing framework for Python.
+- `unittest2`: Backport of Python's built-in `unittest` module for older versions of Python.
+- Ensure you are using Python 3.6 or later.
+
+==== Verify the Setup
+Check if the dependencies are installed:
+
+[source,bash]
+----
+pytest --version
+python -m unittest --help
+----
+
+The commands should print the respective versions and usage information.
+
+=== Step 2: Introduction to Testing
+
+==== What is Testing?
+- Testing ensures that your code behaves as expected.
+- Types of testing covered:
+  - **Unit Testing:** Testing individual functions or components.
+  - **Integration Testing:** Testing combined components or workflows.
+  - **Edge Case Testing:** Verifying behavior in unusual or extreme cases.
+
+==== Python Testing Frameworks
+- **`unittest`:** Built-in Python library for testing.
+- **`pytest`:** Popular third-party library with advanced features.
+- **`mock`:** Used to simulate objects and behavior.
+
+[source,python]
+----
+# Importing the unittest framework
+import unittest
+
+# Example: Simple function to test
+def add_numbers(a, b):
+    return a + b
+
+# Writing a basic test case
+class TestAddNumbers(unittest.TestCase):
+    def test_add_positive(self):
+        self.assertEqual(add_numbers(2, 3), 5)
+
+    def test_add_negative(self):
+        self.assertEqual(add_numbers(-2, -3), -5)
+
+if __name__ == "__main__":
+    unittest.main()
+----
+
+=== Step 3: Writing Unit Tests
+
+==== Function to Test
+
+[source,python]
+----
+# Example: Function to calculate premium
+
+def calculate_premium(base, risk_factor):
+    if base <= 0 or risk_factor <= 0:
+        raise ValueError("Base and risk factor must be positive.")
+    return base * risk_factor
+----
+
+==== Writing Unit Tests
+
+[source,python]
+----
+import unittest
+
+class TestCalculatePremium(unittest.TestCase):
+
+    def test_valid_premium(self):
+        self.assertEqual(calculate_premium(1000, 1.2), 1200)
+
+    def test_zero_base(self):
+        with self.assertRaises(ValueError):
+            calculate_premium(0, 1.2)
+
+    def test_negative_risk_factor(self):
+        with self.assertRaises(ValueError):
+            calculate_premium(1000, -1.2)
+
+if __name__ == "__main__":
+    unittest.main()
+----
+
+=== Step 4: Testing with `pytest`
+
+==== Function to Test
+
+[source,python]
+----
+# Example: Function to determine policy status
+
+def policy_status(policies, policy_id):
+    """
+    Return the status of a policy.
+    """
+    return policies.get(policy_id, "Policy not found")
+----
+
+==== Writing Tests with `pytest`
+
+[source,python]
+----
+import pytest
+
+# Example test cases
+def test_valid_policy():
+    policies = {"POL12345": "Active", "POL12346": "Expired"}
+    assert policy_status(policies, "POL12345") == "Active"
+
+def test_invalid_policy():
+    policies = {"POL12345": "Active"}
+    assert policy_status(policies, "POL99999") == "Policy not found"
+----
+
+=== Step 5: Mocking in Tests
+
+[source,python]
+----
+from unittest.mock import patch
+
+# Example: Simulating external function behavior
+@patch("builtins.print")
+def test_mocked_function(mock_print):
+    print("Testing mock")
+    mock_print.assert_called_with("Testing mock")
+----
+
+=== Step 6: Integration Testing
+
+[source,python]
+----
+# Integration testing multiple functions
+
+def validate_policy(policy_id, active_policies):
+    if policy_id not in active_policies:
+        raise ValueError("Policy is not active.")
+    return "Policy is valid"
+
+def calculate_claim(policy_id, claim_amount, active_policies):
+    try:
+        validate_policy(policy_id, active_policies)
+        return f"Claim approved for {claim_amount}"
+    except ValueError as e:
+        return str(e)
+----
+
+==== Writing Integration Tests
+
+[source,python]
+----
+def test_integration():
+    active_policies = {"POL12345", "POL12346"}
+    assert calculate_claim("POL12345", 1000, active_policies) == "Claim approved for 1000"
+    assert calculate_claim("POL12347", 1000, active_policies) == "Policy is not active."
+----
+
+=== Step 7: Testing Edge Cases
+
+[source,python]
+----
+def test_edge_cases():
+    # Test with extreme values
+    assert calculate_premium(1e6, 1.5) == 1.5e6
+    assert policy_status({}, "POL12345") == "Policy not found"
+----
+
+=== Step 8: Real-World Case Scenario: Insurance Claims System
+
+[source,python]
+----
+# System to validate claims and calculate premium
+
+def process_claim(policy_id, claim_amount, policies):
+    """Process a claim for a policy."""
+    if policy_id not in policies:
+        return "Policy not found"
+
+    if claim_amount > policies[policy_id]["premium"] * 2:
+        return "Claim denied: Exceeds limit"
+
+    return "Claim approved"
+
+# Writing tests for the claims system
+def test_claim_system():
+    policies = {
+        "POL12345": {"premium": 1500},
+        "POL12346": {"premium": 2500}
+    }
+    assert process_claim("POL12345", 3000, policies) == "Claim approved"
+    assert process_claim("POL12345", 4000, policies) == "Claim denied: Exceeds limit"
+    assert process_claim("POL99999", 2000, policies) == "Policy not found"
+----
+
+=== Step 9: Run and Verify
+
+==== Running `unittest`
+
+- Save your test script as `test_script.py`.
+- Run the tests using the following command:
+
+[source,bash]
+----
+python -m unittest test_script.py
+----
+
+==== Running `pytest`
+
+- Save your test script as `test_script.py`.
+- Run the tests using the following command:
+
+[source,bash]
+----
+pytest test_script.py
+----
+
+- To run all test files in the directory:
+
+[source,bash]
+----
+pytest
+----
+
+- To generate a detailed output:
+
+[source,bash]
+----
+pytest -v
+----
+
+=== Step 10: Summary
+
+- **Unit Testing:** Focus on individual components like functions.
+- **Integration Testing:** Validate interactions between components.
+- **Edge Case Testing:** Ensure robustness with extreme inputs.
+- Tools like `unittest` and `pytest` simplify testing workflows, while mocking enables testing external dependencies effectively.
+- Follow the setup and execution steps to validate your scripts.
+
+
+== Lab: Database Basics with Python
+
+=== Objective
+This lab introduces the basics of working with relational databases in Python. You will:
+
+1. Set up a SQLite database.
+2. Perform CRUD (Create, Read, Update, Delete) operations.
+3. Use SQL queries for data manipulation and retrieval.
+
+=== Step 1: Setting Up SQLite
+
+#### What is SQLite?
+SQLite is a lightweight, file-based relational database management system. It is included with Python, making it ideal for learning and small projects.
+
+#### Installing SQLite
+SQLite is pre-installed with Python. To check, run:
+
+[source,bash]
+----
+python -c "import sqlite3; print('SQLite is available')"
+----
+
+=== Step 2: Connecting to a Database
+
+#### Creating and Connecting to a SQLite Database
+
+[source,python]
+----
+import sqlite3
+
+# Connect to SQLite database (creates the database file if it doesn't exist)
+connection = sqlite3.connect("insurance.db")
+
+# Create a cursor to interact with the database
+cursor = connection.cursor()
+
+print("Connected to database successfully")
+----
+
+=== Step 3: Creating Tables
+
+#### Define a Table for Policies
+
+[source,python]
+----
+# SQL query to create a table
+create_table_query = """
+CREATE TABLE IF NOT EXISTS policies (
+    policy_id TEXT PRIMARY KEY,
+    policy_holder TEXT NOT NULL,
+    policy_type TEXT NOT NULL,
+    premium REAL NOT NULL
+);
+"""
+
+# Execute the query
+cursor.execute(create_table_query)
+print("Table 'policies' created successfully")
+----
+
+=== Step 4: Inserting Data
+
+#### Insert Records into the Table
+
+[source,python]
+----
+# Sample data
+policy_data = [
+    ("POL12345", "John Doe", "Life", 1200.50),
+    ("POL12346", "Jane Smith", "Health", 2500.75),
+    ("POL12347", "Jim Brown", "Vehicle", 1800.00)
+]
+
+# SQL query to insert data
+insert_query = "INSERT INTO policies (policy_id, policy_holder, policy_type, premium) VALUES (?, ?, ?, ?);"
+
+# Insert data
+cursor.executemany(insert_query, policy_data)
+connection.commit()
+print("Data inserted successfully")
+----
+
+=== Step 5: Querying Data
+
+#### Retrieve Data from the Table
+
+[source,python]
+----
+# SQL query to select all records
+select_query = "SELECT * FROM policies;"
+
+# Execute the query and fetch all results
+cursor.execute(select_query)
+rows = cursor.fetchall()
+
+# Display the results
+print("Policies:")
+for row in rows:
+    print(row)
+----
+
+=== Step 6: Updating Data
+
+#### Update a Record
+
+[source,python]
+----
+# SQL query to update a record
+update_query = "UPDATE policies SET premium = ? WHERE policy_id = ?;"
+
+# Update the premium for a specific policy
+cursor.execute(update_query, (1400.00, "POL12345"))
+connection.commit()
+print("Policy updated successfully")
+----
+
+=== Step 7: Deleting Data
+
+#### Delete a Record
+
+[source,python]
+----
+# SQL query to delete a record
+delete_query = "DELETE FROM policies WHERE policy_id = ?;"
+
+# Delete a policy by ID
+cursor.execute(delete_query, ("POL12347",))
+connection.commit()
+print("Policy deleted successfully")
+----
+
+=== Step 8: Closing the Connection
+
+#### Always Close the Database Connection
+
+[source,python]
+----
+# Close the cursor and connection
+cursor.close()
+connection.close()
+print("Database connection closed")
+----
+
+=== Step 9: Summary
+
+- SQLite is an easy-to-use database for small projects and learning.
+- CRUD operations allow you to interact with data effectively.
+- Always ensure you close database connections to avoid resource leaks.
+
+You now have a basic understanding of working with databases in Python!
+
+
+== Lab: Data Analytics Using Functional Programming
+
+=== Objective
+This lab focuses on data analytics using functional programming principles. Key goals include:
+
+1. Extracting insights from data.
+2. Building a composable pipeline for analytics.
+3. Applying pure functions, higher-order functions, and data transformations.
+
+=== Scenario: Healthcare Analytics for BCBS
+You are tasked with performing data analytics for BCBS (Blue Cross Blue Shield) operations. The tasks include:
+
+1. Analyzing hospital and doctor collaboration.
+2. Calculating company revenue from member data.
+3. Identifying shared resources among companies.
+4. Generating a summary of actionable insights.
+
+=== Step 1: Setting Up Data
+
+[source,python]
+----
+# Sample data for hospitals, doctors, and members
+hospitals = [
+    {"hospital_id": "H001", "name": "Community Hospital", "city": "Springfield"},
+    {"hospital_id": "H002", "name": "Central Medical Center", "city": "Rivertown"}
+]
+
+doctors = [
+    {"doctor_id": "D001", "name": "Dr. Smith", "specialty": "Cardiology", "hospital_id": "H001"},
+    {"doctor_id": "D002", "name": "Dr. Johnson", "specialty": "Orthopedics", "hospital_id": "H002"}
+]
+
+bcbs_companies = [
+    {"company_id": "C001", "name": "BCBS Springfield", "shared_office": True},
+    {"company_id": "C002", "name": "BCBS Rivertown", "shared_office": False}
+]
+
+members = [
+    {"member_id": "M001", "name": "Alice", "plan": "Basic", "company_id": "C001"},
+    {"member_id": "M002", "name": "Bob", "plan": "Premium", "company_id": "C002"}
+]
+
+# Plan rates for revenue calculation
+plan_rates = {"Basic": 100, "Premium": 200}
+----
+
+=== Step 2: Data Transformation with Functional Programming
+
+#### Mapping Doctors to Hospitals
+
+[source,python]
+----
+def map_doctors_to_hospitals(doctors, hospitals):
+    """Map each doctor to their respective hospital."""
+    return [
+        {
+            **doctor,
+            "hospital_name": next(
+                (hospital["name"] for hospital in hospitals if hospital["hospital_id"] == doctor["hospital_id"]),
+                "Unknown"
+            )
+        }
+        for doctor in doctors
+    ]
+
+# Test mapping function
+mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+print("Mapped Doctors:", mapped_doctors)
+----
+
+#### Enriching Member Data
+
+[source,python]
+----
+def enrich_member_data(members, companies):
+    """Add company name to each member record."""
+    return [
+        {
+            **member,
+            "company_name": next(
+                (company["name"] for company in companies if company["company_id"] == member["company_id"]),
+                "Unknown"
+            )
+        }
+        for member in members
+    ]
+
+# Test enrichment function
+enriched_members = enrich_member_data(members, bcbs_companies)
+print("Enriched Members:", enriched_members)
+----
+
+=== Step 3: Revenue Calculation
+
+#### Aggregating Revenue by Company
+
+[source,python]
+----
+def calculate_revenue_by_company(members, plan_rates):
+    """Calculate total revenue for each company."""
+    return {
+        company_id: sum(plan_rates[member["plan"]] for member in members if member["company_id"] == company_id)
+        for company_id in {member["company_id"] for member in members}
+    }
+
+# Test revenue calculation
+revenue_by_company = calculate_revenue_by_company(members, plan_rates)
+print("Revenue by Company:", revenue_by_company)
+----
+
+=== Step 4: Resource Analysis
+
+#### Counting Companies Sharing Resources
+
+[source,python]
+----
+def count_shared_resources(companies):
+    """Count the number of companies sharing office resources."""
+    return len([company for company in companies if company["shared_office"]])
+
+# Test resource count
+shared_resource_count = count_shared_resources(bcbs_companies)
+print("Companies Sharing Resources:", shared_resource_count)
+----
+
+=== Step 5: Building an Analytics Pipeline
+
+#### Combining All Steps
+
+[source,python]
+----
+def healthcare_analytics_pipeline(doctors, hospitals, members, companies, plan_rates):
+    """Perform end-to-end analytics for BCBS data."""
+    # Step 1: Map doctors to hospitals
+    mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+
+    # Step 2: Enrich member data
+    enriched_members = enrich_member_data(members, companies)
+
+    # Step 3: Calculate revenue
+    revenue = calculate_revenue_by_company(members, plan_rates)
+
+    # Step 4: Analyze shared resources
+    shared_resource_count = count_shared_resources(companies)
+
+    return {
+        "mapped_doctors": mapped_doctors,
+        "enriched_members": enriched_members,
+        "revenue": revenue,
+        "shared_resource_count": shared_resource_count
+    }
+
+# Execute the pipeline
+analytics_results = healthcare_analytics_pipeline(doctors, hospitals, members, bcbs_companies, plan_rates)
+print("Analytics Results:", analytics_results)
+----
+
+=== Step 6: Insights and Summary
+
+#### Insights
+1. **Doctor-Hospital Mapping**: Understand the distribution of doctors across hospitals.
+2. **Enriched Member Data**: Identify company affiliations for all members.
+3. **Revenue Analysis**: Calculate revenue generated by each company.
+4. **Shared Resources**: Determine collaboration levels among companies.
+
+#### Summary
+- Functional programming principles like pure functions and higher-order functions enable efficient data transformations.
+- Composing functions into an analytics pipeline ensures modular and maintainable code.
+- The real-world scenario of BCBS highlights practical applications of data analytics in healthcare.
+
+
+
+== Case Study: Database ETL and Analytics
+
+=== Objective
+This case study demonstrates how to use a database in an ETL (Extract, Transform, Load) pipeline and perform analytics using Python. The tasks include:
+
+1. Extracting data from various sources.
+2. Transforming and cleaning data.
+3. Loading data into a SQLite database.
+4. Performing analytics on the data.
+
+=== Scenario: Insurance Analytics Pipeline
+An insurance company wants to:
+
+1. Consolidate policyholder data from multiple sources.
+2. Clean and transform the data to ensure consistency.
+3. Store the processed data in a database.
+4. Generate reports and insights for business decisions.
+
+=== Step 1: Setting Up Data Sources
+
+#### Sample Data Sources
+
+[source,python]
+----
+# Data from multiple sources
+source_1 = [
+    {"policy_id": "POL12345", "holder": "John Doe", "type": "Life", "premium": 1200.50},
+    {"policy_id": "POL12346", "holder": "Jane Smith", "type": "Health", "premium": 2500.75}
+]
+
+source_2 = [
+    {"policy_id": "POL12347", "holder": "Jim Brown", "type": "Vehicle", "premium": 1800.00},
+    {"policy_id": "POL12348", "holder": "Alice Green", "type": "Life", "premium": 3000.00}
+]
+----
+
+=== Step 2: Extracting and Combining Data
+
+#### Extract Data from Multiple Sources
+
+[source,python]
+----
+def extract_data(sources):
+    """Combine data from multiple sources into a single list."""
+    combined_data = []
+    for source in sources:
+        combined_data.extend(source)
+    return combined_data
+
+# Combine data from sources
+raw_data = extract_data([source_1, source_2])
+print("Extracted Data:", raw_data)
+----
+
+=== Step 3: Transforming Data
+
+#### Cleaning and Standardizing Data
+
+[source,python]
+----
+def transform_data(data):
+    """Clean and standardize policy data."""
+    transformed_data = []
+    for record in data:
+        transformed_record = {
+            "policy_id": record["policy_id"].strip().upper(),
+            "policy_holder": record["holder"].title(),
+            "policy_type": record["type"].capitalize(),
+            "premium": round(record["premium"], 2)
+        }
+        transformed_data.append(transformed_record)
+    return transformed_data
+
+# Transform the raw data
+cleaned_data = transform_data(raw_data)
+print("Transformed Data:", cleaned_data)
+----
+
+=== Step 4: Loading Data into SQLite
+
+#### Create Database and Table
+
+[source,python]
+----
+import sqlite3
+
+# Connect to SQLite database
+connection = sqlite3.connect("insurance_etl.db")
+cursor = connection.cursor()
+
+# Create a table for policies
+create_table_query = """
+CREATE TABLE IF NOT EXISTS policies (
+    policy_id TEXT PRIMARY KEY,
+    policy_holder TEXT NOT NULL,
+    policy_type TEXT NOT NULL,
+    premium REAL NOT NULL
+);
+"""
+cursor.execute(create_table_query)
+print("Table 'policies' created successfully")
+----
+
+#### Insert Data into the Database
+
+[source,python]
+----
+def load_data_to_db(data, cursor, connection):
+    """Insert transformed data into the database."""
+    insert_query = "INSERT OR REPLACE INTO policies (policy_id, policy_holder, policy_type, premium) VALUES (?, ?, ?, ?);"
+    cursor.executemany(insert_query, [(record["policy_id"], record["policy_holder"], record["policy_type"], record["premium"]) for record in data])
+    connection.commit()
+
+# Load cleaned data into the database
+load_data_to_db(cleaned_data, cursor, connection)
+print("Data loaded into the database successfully")
+----
+
+=== Step 5: Performing Analytics
+
+#### Querying the Database
+
+[source,python]
+----
+# Retrieve all policies
+def fetch_policies(cursor):
+    cursor.execute("SELECT * FROM policies;")
+    return cursor.fetchall()
+
+# Fetch and display all policies
+policies = fetch_policies(cursor)
+print("Policies in Database:", policies)
+
+# Calculate total premiums by policy type
+def calculate_premium_by_type(cursor):
+    query = "SELECT policy_type, SUM(premium) AS total_premium FROM policies GROUP BY policy_type;"
+    cursor.execute(query)
+    return cursor.fetchall()
+
+premium_summary = calculate_premium_by_type(cursor)
+print("Premium Summary by Type:", premium_summary)
+----
+
+=== Step 6: Generating Reports
+
+#### Displaying Insights
+
+[source,python]
+----
+def generate_report(policies, premium_summary):
+    """Generate a report summarizing policy data."""
+    print("\n=== Insurance Policies Report ===")
+    print("\nAll Policies:")
+    for policy in policies:
+        print(f"ID: {policy[0]}, Holder: {policy[1]}, Type: {policy[2]}, Premium: ${policy[3]:.2f}")
+
+    print("\nPremium Summary by Type:")
+    for summary in premium_summary:
+        print(f"Type: {summary[0]}, Total Premium: ${summary[1]:.2f}")
+
+# Generate and display the report
+generate_report(policies, premium_summary)
+----
+
+=== Step 7: Closing the Database Connection
+
+[source,python]
+----
+# Close the database connection
+cursor.close()
+connection.close()
+print("Database connection closed")
+----
+
+=== Summary
+
+- **Extract**: Combined data from multiple sources.
+- **Transform**: Cleaned and standardized the data.
+- **Load**: Stored the data in a SQLite database.
+- **Analytics**: Queried the database to generate insights.
+- **Reporting**: Created a detailed report summarizing the data.
+
+This ETL pipeline demonstrates how to manage and analyze data efficiently using Python and SQLite.
+
+
+== Lab: Logging in Python
+
+=== Objective
+This lab provides a comprehensive understanding of logging in Python, including:
+
+1. The importance of logging.
+2. Types of logging.
+3. Log levels.
+4. Logging destinations.
+5. Creating a logging system for a real-world use case.
+
+=== Step 1: Introduction to Logging
+
+#### Why Logging?
+- Helps monitor application behavior.
+- Assists in debugging and error tracking.
+- Useful for auditing and tracking system events.
+
+#### Types of Logging
+1. **Application Logs**: Logs generated by the application to track events or errors.
+2. **System Logs**: Logs from the operating system or infrastructure.
+3. **Audit Logs**: Logs for security and compliance tracking.
+
+#### Log Levels
+1. **DEBUG**: Detailed information, typically for diagnosing problems.
+2. **INFO**: Confirmation that things are working as expected.
+3. **WARNING**: Indication of potential problems.
+4. **ERROR**: Logs an error that has occurred.
+5. **CRITICAL**: Logs severe errors causing program termination.
+
+=== Step 2: Basic Logging Configuration
+
+#### Setting Up Logging
+
+[source,python]
+----
+import logging
+
+# Basic configuration
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+# Test logging levels
+logging.debug("This is a DEBUG message")
+logging.info("This is an INFO message")
+logging.warning("This is a WARNING message")
+logging.error("This is an ERROR message")
+logging.critical("This is a CRITICAL message")
+----
+
+=== Step 3: Logging to a File
+
+#### Writing Logs to a File
+
+[source,python]
+----
+# Configure logging to write to a file
+logging.basicConfig(
+    filename='application.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+# Log messages
+logging.info("Application started")
+logging.warning("This is a warning message")
+logging.error("An error occurred")
+----
+
+=== Step 4: Advanced Logging with Handlers
+
+#### Adding Multiple Handlers
+
+[source,python]
+----
+# Create logger
+logger = logging.getLogger('AdvancedLogger')
+logger.setLevel(logging.DEBUG)
+
+# Create file handler
+file_handler = logging.FileHandler('advanced.log')
+file_handler.setLevel(logging.ERROR)
+
+# Create console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+
+# Create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# Add handlers to logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+# Log messages
+logger.debug("This is a DEBUG message")
+logger.info("This is an INFO message")
+logger.warning("This is a WARNING message")
+logger.error("This is an ERROR message")
+logger.critical("This is a CRITICAL message")
+----
+
+=== Step 5: Logging to External Destinations
+
+#### Logging to JSON File
+
+[source,python]
+----
+import json
+
+class JSONFileHandler(logging.FileHandler):
+    def emit(self, record):
+        log_entry = {
+            "timestamp": self.formatTime(record),
+            "level": record.levelname,
+            "message": record.msg
+        }
+        with open(self.baseFilename, 'a') as log_file:
+            log_file.write(json.dumps(log_entry) + '\n')
+
+# Configure JSON file handler
+json_handler = JSONFileHandler('logs.json')
+json_handler.setFormatter(logging.Formatter('%(asctime)s'))
+logger.addHandler(json_handler)
+
+logger.info("This log is written to a JSON file")
+----
+
+=== Step 6: Scenario: Insurance Policy Management Logging
+
+#### Scenario
+An insurance company wants to log events in their policy management system, including:
+1. Policy creation.
+2. Policy updates.
+3. Error handling.
+
+[source,python]
+----
+# Create logger for policy management
+policy_logger = logging.getLogger('PolicyLogger')
+policy_logger.setLevel(logging.INFO)
+
+# File handler for policy events
+policy_file_handler = logging.FileHandler('policy_events.log')
+policy_file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+policy_logger.addHandler(policy_file_handler)
+
+# Policy management functions
+def create_policy(policy_id, holder, policy_type):
+    policy_logger.info(f"Policy created: ID={policy_id}, Holder={holder}, Type={policy_type}")
+
+def update_policy(policy_id, updates):
+    policy_logger.info(f"Policy updated: ID={policy_id}, Updates={updates}")
+
+def handle_error(error_message):
+    policy_logger.error(f"Error occurred: {error_message}")
+
+# Simulate events
+create_policy("POL12345", "John Doe", "Life")
+update_policy("POL12345", {"premium": 1500})
+handle_error("Invalid policy ID")
+----
+
+=== Step 7: Summary
+
+- **Log Levels**: Use appropriate log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL) based on the severity.
+- **Destinations**: Logs can be written to files, consoles, or external systems.
+- **Handlers**: Multiple handlers allow flexibility in logging to different destinations.
+- **Real-World Application**: Logging helps in tracking events and debugging in systems like insurance management.
+
+
+
