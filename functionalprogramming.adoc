@@ -1,0 +1,185 @@
+== Lab: Functional Programming in Python
+
+=== Objective
+Provide a detailed guide to functional programming in Python, focusing on:
+
+1. Features of functional programming.
+2. Pure functions and immutability.
+3. Higher-order functions and using functions as arguments/return values.
+4. Scope of variables in functional programming.
+
+=== Step 1: Introduction to Functional Programming
+
+Functional programming is a programming paradigm where functions are treated as first-class citizens and computation is performed using mathematical functions. Key principles include:
+
+- **Immutability**: Data is not modified after creation.
+- **Pure Functions**: Functions produce the same output for the same input without side effects.
+- **First-Class Functions**: Functions can be passed as arguments, returned as values, and stored in variables.
+- **Higher-Order Functions**: Functions that take other functions as arguments or return them as results.
+
+=== Step 2: Pure Functions
+
+#### What is a Pure Function?
+- A function is considered pure if:
+  - It has no side effects.
+  - The output depends solely on the input.
+
+[source,python]
+----
+# Example: Pure Function
+
+def add_numbers(a, b):
+    """Adds two numbers without modifying external state."""
+    return a + b
+
+print(add_numbers(2, 3))  # Always produces 5
+
+# Example: Impure Function
+result = 0
+
+def add_to_result(value):
+    """Adds value to a global variable (impure)."""
+    global result
+    result += value
+    return result
+
+print(add_to_result(5))  # Depends on external state
+----
+
+#### Key Benefits of Pure Functions
+- Easier to test and debug.
+- More predictable behavior.
+- Suitable for parallel processing.
+
+=== Step 3: Immutability
+
+#### Mutable vs Immutable Data Types
+- **Immutable**: Data cannot be changed (e.g., `int`, `tuple`, `str`).
+- **Mutable**: Data can be changed (e.g., `list`, `dict`).
+
+[source,python]
+----
+# Example: Immutable Data
+x = (1, 2, 3)
+try:
+    x[0] = 10
+except TypeError as e:
+    print("Error:", e)
+
+# Example: Mutable Data
+y = [1, 2, 3]
+y[0] = 10
+print(y)  # [10, 2, 3]
+----
+
+#### Immutability in Functional Programming
+- Avoid mutating data to ensure predictable results.
+- Use immutable types like `tuple` or functional libraries like `frozenset`.
+
+=== Step 4: Higher-Order Functions
+
+#### What is a Higher-Order Function?
+- A function that:
+  - Takes another function as an argument.
+  - Returns a function as a result.
+
+#### Using Functions as Arguments
+
+[source,python]
+----
+# Example: Using a Function as an Argument
+
+def apply_function(func, value):
+    """Applies a function to a value."""
+    return func(value)
+
+# Function to double a number
+def double(x):
+    return x * 2
+
+print(apply_function(double, 5))  # Output: 10
+----
+
+#### Returning a Function
+
+[source,python]
+----
+# Example: Returning a Function
+
+def multiplier(factor):
+    """Returns a function that multiplies by the given factor."""
+    def multiply(value):
+        return value * factor
+    return multiply
+
+# Create a function that triples a value
+triple = multiplier(3)
+print(triple(5))  # Output: 15
+----
+
+=== Step 5: Scope of Variables
+
+#### Variable Scope in Python
+- **Local Scope**: Variables defined inside a function.
+- **Global Scope**: Variables defined outside any function.
+- **Nonlocal Scope**: Variables in an enclosing function for nested functions.
+
+[source,python]
+----
+# Example: Local, Global, and Nonlocal Scope
+x = 10  # Global variable
+
+def outer_function():
+    y = 20  # Enclosing variable
+
+    def inner_function():
+        nonlocal y
+        y += 5
+        print("Inner y:", y)
+
+    inner_function()
+    print("Outer y:", y)
+
+outer_function()
+print("Global x:", x)
+----
+
+=== Step 6: Real-World Case Study: Insurance Premium Calculator
+
+[source,python]
+----
+# Step 1: Pure Function to Calculate Premium
+def calculate_premium(base, risk_factor):
+    return base * risk_factor
+
+# Step 2: Higher-Order Function to Apply Discounts
+def apply_discount(discount_func, premium):
+    return discount_func(premium)
+
+# Discount Function
+def ten_percent_discount(premium):
+    return premium * 0.9
+
+# Step 3: Returning a Function for Tax Calculation
+def tax_calculator(tax_rate):
+    def calculate_tax(amount):
+        return amount * tax_rate
+    return calculate_tax
+
+# Step 4: Combining All Concepts
+premium = calculate_premium(1000, 1.2)
+premium_after_discount = apply_discount(ten_percent_discount, premium)
+calculate_tax = tax_calculator(0.05)
+total_with_tax = premium_after_discount + calculate_tax(premium_after_discount)
+
+print(f"Base Premium: {premium}")
+print(f"Premium After Discount: {premium_after_discount}")
+print(f"Total with Tax: {total_with_tax}")
+----
+
+=== Step 7: Summary
+
+- Functional programming promotes immutability and pure functions for predictable results.
+- Higher-order functions allow flexible and reusable code by operating on other functions.
+- Understanding variable scope is crucial for avoiding unintended side effects.
+- Applying these principles can simplify complex real-world problems, as shown in the case study.
