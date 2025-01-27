@@ -1,0 +1,183 @@
+== Case Study: Functional Programming for BCBS Operations
+
+=== Objective
+Implement a functional programming approach to streamline BCBS (Blue Cross Blue Shield) operations, focusing on:
+
+1. Managing hospital and doctor collaboration data.
+2. Sharing resources between BCBS companies.
+3. Joint enrollment and billing functions.
+
+This case study uses Python's functional programming principles to create reusable, composable, and predictable solutions.
+
+=== Step 1: Defining the Problem
+
+BCBS companies operate in a decentralized model but collaborate in key areas:
+
+1. Maintain a list of hospitals and doctors in a community.
+2. Share office space and resources between companies.
+3. Conduct joint enrollment and billing for members.
+
+We will solve this using:
+
+- Pure functions for predictable operations.
+- Higher-order functions for reusable logic.
+- Data immutability to maintain consistent state.
+
+=== Step 2: Setting Up Initial Data
+
+[source,python]
+----
+# List of hospitals and doctors in the community
+hospitals = [
+    {"hospital_id": "H001", "name": "Community Hospital", "city": "Springfield"},
+    {"hospital_id": "H002", "name": "Central Medical Center", "city": "Rivertown"}
+]
+
+doctors = [
+    {"doctor_id": "D001", "name": "Dr. Smith", "specialty": "Cardiology", "hospital_id": "H001"},
+    {"doctor_id": "D002", "name": "Dr. Johnson", "specialty": "Orthopedics", "hospital_id": "H002"}
+]
+
+# BCBS companies sharing resources
+bcbs_companies = [
+    {"company_id": "C001", "name": "BCBS Springfield", "shared_office": True},
+    {"company_id": "C002", "name": "BCBS Rivertown", "shared_office": True}
+]
+
+# Enrollment data
+members = [
+    {"member_id": "M001", "name": "Alice", "plan": "Basic", "company_id": "C001"},
+    {"member_id": "M002", "name": "Bob", "plan": "Premium", "company_id": "C002"}
+]
+----
+
+=== Step 3: Functional Operations for Data Management
+
+#### Pure Function: Mapping Doctors to Hospitals
+
+[source,python]
+----
+def map_doctors_to_hospitals(doctors, hospitals):
+    """Map doctors to their respective hospitals."""
+    return [
+        {
+            **doctor,
+            "hospital_name": next(
+                (hospital["name"] for hospital in hospitals if hospital["hospital_id"] == doctor["hospital_id"]),
+                "Unknown"
+            )
+        }
+        for doctor in doctors
+    ]
+
+# Test the function
+mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+print("Mapped Doctors:", mapped_doctors)
+----
+
+#### Higher-Order Function: Filter Shared Resources
+
+[source,python]
+----
+def filter_shared_resources(companies, filter_func):
+    """Filter companies based on a condition."""
+    return list(filter(filter_func, companies))
+
+# Test the function
+shared_office_companies = filter_shared_resources(bcbs_companies, lambda c: c["shared_office"])
+print("Companies Sharing Offices:", shared_office_companies)
+----
+
+#### Composing Enrollment Data
+
+[source,python]
+----
+def enrich_member_data(members, companies):
+    """Enrich members with company names."""
+    return [
+        {
+            **member,
+            "company_name": next(
+                (company["name"] for company in companies if company["company_id"] == member["company_id"]),
+                "Unknown"
+            )
+        }
+        for member in members
+    ]
+
+# Test the function
+enriched_members = enrich_member_data(members, bcbs_companies)
+print("Enriched Members:", enriched_members)
+----
+
+=== Step 4: Joint Enrollment and Billing
+
+#### Function Composition: Calculate Total Members and Premium Revenue
+
+[source,python]
+----
+def calculate_revenue_by_company(members, plans):
+    """Calculate total revenue by company based on member plans."""
+    return {
+        company_id: sum(plans[member["plan"]] for member in members if member["company_id"] == company_id)
+        for company_id in {member["company_id"] for member in members}
+    }
+
+# Define plan rates
+plan_rates = {"Basic": 100, "Premium": 200}
+
+# Test the function
+revenue_by_company = calculate_revenue_by_company(members, plan_rates)
+print("Revenue by Company:", revenue_by_company)
+----
+
+=== Step 5: Sharing Office Space and Resources
+
+#### Aggregating Shared Resource Usage
+
+[source,python]
+----
+def aggregate_shared_resources(companies):
+    """Aggregate shared resources among BCBS companies."""
+    return len([company for company in companies if company["shared_office"]])
+
+# Test the function
+shared_resource_count = aggregate_shared_resources(bcbs_companies)
+print("Total Companies Sharing Resources:", shared_resource_count)
+----
+
+=== Step 6: End-to-End Pipeline
+
+#### Process All Data Together
+
+[source,python]
+----
+def process_bcbs_data(doctors, hospitals, members, companies):
+    """Process BCBS data to produce final insights."""
+    # Step 1: Map doctors to hospitals
+    mapped_doctors = map_doctors_to_hospitals(doctors, hospitals)
+
+    # Step 2: Enrich members with company data
+    enriched_members = enrich_member_data(members, companies)
+
+    # Step 3: Calculate revenue by company
+    plan_rates = {"Basic": 100, "Premium": 200}
+    revenue = calculate_revenue_by_company(members, plan_rates)
+
+    return {
+        "mapped_doctors": mapped_doctors,
+        "enriched_members": enriched_members,
+        "revenue": revenue
+    }
+
+# Run the pipeline
+final_data = process_bcbs_data(doctors, hospitals, members, bcbs_companies)
+print("Final Data:", final_data)
+----
+
+=== Step 7: Summary
+
+- **Pure Functions**: Ensure predictable operations like mapping doctors to hospitals.
+- **Higher-Order Functions**: Reuse logic for filtering and enrichment.
+- **Data Composition**: Build enriched and aggregated insights like member data and revenue.
+- **Real-World Applicability**: Demonstrated a complete pipeline for BCBS operations using functional programming principles.
