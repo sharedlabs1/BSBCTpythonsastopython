@@ -1,0 +1,140 @@
+== Lab: Mastering File Operations in Python
+
+=== Objective
+Provide a comprehensive guide to Python file operations by:
+
+1. Understanding file modes and their usage.
+2. Demonstrating operations with CSV, JSON, and text files.
+3. Using real-world scenarios for practical learning.
+
+=== Step 1: Introduction to File Modes
+
+[source,python]
+----
+# File modes in Python:
+file_modes = {
+    "r": "Read - Opens a file for reading (default).",
+    "w": "Write - Opens a file for writing (creates/truncates).",
+    "x": "Exclusive creation - Fails if the file exists.",
+    "a": "Append - Opens a file for appending.",
+    "b": "Binary - Opens a file in binary mode.",
+    "t": "Text - Opens a file in text mode (default).",
+    "+": "Read and write mode."
+}
+
+for mode, description in file_modes.items():
+    print(f"Mode '{mode}': {description}")
+----
+
+=== Step 2: Basic Text File Operations
+
+[source,python]
+----
+# Writing to a text file
+with open("policies.txt", "w") as file:
+    file.write("POL12345, John Doe, Life, 1500\n")
+    file.write("POL12346, Jane Smith, Health, 2500\n")
+
+# Reading from a text file
+with open("policies.txt", "r") as file:
+    content = file.readlines()
+    print("File Content:", content)
+
+# Appending to a text file
+with open("policies.txt", "a") as file:
+    file.write("POL12347, Jim Brown, Vehicle, 3500\n")
+----
+
+=== Step 3: Working with CSV Files
+
+[source,python]
+----
+import csv
+
+# Writing to a CSV file
+with open("policies.csv", "w", newline="") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["PolicyID", "Holder", "Type", "Premium"])
+    writer.writerow(["POL12345", "John Doe", "Life", 1500])
+    writer.writerow(["POL12346", "Jane Smith", "Health", 2500])
+
+# Reading from a CSV file
+with open("policies.csv", "r") as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        print(row)
+
+# Writing to a CSV file with DictWriter
+with open("policies_dict.csv", "w", newline="") as csvfile:
+    fieldnames = ["PolicyID", "Holder", "Type", "Premium"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    writer.writerow({"PolicyID": "POL12345", "Holder": "John Doe", "Type": "Life", "Premium": 1500})
+----
+
+=== Step 4: Working with JSON Files
+
+[source,python]
+----
+import json
+
+# Writing to a JSON file
+policy_data = {
+    "POL12345": {"holder": "John Doe", "type": "Life", "premium": 1500},
+    "POL12346": {"holder": "Jane Smith", "type": "Health", "premium": 2500}
+}
+
+with open("policies.json", "w") as jsonfile:
+    json.dump(policy_data, jsonfile, indent=4)
+
+# Reading from a JSON file
+with open("policies.json", "r") as jsonfile:
+    data = json.load(jsonfile)
+    print("Policy Data:", data)
+----
+
+=== Step 5: Handling Binary Files
+
+[source,python]
+----
+# Writing to a binary file
+with open("policy_binary.bin", "wb") as binfile:
+    binfile.write(b"Policy Data: POL12345, John Doe, Life, 1500")
+
+# Reading from a binary file
+with open("policy_binary.bin", "rb") as binfile:
+    binary_content = binfile.read()
+    print("Binary Content:", binary_content)
+----
+
+=== Step 6: Combining File Operations in a Real-World Scenario
+
+[source,python]
+----
+import csv
+import json
+
+# Step 1: Read policies from a CSV file
+with open("policies.csv", "r") as csvfile:
+    reader = csv.DictReader(csvfile)
+    policies = [row for row in reader]
+
+# Step 2: Filter policies with premiums above a threshold
+high_premium_policies = [policy for policy in policies if int(policy["Premium"]) > 2000]
+
+# Step 3: Save filtered policies to a JSON file
+with open("high_premium_policies.json", "w") as jsonfile:
+    json.dump(high_premium_policies, jsonfile, indent=4)
+
+# Step 4: Append a summary to a text file
+with open("policy_summary.txt", "a") as file:
+    file.write(f"Total High Premium Policies: {len(high_premium_policies)}\n")
+    file.write("High Premium Policies saved to high_premium_policies.json\n")
+----
+
+=== Step 7: Summary
+
+- File modes provide flexibility in handling different file operations.
+- Python’s libraries for CSV and JSON make it easy to work with structured data.
+- Combining these operations enables powerful data processing pipelines for real-world scenarios, such as insurance policy management.
